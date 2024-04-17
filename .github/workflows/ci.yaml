@@ -66,7 +66,6 @@ jobs:
         role: cicd
         secrets: |
           kv/data/cicd/github api_token | GITHUB_API_TOKEN ;
-          kv/data/cicd/fly api_token | FLY_API_TOKEN
     - name: Docker Login
       if: github.ref == 'refs/heads/main'
       run: docker login ghcr.io -u ${{ github.repository_owner }} -p ${GITHUB_API_TOKEN}
