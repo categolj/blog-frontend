@@ -13,3 +13,10 @@ export interface Entry {
 export interface FrontMatter {
     title: string;
 }
+
+export interface Entries {
+    content: Entry[];
+    hasNext: boolean;
+    hasPrevious: boolean;
+    size: number;
+}

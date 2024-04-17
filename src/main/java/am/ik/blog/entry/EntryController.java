@@ -1,11 +1,14 @@
 package am.ik.blog.entry;
 
+import java.time.Instant;
 import java.util.Optional;
 
 import am.ik.blog.model.Entry;
+import am.ik.pagination.CursorPage;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -15,6 +18,11 @@ public class EntryController {
 
 	public EntryController(EntryClient entryClient) {
 		this.entryClient = entryClient;
+	}
+
+	@GetMapping(path = "/api/entries")
+	public CursorPage<Entry, Instant> getEntries(@RequestParam Optional<Instant> cursor) {
+		return this.entryClient.getEntries(cursor);
 	}
 
 	@GetMapping(path = "/api/entries/{entryId}")

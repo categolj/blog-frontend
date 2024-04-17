@@ -1,11 +1,14 @@
 package am.ik.blog.entry;
 
+import java.time.Instant;
 import java.util.Optional;
 
 import am.ik.blog.BlogApiProps;
 import am.ik.blog.model.Entry;
+import am.ik.pagination.CursorPage;
 import am.ik.spring.http.client.RetryableClientHttpRequestInterceptor;
 
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 import org.springframework.util.backoff.FixedBackOff;
 import org.springframework.web.client.HttpClientErrorException;
@@ -20,6 +23,14 @@ public class EntryClient {
 		this.restClient = restClientBuilder.baseUrl(props.url())
 			.requestInterceptor(new RetryableClientHttpRequestInterceptor(new FixedBackOff(1_000, 2)))
 			.build();
+	}
+
+	public CursorPage<Entry, Instant> getEntries(Optional<Instant> cursor) {
+		return this.restClient.get()
+			.uri("/entries?cursor=%s".formatted(cursor.map(Instant::toString).orElse("")))
+			.retrieve()
+			.body(new ParameterizedTypeReference<>() {
+			});
 	}
 
 	public Optional<Entry> getEntry(long entryId) {

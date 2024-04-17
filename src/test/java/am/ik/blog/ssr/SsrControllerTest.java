@@ -1,20 +1,25 @@
 package am.ik.blog.ssr;
 
+import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import am.ik.blog.entry.EntryClient;
-import am.ik.blog.post.Post;
-import am.ik.blog.post.PostClient;
+import am.ik.blog.model.Author;
+import am.ik.blog.model.Category;
+import am.ik.blog.model.Entry;
+import am.ik.blog.model.Tag;
+import am.ik.pagination.CursorPage;
 import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.DomNode;
-import com.gargoylesoftware.htmlunit.html.DomNodeList;
+import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
 import com.gargoylesoftware.htmlunit.html.HtmlDivision;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlScript;
+import com.gargoylesoftware.htmlunit.html.HtmlStrong;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +28,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static am.ik.blog.model.AuthorBuilder.author;
+import static am.ik.blog.model.EntryBuilder.entry;
+import static am.ik.blog.model.FrontMatterBuilder.frontMatter;
+import static io.github.ulfs.assertj.jsoup.Assertions.assertThatDocument;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -39,45 +49,90 @@ class SsrControllerTest {
 	WebClient webClient;
 
 	@MockBean
-	PostClient postClient;
-
-	@MockBean
 	EntryClient entryClient;
 
+	Author author = author().name("demo").date(OffsetDateTime.parse("2024-04-01T00:00:00Z")).build();
+
+	Entry entry100 = entry() //
+		.entryId(100L) //
+		.content("""
+				Welcome
+				**Hello world**, this is my first blog post.
+				I hope you like it!
+				""".trim()) //
+		.created(author) //
+		.updated(author) //
+		.frontMatter(frontMatter() //
+			.title("Hello World!") //
+			.tags(List.of(new Tag("x"), new Tag("y"), new Tag("z"))) //
+			.categories(List.of(new Category("a"), new Category("b"), new Category("c"))) //
+			.build()) //
+		.build();
+
 	@Test
-	void index() throws Exception {
-		given(this.postClient.getPosts()).willReturn(List.of(new Post(2, "SSR", "Server Side Rendering!", 1000),
-				new Post(1, "Hello", "Hello World!", 1000)));
-		HtmlPage page = this.webClient.getPage("/");
-		HtmlDivision root = page.getHtmlElementById("root");
-		assertThat(root).isNotNull();
-		DomNodeList<DomNode> titles = root.querySelectorAll("li");
-		assertThat(titles).hasSize(2);
-		assertThat(titles.get(0).getTextContent()).isEqualTo("SSR");
-		assertThat(titles.get(1).getTextContent()).isEqualTo("Hello");
+	@SuppressWarnings("deprecate")
+	void getEntry() throws Exception {
+		given(this.entryClient.getEntry(100L)).willReturn(Optional.of(entry100));
+		HtmlPage page = this.webClient.getPage("/entries/100");
+		HtmlAnchor title = page.querySelector("#title > a");
+		assertThat(title).isNotNull();
+		assertThatDocument(title.asXml()).elementHasText("a", "Hello World!")
+			.elementAttributeHasText("a", "href", "/entries/100");
+		HtmlDivision entry = page.getHtmlElementById("entry");
+		assertThat(entry).isNotNull();
+		assertThat(entry.getTextContent()).isEqualTo("""
+				Welcome
+				Hello world, this is my first blog post.
+				I hope you like it!
+				""");
+		// Check is markdown is rendered
+		HtmlStrong strong = entry.querySelector("strong");
+		assertThat(strong).isNotNull();
+		assertThat(strong.getTextContent()).isEqualTo("Hello world");
+		HtmlScript initData = page.getHtmlElementById("__INIT_DATA__");
+		assertThat(initData).isNotNull();
+		assertThat(initData.getTextContent()).isEqualTo(
+				"""
+						{"preLoadedEntry":{"entryId":100,"frontMatter":{"title":"Hello World!","categories":[{"name":"a"},{"name":"b"},{"name":"c"}],"tags":[{"name":"x"},{"name":"y"},{"name":"z"}]},"content":"Welcome\\n**Hello world**, this is my first blog post.\\nI hope you like it!","created":{"name":"demo","date":"2024-04-01T00:00:00Z"},"updated":{"name":"demo","date":"2024-04-01T00:00:00Z"}}}
+						"""
+					.trim());
 	}
 
 	@Test
-	void post() throws Exception {
-		given(this.postClient.getPost(1)).willReturn(new Post(1, "Hello", "Hello World!", 1000));
-		HtmlPage page = this.webClient.getPage("/posts/1");
-		HtmlDivision root = page.getHtmlElementById("root");
-		assertThat(root).isNotNull();
-		DomNode title = root.querySelector("h3");
-		assertThat(title).isNotNull();
-		assertThat(title.getTextContent()).isEqualTo("Hello");
-		DomNode body = root.querySelector("p");
-		assertThat(body).isNotNull();
-		assertThat(body.getTextContent()).isEqualTo("Hello World!");
+	void index() throws Exception {
+		Entry entry2 = entry() //
+			.entryId(2L) //
+			.frontMatter(frontMatter() //
+				.title("entry2") //
+				.build()) //
+			.build();
+		Entry entry1 = entry() //
+			.entryId(1L) //
+			.frontMatter(frontMatter() //
+				.title("entry1") //
+				.build()) //
+			.build();
+		given(this.entryClient.getEntries(any()))
+			.willReturn(new CursorPage<>(List.of(entry2, entry1), 2, Entry::toCursor, false, true));
+		HtmlPage page = this.webClient.getPage("/");
+		HtmlDivision entries = page.getHtmlElementById("entries");
+		assertThat(entries).isNotNull();
+		assertThatDocument(entries.asXml()).elementHasText("li:nth-child(1)", "entry2")
+			.elementAttributeHasText("li:nth-child(1) > a", "href", "/entries/2")
+			.elementHasText("li:nth-child(2)", "entry1")
+			.elementAttributeHasText("li:nth-child(2) > a", "href", "/entries/1");
 		HtmlScript initData = page.getHtmlElementById("__INIT_DATA__");
 		assertThat(initData).isNotNull();
-		assertThat(initData.getTextContent()).isEqualTo("""
-				{"preLoadedPost":{"id":1,"title":"Hello","body":"Hello World!","userId":1000}}
-				""".trim());
+		assertThat(initData.getTextContent()).isEqualTo(
+				"""
+						{"preLoadedEntries":{"content":[{"entryId":2,"frontMatter":{"title":"entry2","categories":null,"tags":null},"content":null,"created":null,"updated":null},{"entryId":1,"frontMatter":{"title":"entry1","categories":null,"tags":null},"content":null,"created":null,"updated":null}],"size":2,"hasPrevious":false,"hasNext":true}}
+						"""
+					.trim());
 	}
 
 	@Test
 	void concurrentAccess() throws Exception {
+		given(this.entryClient.getEntry(100L)).willReturn(Optional.of(entry100));
 		int n = 32;
 		CountDownLatch latch;
 		try (ExecutorService executorService = Executors.newFixedThreadPool(n)) {
@@ -85,7 +140,7 @@ class SsrControllerTest {
 			for (int i = 0; i < n; i++) {
 				executorService.submit(() -> {
 					try {
-						this.mvc.perform(get("/")).andExpect(status().isOk());
+						this.mvc.perform(get("/entries/100")).andExpect(status().isOk());
 					}
 					catch (Exception e) {
 						throw new RuntimeException(e);

@@ -1,12 +1,15 @@
 package am.ik.blog.ssr;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import am.ik.blog.entry.EntryClient;
 import am.ik.blog.model.Entry;
 import am.ik.blog.post.Post;
 import am.ik.blog.post.PostClient;
+import am.ik.pagination.CursorPage;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,10 +32,16 @@ public class SsrController {
 		this.postClient = postClient;
 	}
 
-	@GetMapping(path = { "/", "/posts" })
+	@GetMapping(path = { "/" })
 	public String index() {
+		CursorPage<Entry, Instant> entries = this.entryClient.getEntries(Optional.empty());
+		return this.reactRenderer.render("/", Map.of("preLoadedEntries", entries));
+	}
+
+	@GetMapping(path = { "/posts" })
+	public String posts() {
 		List<Post> posts = this.postClient.getPosts();
-		return this.reactRenderer.render("/", Map.of("preLoadedPosts", posts));
+		return this.reactRenderer.render("/posts", Map.of("preLoadedPosts", posts));
 	}
 
 	@GetMapping(path = { "/posts/{id}" })

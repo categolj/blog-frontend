@@ -51,6 +51,11 @@
 			<version>0.3.0</version>
 		</dependency>
 		<dependency>
+			<groupId>am.ik.pagination</groupId>
+			<artifactId>pagination</artifactId>
+			<version>0.2.0</version>
+		</dependency>
+		<dependency>
 			<groupId>am.ik.access-logger</groupId>
 			<artifactId>access-logger</artifactId>
 			<version>0.2.0</version>
@@ -79,6 +84,12 @@
 		<dependency>
 			<groupId>net.sourceforge.htmlunit</groupId>
 			<artifactId>htmlunit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.github.ulfs</groupId>
+			<artifactId>assertj-jsoup</artifactId>
+			<version>0.1.4</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
