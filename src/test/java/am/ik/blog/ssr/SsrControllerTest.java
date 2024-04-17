@@ -6,6 +6,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import am.ik.blog.entry.EntryClient;
 import am.ik.blog.post.Post;
 import am.ik.blog.post.PostClient;
 import com.gargoylesoftware.htmlunit.WebClient;
@@ -39,6 +40,9 @@ class SsrControllerTest {
 
 	@MockBean
 	PostClient postClient;
+
+	@MockBean
+	EntryClient entryClient;
 
 	@Test
 	void index() throws Exception {
