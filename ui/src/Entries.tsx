@@ -1,6 +1,7 @@
-import React, {useEffect, useState} from 'react'
-import {Entries as EntriesModel, Entry} from "./types.ts";
+import React from 'react'
+import {Entries as EntriesModel} from "./types.ts";
 import {Link} from "react-router-dom";
+import useSWR, {Fetcher} from 'swr';
 
 export interface EntriesProps {
     preLoadedEntries: EntriesModel;
@@ -8,19 +9,10 @@ export interface EntriesProps {
 
 const Entries: React.FC<EntriesProps> = ({preLoadedEntries}) => {
     const isPreLoaded = !!preLoadedEntries;
-    const [entries, setEntries] = useState<EntriesModel>(isPreLoaded ? preLoadedEntries : {content: [] as Entry[]} as EntriesModel);
-    const [loading, setLoading] = useState(!isPreLoaded);
-
-    useEffect(() => {
-        if (!isPreLoaded) {
-            fetch('/api/entries')
-                .then(res => res.json())
-                .then(data => setEntries(data))
-                .finally(() => setLoading(false));
-        }
-    }, [isPreLoaded]);
-
-    if (loading) {
+    const fetcher: Fetcher<EntriesModel, string> = (url) => fetch(url).then(res => res.json());
+    const {data, isLoading} = useSWR(isPreLoaded ? null : '/api/entries', fetcher);
+    const entries = data || preLoadedEntries;
+    if (isLoading || !entries) {
         return <div>Loading ...</div>
     }
     return (<>
