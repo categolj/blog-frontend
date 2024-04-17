@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Link, useParams} from "react-router-dom";
 import {Entry as EntryModel} from "./types.ts";
+import {marked} from 'marked';
 
 export interface EntryProps {
     preLoadedEntry: EntryModel;
@@ -24,9 +25,10 @@ const Entry: React.FC<EntryProps> = ({preLoadedEntry}) => {
     if (loading) {
         return <div>Loading ...</div>
     }
+    const contentHtml = marked.parse(entry.content, {async: false}) as string;
     return <>
         <h3><Link to={`/entries/${entry.entryId}`}>{entry.frontMatter.title}</Link></h3>
-        <p>{entry.content}</p>
+        <p dangerouslySetInnerHTML={{__html: contentHtml}}></p>
         <hr/>
         <Link to={'/'}>&laquo; Go to Entries</Link>
     </>;
