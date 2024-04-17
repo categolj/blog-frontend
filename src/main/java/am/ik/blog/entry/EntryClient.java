@@ -42,13 +42,11 @@ public class EntryClient {
 			.toEntity(Entry.class);
 	}
 
-	public ResponseEntity<Void> headEntry(long entryId, String ifModifiedSince) {
-		return this.restClient.head()
-			.uri("/entries/{entryId}", entryId)
-			.headers(headers -> headers.setBasicAuth("blog-ui", "empty"))
-			.header(HttpHeaders.IF_MODIFIED_SINCE, ifModifiedSince)
-			.retrieve()
-			.toBodilessEntity();
+	public ResponseEntity<Void> headEntry(long entryId, Instant lastModifiedDate) {
+		return this.restClient.head().uri("/entries/{entryId}", entryId).headers(headers -> {
+			headers.setBasicAuth("blog-ui", "empty");
+			headers.setIfModifiedSince(lastModifiedDate);
+		}).retrieve().toBodilessEntity();
 	}
 
 }

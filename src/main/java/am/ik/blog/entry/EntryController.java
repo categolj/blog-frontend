@@ -48,9 +48,9 @@ public class EntryController {
 
 	@GetMapping(path = "/api/entries/{entryId}")
 	public ResponseEntity<Entry> getEntry(@PathVariable Long entryId,
-			@RequestHeader(name = HttpHeaders.IF_MODIFIED_SINCE) Optional<String> ifModifiedSince) {
-		if (ifModifiedSince.isPresent()) {
-			ResponseEntity<Void> head = this.entryClient.headEntry(entryId, ifModifiedSince.get());
+			@RequestHeader(name = HttpHeaders.IF_MODIFIED_SINCE) Optional<Instant> lastModifiedDate) {
+		if (lastModifiedDate.isPresent()) {
+			ResponseEntity<Void> head = this.entryClient.headEntry(entryId, lastModifiedDate.get());
 			if (head.getStatusCode() == HttpStatus.NOT_MODIFIED) {
 				return ResponseEntity.status(HttpStatus.NOT_MODIFIED).headers(copyHeaders(head.getHeaders())).build();
 			}
