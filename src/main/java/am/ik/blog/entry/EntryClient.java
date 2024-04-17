@@ -9,9 +9,10 @@ import am.ik.pagination.CursorPage;
 import am.ik.spring.http.client.RetryableClientHttpRequestInterceptor;
 
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.backoff.FixedBackOff;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 
 @Component
@@ -25,26 +26,29 @@ public class EntryClient {
 			.build();
 	}
 
-	public CursorPage<Entry, Instant> getEntries(Optional<Instant> cursor) {
+	public ResponseEntity<CursorPage<Entry, Instant>> getEntries(Optional<Instant> cursor) {
 		return this.restClient.get()
 			.uri("/entries?cursor=%s".formatted(cursor.map(Instant::toString).orElse("")))
 			.retrieve()
-			.body(new ParameterizedTypeReference<>() {
+			.toEntity(new ParameterizedTypeReference<>() {
 			});
 	}
 
-	public Optional<Entry> getEntry(long entryId) {
-		try {
-			Entry entry = this.restClient.get()
-				.uri("/entries/{entryId}", entryId)
-				.headers(headers -> headers.setBasicAuth("blog-ui", "empty"))
-				.retrieve()
-				.body(Entry.class);
-			return Optional.ofNullable(entry);
-		}
-		catch (HttpClientErrorException.NotFound notFound) {
-			return Optional.empty();
-		}
+	public ResponseEntity<Entry> getEntry(long entryId) {
+		return this.restClient.get()
+			.uri("/entries/{entryId}", entryId)
+			.headers(headers -> headers.setBasicAuth("blog-ui", "empty"))
+			.retrieve()
+			.toEntity(Entry.class);
+	}
+
+	public ResponseEntity<Void> headEntry(long entryId, String ifModifiedSince) {
+		return this.restClient.head()
+			.uri("/entries/{entryId}", entryId)
+			.headers(headers -> headers.setBasicAuth("blog-ui", "empty"))
+			.header(HttpHeaders.IF_MODIFIED_SINCE, ifModifiedSince)
+			.retrieve()
+			.toBodilessEntity();
 	}
 
 }

@@ -2,7 +2,6 @@ package am.ik.blog.ssr;
 
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -26,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static am.ik.blog.model.AuthorBuilder.author;
@@ -70,9 +70,8 @@ class SsrControllerTest {
 		.build();
 
 	@Test
-	@SuppressWarnings("deprecate")
 	void getEntry() throws Exception {
-		given(this.entryClient.getEntry(100L)).willReturn(Optional.of(entry100));
+		given(this.entryClient.getEntry(100L)).willReturn(ResponseEntity.ok(entry100));
 		HtmlPage page = this.webClient.getPage("/entries/100");
 		HtmlAnchor title = page.querySelector("#title > a");
 		assertThat(title).isNotNull();
@@ -113,7 +112,7 @@ class SsrControllerTest {
 				.build()) //
 			.build();
 		given(this.entryClient.getEntries(any()))
-			.willReturn(new CursorPage<>(List.of(entry2, entry1), 2, Entry::toCursor, false, true));
+			.willReturn(ResponseEntity.ok(new CursorPage<>(List.of(entry2, entry1), 2, Entry::toCursor, false, true)));
 		HtmlPage page = this.webClient.getPage("/entries");
 		HtmlDivision entries = page.getHtmlElementById("entries");
 		assertThat(entries).isNotNull();
@@ -132,7 +131,7 @@ class SsrControllerTest {
 
 	@Test
 	void concurrentAccess() throws Exception {
-		given(this.entryClient.getEntry(100L)).willReturn(Optional.of(entry100));
+		given(this.entryClient.getEntry(100L)).willReturn(ResponseEntity.ok(entry100));
 		int n = 32;
 		CountDownLatch latch;
 		try (ExecutorService executorService = Executors.newFixedThreadPool(n)) {
