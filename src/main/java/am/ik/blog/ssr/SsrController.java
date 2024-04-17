@@ -1,14 +1,11 @@
 package am.ik.blog.ssr;
 
 import java.time.Instant;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import am.ik.blog.entry.EntryClient;
 import am.ik.blog.model.Entry;
-import am.ik.blog.post.Post;
-import am.ik.blog.post.PostClient;
 import am.ik.pagination.CursorPage;
 
 import org.springframework.http.HttpStatus;
@@ -24,30 +21,20 @@ public class SsrController {
 
 	private final EntryClient entryClient;
 
-	private final PostClient postClient;
-
-	public SsrController(ReactRenderer reactRenderer, EntryClient entryClient, PostClient postClient) {
+	public SsrController(ReactRenderer reactRenderer, EntryClient entryClient) {
 		this.reactRenderer = reactRenderer;
 		this.entryClient = entryClient;
-		this.postClient = postClient;
 	}
 
 	@GetMapping(path = { "/" })
 	public String index() {
+		return this.entries();
+	}
+
+	@GetMapping(path = { "/entries" })
+	public String entries() {
 		CursorPage<Entry, Instant> entries = this.entryClient.getEntries(Optional.empty());
 		return this.reactRenderer.render("/", Map.of("preLoadedEntries", entries));
-	}
-
-	@GetMapping(path = { "/posts" })
-	public String posts() {
-		List<Post> posts = this.postClient.getPosts();
-		return this.reactRenderer.render("/posts", Map.of("preLoadedPosts", posts));
-	}
-
-	@GetMapping(path = { "/posts/{id}" })
-	public String post(@PathVariable int id) {
-		Post post = this.postClient.getPost(id);
-		return this.reactRenderer.render("/posts/%d".formatted(id), Map.of("preLoadedPost", post));
 	}
 
 	@GetMapping(path = { "/entries/{entryId}" })

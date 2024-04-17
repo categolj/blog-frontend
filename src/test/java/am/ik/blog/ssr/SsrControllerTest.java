@@ -99,7 +99,7 @@ class SsrControllerTest {
 	}
 
 	@Test
-	void index() throws Exception {
+	void getEntries() throws Exception {
 		Entry entry2 = entry() //
 			.entryId(2L) //
 			.frontMatter(frontMatter() //
@@ -114,7 +114,7 @@ class SsrControllerTest {
 			.build();
 		given(this.entryClient.getEntries(any()))
 			.willReturn(new CursorPage<>(List.of(entry2, entry1), 2, Entry::toCursor, false, true));
-		HtmlPage page = this.webClient.getPage("/");
+		HtmlPage page = this.webClient.getPage("/entries");
 		HtmlDivision entries = page.getHtmlElementById("entries");
 		assertThat(entries).isNotNull();
 		assertThatDocument(entries.asXml()).elementHasText("li:nth-child(1)", "entry2")
