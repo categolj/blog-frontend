@@ -6,10 +6,10 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
 @SpringBootApplication
 @ConfigurationPropertiesScan
-public class SsrReactSpringBootGraalvmJsApplication {
+public class BlogFrontendApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SsrReactSpringBootGraalvmJsApplication.class, args);
+		SpringApplication.run(BlogFrontendApplication.class, args);
 	}
 
 }
