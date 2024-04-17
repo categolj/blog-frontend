@@ -3,8 +3,6 @@ package am.ik.blog.entry;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Optional;
-import java.util.Set;
-import java.util.function.Consumer;
 
 import am.ik.blog.model.Entry;
 import am.ik.pagination.CursorPage;
