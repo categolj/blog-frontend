@@ -1,6 +1,7 @@
 import Posts, {PostsProps} from "./Posts.jsx";
 import Post, {PostProps} from "./Post.jsx";
 import {RouteObject} from "react-router-dom";
+import Entry, {EntryProps} from "./Entry.tsx";
 
 export default function routes(initData: object): RouteObject[] {
     return [
@@ -12,6 +13,9 @@ export default function routes(initData: object): RouteObject[] {
         },
         {
             path: "/posts/:id", element: <Post {...initData as PostProps}/>
+        },
+        {
+            path: "/entries/:entryId", element: <Entry {...initData as EntryProps} />
         }
     ];
 }
