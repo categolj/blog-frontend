@@ -45,7 +45,7 @@ public class EntryController {
 			@RequestHeader(name = HttpHeaders.IF_MODIFIED_SINCE) Optional<Instant> lastModifiedDate) {
 		if (lastModifiedDate.isPresent()) {
 			ResponseEntity<Void> head = this.entryClient.headEntry(entryId, lastModifiedDate.get());
-			if (head.getStatusCode() == HttpStatus.NOT_MODIFIED) {
+			if (head.getStatusCode().isSameCodeAs(HttpStatus.NOT_MODIFIED)) {
 				return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();
 			}
 		}
