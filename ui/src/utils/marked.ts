@@ -4,7 +4,7 @@ import {getHeadingList, gfmHeadingId, HeadingData} from "marked-gfm-heading-id";
 function toc(headings: HeadingData[]) {
     const contents: string[] = [];
     let previousLevel = -1;
-    contents.push('<ul id="table-of-contents">')
+    contents.push('<ul id="table-of-content">')
     headings.forEach(({id, text, level}) => {
         if (previousLevel !== -1 && level > previousLevel) {
             contents.push('<ul>')
