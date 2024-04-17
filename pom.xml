@@ -8,11 +8,11 @@
 		<version>3.2.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.example</groupId>
-	<artifactId>ssr-react-spring-boot-graalvm-js</artifactId>
+	<groupId>am.ik.blog</groupId>
+	<artifactId>blog-frontend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ssr-react-spring-boot-graalvm-js</name>
-	<description>ssr-react-spring-boot-graalvm-js</description>
+	<name>blog-frontend</name>
+	<description>blog-frontend</description>
 	<properties>
 		<java.version>21</java.version>
 		<graalvm.version>24.0.0</graalvm.version>
@@ -55,6 +55,12 @@
 			<artifactId>access-logger</artifactId>
 			<version>0.2.0</version>
 		</dependency>
+ 		<dependency>
+ 			<groupId>cc.jilt</groupId>
+ 			<artifactId>jilt</artifactId>
+ 			<version>1.5</version>
+ 			<scope>provided</scope>
+ 		</dependency>
 		<dependency>
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-registry-prometheus</artifactId>

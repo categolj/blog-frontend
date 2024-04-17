@@ -1,4 +1,4 @@
-package com.example.config;
+package am.ik.blog.config;
 
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
 import org.springframework.context.annotation.Configuration;

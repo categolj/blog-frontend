@@ -1,4 +1,4 @@
-package com.example.ssr;
+package am.ik.blog.ssr;
 
 import java.io.File;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package com.example.ssr;
+package am.ik.blog.ssr;
 
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -6,8 +6,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import com.example.post.Post;
-import com.example.post.PostClient;
+import am.ik.blog.post.Post;
+import am.ik.blog.post.PostClient;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.DomNode;
 import com.gargoylesoftware.htmlunit.html.DomNodeList;
@@ -27,7 +27,7 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = SsrController.class, properties = "logging.level.com.example=trace")
+@WebMvcTest(controllers = SsrController.class, properties = "logging.level.am.ik.blog=trace")
 @Import(ReactRenderer.class)
 class SsrControllerTest {
 

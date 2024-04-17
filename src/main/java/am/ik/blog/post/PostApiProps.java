@@ -1,4 +1,4 @@
-package com.example.post;
+package am.ik.blog.post;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

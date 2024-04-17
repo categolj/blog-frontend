@@ -1,4 +1,4 @@
-package com.example.config;
+package am.ik.blog.config;
 
 import am.ik.accesslogger.AccessLogger;
 

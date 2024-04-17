@@ -1,10 +1,10 @@
-package com.example.ssr;
+package am.ik.blog.ssr;
 
 import java.util.List;
 import java.util.Map;
 
-import com.example.post.Post;
-import com.example.post.PostClient;
+import am.ik.blog.post.Post;
+import am.ik.blog.post.PostClient;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

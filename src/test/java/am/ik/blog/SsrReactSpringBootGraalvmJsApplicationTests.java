@@ -1,4 +1,4 @@
-package com.example;
+package am.ik.blog;
 
 import org.junit.jupiter.api.Test;
 
