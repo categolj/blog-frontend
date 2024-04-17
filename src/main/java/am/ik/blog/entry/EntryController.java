@@ -34,16 +34,12 @@ public class EntryController {
 	@GetMapping(path = "/api/entries")
 	public ResponseEntity<CursorPage<Entry, Instant>> getEntries(@RequestParam Optional<Instant> cursor) {
 		ResponseEntity<CursorPage<Entry, Instant>> response = this.entryClient.getEntries(cursor);
-		return ResponseEntity.status(response.getStatusCode())
-			.headers(copyHeaders(response.getHeaders()))
-			.headers(headers -> {
-				CursorPage<Entry, Instant> page = response.getBody();
-				if (page != null && page.size() > 0) {
-					headers.setLastModified(page.content().get(0).toCursor());
-				}
-			})
-			.cacheControl(swrCacheControl)
-			.body(response.getBody());
+		return ResponseEntity.ok().headers(headers -> {
+			CursorPage<Entry, Instant> page = response.getBody();
+			if (page != null && page.size() > 0) {
+				headers.setLastModified(page.content().get(0).toCursor());
+			}
+		}).cacheControl(swrCacheControl).body(response.getBody());
 	}
 
 	@GetMapping(path = "/api/entries/{entryId}")
@@ -52,26 +48,16 @@ public class EntryController {
 		if (lastModifiedDate.isPresent()) {
 			ResponseEntity<Void> head = this.entryClient.headEntry(entryId, lastModifiedDate.get());
 			if (head.getStatusCode() == HttpStatus.NOT_MODIFIED) {
-				return ResponseEntity.status(HttpStatus.NOT_MODIFIED).headers(copyHeaders(head.getHeaders())).build();
+				return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();
 			}
 		}
 		ResponseEntity<Entry> response = this.entryClient.getEntry(entryId);
-		return ResponseEntity.status(response.getStatusCode())
-			.headers(copyHeaders(response.getHeaders()))
-			.cacheControl(swrCacheControl)
-			.body(response.getBody());
-	}
-
-	private static final Set<String> skipCopyHeaders = Set.of("server", "vary", "cache-control", "expires", "date",
-			"pragma");
-
-	private static Consumer<HttpHeaders> copyHeaders(HttpHeaders source) {
-		return destination -> source.forEach((name, values) -> {
-			if (skipCopyHeaders.contains(name) || name.startsWith("x-")) {
-				return;
+		return ResponseEntity.ok().headers(headers -> {
+			long lastModified = response.getHeaders().getLastModified();
+			if (lastModified != -1) {
+				headers.setLastModified(lastModified);
 			}
-			destination.put(name, values);
-		});
+		}).cacheControl(swrCacheControl).body(response.getBody());
 	}
 
 }
