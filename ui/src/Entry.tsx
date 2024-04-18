@@ -22,8 +22,6 @@ const Entry: React.FC<EntryProps> = ({preLoadedEntry}) => {
     return <>
         <h3 id="title"><Link to={`/entries/${entry.entryId}`}>{entry.frontMatter.title}</Link></h3>
         <div id="entry" dangerouslySetInnerHTML={{__html: contentHtml}}/>
-        <hr/>
-        <Link to={'/'}>&laquo; Go to Entries</Link>
     </>;
 };
 

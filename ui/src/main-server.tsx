@@ -3,18 +3,21 @@ import ReactDOMServer from 'react-dom/server'
 import './index.css'
 import routes from "./routes.tsx";
 import {StaticRouter} from "react-router-dom/server";
-import {Route, Routes} from "react-router-dom";
+import {Route, RouteObject, Routes} from "react-router-dom";
 import {RouteProps} from "react-router/dist/lib/components";
+import Layout from "./components/Layout.tsx";
 
 export function render(url: string, input: string) {
     const initData = input ? JSON.parse(input) : {};
-    const router = routes(initData);
+    const router = routes(initData)[0].children as RouteObject[];
     return {
         html: ReactDOMServer.renderToString(
             <React.StrictMode>
                 <StaticRouter location={url}>
                     <Routes>
-                        {router.map(route => <Route {...route as RouteProps} />)}
+                        <Route path="/" element={<Layout/>}>
+                            {router.map(route => <Route {...route as RouteProps} />)}
+                        </Route>
                     </Routes>
                 </StaticRouter>
             </React.StrictMode>,
