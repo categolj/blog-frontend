@@ -3,6 +3,7 @@ import {Link, useParams} from "react-router-dom";
 import useSWR, {Fetcher} from 'swr';
 import {Entry as EntryModel} from "./types.ts";
 import marked from './utils/marked.ts'
+import 'highlight.js/styles/default.min.css';
 
 export interface EntryProps {
     preLoadedEntry: EntryModel;
