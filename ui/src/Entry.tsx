@@ -1,7 +1,8 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Link, useParams} from "react-router-dom";
 import useSWR, {Fetcher} from 'swr';
 import {Entry as EntryModel} from "./types.ts";
+import {addCopyButton} from './utils/copy';
 import marked from './utils/marked.ts'
 import 'highlight.js/styles/default.min.css';
 
@@ -15,6 +16,7 @@ const Entry: React.FC<EntryProps> = ({preLoadedEntry}) => {
     const fetcher: Fetcher<EntryModel, string> = (entryId) => fetch(`/api/entries/${entryId}`).then(res => res.json());
     const {data, isLoading} = useSWR(isPreLoaded ? null : entryId, fetcher);
     const entry = data || preLoadedEntry;
+    useEffect(addCopyButton, [entry]);
     if (isLoading || !entry) {
         return <div>Loading ...</div>
     }
