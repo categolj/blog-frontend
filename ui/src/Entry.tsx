@@ -4,7 +4,6 @@ import useSWR, {Fetcher} from 'swr';
 import {Entry as EntryModel} from "./types.ts";
 import marked from './utils/marked.ts'
 import ScrollToTop from "react-scroll-to-top";
-import 'highlight.js/styles/default.min.css';
 
 export interface EntryProps {
     preLoadedEntry: EntryModel;

@@ -1,7 +1,5 @@
-import {Marked} from 'marked'
+import {marked} from 'marked'
 import {getHeadingList, gfmHeadingId, HeadingData} from "marked-gfm-heading-id";
-import {markedHighlight} from "marked-highlight";
-import hljs from 'highlight.js';
 
 function toc(headings: HeadingData[]) {
     const contents: string[] = [];
@@ -28,17 +26,11 @@ function toc(headings: HeadingData[]) {
 
 const TOC_MARKER = '<!-- toc -->';
 
-export default new Marked(
-    markedHighlight({
-        highlight(code, lang) {
-            const language = hljs.getLanguage(lang) ? lang : 'plaintext';
-            return hljs.highlight(code, {language}).value;
+marked.use(gfmHeadingId(), {
+    hooks: {
+        postprocess(html) {
+            return html.includes(TOC_MARKER) ? html.replace(TOC_MARKER, toc(getHeadingList())) : html;
         }
-    }))
-    .use(gfmHeadingId(), {
-        hooks: {
-            postprocess(html) {
-                return html.includes(TOC_MARKER) ? html.replace(TOC_MARKER, toc(getHeadingList())) : html;
-            }
-        }
-    });
+    }
+});
+export default marked;
