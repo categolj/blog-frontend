@@ -3,7 +3,6 @@ import {Link, useParams} from "react-router-dom";
 import useSWR, {Fetcher} from 'swr';
 import {Entry as EntryModel} from "./types.ts";
 import marked from './utils/marked.ts'
-import ScrollToTop from "react-scroll-to-top";
 
 export interface EntryProps {
     preLoadedEntry: EntryModel;
@@ -22,7 +21,6 @@ const Entry: React.FC<EntryProps> = ({preLoadedEntry}) => {
     return <>
         <h3 id="title"><Link to={`/entries/${entry.entryId}`}>{entry.frontMatter.title}</Link></h3>
         <div id="entry" dangerouslySetInnerHTML={{__html: contentHtml}}/>
-        <ScrollToTop smooth style={{paddingLeft: '5px'}}/>
         <hr/>
         <Link to={'/'}>&laquo; Go to Entries</Link>
     </>;
