@@ -1,9 +1,19 @@
 import React from "react";
 import {Link} from "react-router-dom";
+import {styled} from "styled-components";
+
+const Title = styled.h1`
+  font-size: 2em;
+
+  a {
+    color: #333;
+    text-decoration: none;
+  }
+`;
 
 const Header: React.FC = () => {
     return <>
-        <h1><Link to={`/`}>IK.AM</Link></h1>
+        <Title><Link to={`/`}>IK.AM</Link></Title>
     </>;
 };
 
