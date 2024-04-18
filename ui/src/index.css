@@ -14,8 +14,96 @@ img[alt=image], img[alt=alt_text] {
     border-radius: 18px;
 }
 
+blockquote {
+    margin: 10px 0;
+}
+
 pre {
     border: black solid;
     border-radius: 8px;
+    line-height: 1;
+    display: flex;
+    position: relative;
     padding: 10px;
+}
+
+p code {
+    padding: 2px;
+}
+
+/* https://github.com/markedjs/marked/blob/master/docs/css/style.css */
+
+.div-copy {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.div-copy .icon-copy {
+    opacity: 1;
+    transition: opacity .3s;
+    height: 28px;
+    width: 28px;
+    cursor: pointer;
+    padding: 4px;
+}
+
+.div-copy.active .icon-copy {
+    opacity: 1;
+}
+
+.div-copy .tooltip-copy {
+    position: relative;
+}
+
+.div-copy .tooltip-copy::before {
+    content: "Copied";
+    position: absolute;
+
+    /* vertically center */
+    top: 50%;
+    transform: translateY(-50%);
+
+    /* move to right */
+    right: 100%;
+    margin-right: 5px; /* and add a small left margin */
+
+    /* basic styles */
+    padding: 2px 7px;
+    border-radius: 5px;
+    background: #444;
+    color: #fff;
+    text-align: center;
+
+    opacity: 0; /* hide by default */
+    transition: opacity .3s;
+}
+
+.div-copy.click .tooltip-copy::before {
+    opacity: 1;
+}
+
+.div-copy .tooltip-copy::after {
+    content: "";
+    position: absolute;
+
+    /* position tooltip correctly */
+    right: 100%;
+    margin-right: -5px;
+
+    /* vertically center */
+    top: 50%;
+    transform: translateY(-50%);
+
+    /* the arrow */
+    border-style: solid;
+    border-width: 2px 2px 5px 8px;
+    border-color: transparent transparent transparent #444;
+
+    opacity: 0;
+    transition: opacity .3s;
+}
+
+.div-copy.click .tooltip-copy::after {
+    opacity: 1;
 }
