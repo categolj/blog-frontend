@@ -18,6 +18,7 @@ import java.util.function.Function;
 import java.util.function.IntFunction;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.micrometer.observation.annotation.Observed;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Engine;
 import org.graalvm.polyglot.Source;
@@ -95,6 +96,7 @@ public class ReactRenderer implements AutoCloseable {
 		getRoot("polyfill");
 	}
 
+	@Observed(name = "react.render")
 	public String render(String url, Map<String, Object> input) {
 		try {
 			String s = this.objectMapper.writeValueAsString(input);
