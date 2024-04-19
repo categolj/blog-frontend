@@ -28,13 +28,14 @@ public class AppConfig {
 	public static BeanPostProcessor ruleBasedRoutingSampler() {
 		return new BeanPostProcessor() {
 			@Override
+			@SuppressWarnings("deprecation")
 			public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
 				if (bean instanceof Sampler) {
 					return RuleBasedRoutingSampler.builder(SpanKind.SERVER, (Sampler) bean)
-						.drop(SemanticAttributes.URL_PATH, "^/readyz")
-						.drop(SemanticAttributes.URL_PATH, "^/livez")
-						.drop(SemanticAttributes.URL_PATH, "^/actuator")
-						.drop(SemanticAttributes.URL_PATH, "^/cloudfoundryapplication")
+						.drop(SemanticAttributes.HTTP_URL, "^/readyz")
+						.drop(SemanticAttributes.HTTP_URL, "^/livez")
+						.drop(SemanticAttributes.HTTP_URL, "^/actuator")
+						.drop(SemanticAttributes.HTTP_URL, "^/cloudfoundryapplication")
 						.build();
 				}
 				return bean;
