@@ -1,7 +1,14 @@
 package am.ik.blog.config;
 
 import am.ik.accesslogger.AccessLogger;
+import io.micrometer.core.instrument.config.MeterFilter;
+import io.opentelemetry.api.trace.SpanKind;
+import io.opentelemetry.contrib.sampler.RuleBasedRoutingSampler;
+import io.opentelemetry.sdk.trace.samplers.Sampler;
+import io.opentelemetry.semconv.SemanticAttributes;
 
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,7 +19,35 @@ public class AppConfig {
 	public AccessLogger accessLogger() {
 		return new AccessLogger(httpExchange -> {
 			String uri = httpExchange.getRequest().getUri().getPath();
-			return uri != null && !(uri.equals("/readyz") || uri.equals("/livez") || uri.startsWith("/actuator"));
+			return uri != null && !(uri.equals("/readyz") || uri.equals("/livez") || uri.startsWith("/actuator")
+					|| uri.startsWith("/cloudfoundryapplication"));
+		});
+	}
+
+	@Bean
+	public static BeanPostProcessor ruleBasedRoutingSampler() {
+		return new BeanPostProcessor() {
+			@Override
+			public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+				if (bean instanceof Sampler) {
+					return RuleBasedRoutingSampler.builder(SpanKind.SERVER, (Sampler) bean)
+						.drop(SemanticAttributes.URL_PATH, "^/readyz")
+						.drop(SemanticAttributes.URL_PATH, "^/livez")
+						.drop(SemanticAttributes.URL_PATH, "^/actuator")
+						.drop(SemanticAttributes.URL_PATH, "^/cloudfoundryapplication")
+						.build();
+				}
+				return bean;
+			}
+		};
+	}
+
+	@Bean
+	public MeterFilter customMeterFilter() {
+		return MeterFilter.deny(id -> {
+			String uri = id.getTag("uri");
+			return uri != null && (uri.startsWith("/readyz") || uri.startsWith("/livez") || uri.startsWith("/actuator")
+					|| uri.startsWith("/cloudfoundryapplication"));
 		});
 	}
 
