@@ -2,10 +2,11 @@ import React, {useEffect} from "react";
 import {Link, useParams} from "react-router-dom";
 import useSWR, {Fetcher} from 'swr';
 import {Entry as EntryModel} from "./types.ts";
+import Loading from "./components/Loading.tsx";
+import ScrollToTop from "react-scroll-to-top";
 import {addCopyButton} from './utils/copy';
 import marked from './utils/marked.ts'
 import 'highlight.js/styles/default.min.css';
-import Loading from "./components/Loading.tsx";
 
 export interface EntryProps {
     preLoadedEntry: EntryModel;
@@ -25,6 +26,7 @@ const Entry: React.FC<EntryProps> = ({preLoadedEntry}) => {
     return <>
         <h3 id="title"><Link to={`/entries/${entry.entryId}`}>{entry.frontMatter.title}</Link></h3>
         <div id="entry" dangerouslySetInnerHTML={{__html: contentHtml}}/>
+        <ScrollToTop smooth />
     </>;
 };
 

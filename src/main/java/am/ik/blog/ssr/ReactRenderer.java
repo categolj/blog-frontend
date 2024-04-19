@@ -65,7 +65,19 @@ public class ReactRenderer implements AutoCloseable {
 						NODE_ENV: 'production'
 					}
 				};
-				globalThis.document = {};
+				globalThis.document = {
+					head: {
+						firstChild: false,
+						appendChild: () => {}
+					},
+					createElement: () => {
+						return {
+							styleSheet: {
+								cssText: ''
+							}
+						}
+					}
+				};
 				global = globalThis;
 				""");
 		Path mainServer = Paths.get(getRoot("server").getAbsolutePath(), "main-server.js");
