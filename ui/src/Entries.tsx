@@ -2,6 +2,7 @@ import React from 'react'
 import {Entries as EntriesModel} from "./types.ts";
 import {Link} from "react-router-dom";
 import useSWR, {Fetcher} from 'swr';
+import Loading from "./components/Loading.tsx";
 
 export interface EntriesProps {
     preLoadedEntries: EntriesModel;
@@ -13,7 +14,7 @@ const Entries: React.FC<EntriesProps> = ({preLoadedEntries}) => {
     const {data, isLoading} = useSWR(isPreLoaded ? null : '/api/entries', fetcher);
     const entries = data || preLoadedEntries;
     if (isLoading || !entries) {
-        return <div>Loading ...</div>
+        return <Loading/>
     }
     return (<>
         <div id="entries">

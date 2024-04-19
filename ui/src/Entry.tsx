@@ -5,6 +5,7 @@ import {Entry as EntryModel} from "./types.ts";
 import {addCopyButton} from './utils/copy';
 import marked from './utils/marked.ts'
 import 'highlight.js/styles/default.min.css';
+import Loading from "./components/Loading.tsx";
 
 export interface EntryProps {
     preLoadedEntry: EntryModel;
@@ -18,7 +19,7 @@ const Entry: React.FC<EntryProps> = ({preLoadedEntry}) => {
     const entry = data || preLoadedEntry;
     useEffect(addCopyButton, [entry]);
     if (isLoading || !entry) {
-        return <div>Loading ...</div>
+        return <Loading/>
     }
     const contentHtml = marked.parse(entry.content, {async: false, gfm: true}) as string;
     return <>
