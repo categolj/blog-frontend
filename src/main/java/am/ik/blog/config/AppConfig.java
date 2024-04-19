@@ -2,10 +2,10 @@ package am.ik.blog.config;
 
 import am.ik.accesslogger.AccessLogger;
 import io.micrometer.core.instrument.config.MeterFilter;
+import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.contrib.sampler.RuleBasedRoutingSampler;
 import io.opentelemetry.sdk.trace.samplers.Sampler;
-import io.opentelemetry.semconv.SemanticAttributes;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -28,14 +28,14 @@ public class AppConfig {
 	public static BeanPostProcessor ruleBasedRoutingSampler() {
 		return new BeanPostProcessor() {
 			@Override
-			@SuppressWarnings("deprecation")
 			public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
 				if (bean instanceof Sampler) {
+					AttributeKey<String> uri = AttributeKey.stringKey("uri");
 					return RuleBasedRoutingSampler.builder(SpanKind.SERVER, (Sampler) bean)
-						.drop(SemanticAttributes.HTTP_URL, "^/readyz")
-						.drop(SemanticAttributes.HTTP_URL, "^/livez")
-						.drop(SemanticAttributes.HTTP_URL, "^/actuator")
-						.drop(SemanticAttributes.HTTP_URL, "^/cloudfoundryapplication")
+						.drop(uri, "^/readyz")
+						.drop(uri, "^/livez")
+						.drop(uri, "^/actuator")
+						.drop(uri, "^/cloudfoundryapplication")
 						.build();
 				}
 				return bean;
