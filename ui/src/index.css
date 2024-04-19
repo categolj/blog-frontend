@@ -19,14 +19,15 @@ blockquote {
 }
 
 pre {
-    border: black solid;
-    border-radius: 5px;
+    border: 1px black solid;
+    border-radius: .375rem;
     line-height: 1.25em;
     font-size: .875rem;
     display: flex;
     position: relative;
     padding: 10px;
     background: #fafafa;
+    overflow-x: auto;
 }
 
 p code {
