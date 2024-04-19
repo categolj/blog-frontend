@@ -13,12 +13,6 @@ import am.ik.blog.model.Category;
 import am.ik.blog.model.Entry;
 import am.ik.blog.model.Tag;
 import am.ik.pagination.CursorPage;
-import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
-import com.gargoylesoftware.htmlunit.html.HtmlDivision;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import com.gargoylesoftware.htmlunit.html.HtmlScript;
-import com.gargoylesoftware.htmlunit.html.HtmlStrong;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,9 +39,6 @@ class SsrControllerTest {
 	@Autowired
 	MockMvc mvc;
 
-	@Autowired
-	WebClient webClient;
-
 	@MockBean
 	EntryClient entryClient;
 
@@ -72,29 +63,23 @@ class SsrControllerTest {
 	@Test
 	void getEntry() throws Exception {
 		given(this.entryClient.getEntry(100L)).willReturn(ResponseEntity.ok(entry100));
-		HtmlPage page = this.webClient.getPage("/entries/100");
-		HtmlAnchor title = page.querySelector("#title > a");
-		assertThat(title).isNotNull();
-		assertThatDocument(title.asXml()).elementHasText("a", "Hello World!")
-			.elementAttributeHasText("a", "href", "/entries/100");
-		HtmlDivision entry = page.getHtmlElementById("entry");
-		assertThat(entry).isNotNull();
-		assertThat(entry.getTextContent()).isEqualTo("""
-				Welcome
-				Hello world, this is my first blog post.
-				I hope you like it!
-				""");
-		// Check is markdown is rendered
-		HtmlStrong strong = entry.querySelector("strong");
-		assertThat(strong).isNotNull();
-		assertThat(strong.getTextContent()).isEqualTo("Hello world");
-		HtmlScript initData = page.getHtmlElementById("__INIT_DATA__");
-		assertThat(initData).isNotNull();
-		assertThat(initData.getTextContent()).isEqualTo(
-				"""
-						{"preLoadedEntry":{"entryId":100,"frontMatter":{"title":"Hello World!","categories":[{"name":"a"},{"name":"b"},{"name":"c"}],"tags":[{"name":"x"},{"name":"y"},{"name":"z"}]},"content":"Welcome\\n**Hello world**, this is my first blog post.\\nI hope you like it!","created":{"name":"demo","date":"2024-04-01T00:00:00Z"},"updated":{"name":"demo","date":"2024-04-01T00:00:00Z"}}}
-						"""
-					.trim());
+
+		String body = this.mvc.perform(get("/entries/100"))
+			.andExpect(status().isOk())
+			.andReturn()
+			.getResponse()
+			.getContentAsString();
+
+		assertThatDocument(body) //
+			.elementHasText("#title > a", "Hello World!") //
+			.elementAttributeHasText("#title > a", "href", "/entries/100") //
+			.elementHasText("#entry", "Welcome Hello world, this is my first blog post. I hope you like it!") //
+			.elementHasText("#entry strong", "Hello world") //
+			.elementHasHtml("#__INIT_DATA__",
+					"""
+							{"preLoadedEntry":{"entryId":100,"frontMatter":{"title":"Hello World!","categories":[{"name":"a"},{"name":"b"},{"name":"c"}],"tags":[{"name":"x"},{"name":"y"},{"name":"z"}]},"content":"Welcome\\n**Hello world**, this is my first blog post.\\nI hope you like it!","created":{"name":"demo","date":"2024-04-01T00:00:00Z"},"updated":{"name":"demo","date":"2024-04-01T00:00:00Z"}}}
+							"""
+						.trim());
 	}
 
 	@Test
@@ -113,20 +98,23 @@ class SsrControllerTest {
 			.build();
 		given(this.entryClient.getEntries(any()))
 			.willReturn(ResponseEntity.ok(new CursorPage<>(List.of(entry2, entry1), 2, Entry::toCursor, false, true)));
-		HtmlPage page = this.webClient.getPage("/entries");
-		HtmlDivision entries = page.getHtmlElementById("entries");
-		assertThat(entries).isNotNull();
-		assertThatDocument(entries.asXml()).elementHasText("li:nth-child(1)", "entry2")
-			.elementAttributeHasText("li:nth-child(1) > a", "href", "/entries/2")
-			.elementHasText("li:nth-child(2)", "entry1")
-			.elementAttributeHasText("li:nth-child(2) > a", "href", "/entries/1");
-		HtmlScript initData = page.getHtmlElementById("__INIT_DATA__");
-		assertThat(initData).isNotNull();
-		assertThat(initData.getTextContent()).isEqualTo(
-				"""
-						{"preLoadedEntries":{"content":[{"entryId":2,"frontMatter":{"title":"entry2","categories":null,"tags":null},"content":null,"created":null,"updated":null},{"entryId":1,"frontMatter":{"title":"entry1","categories":null,"tags":null},"content":null,"created":null,"updated":null}],"size":2,"hasPrevious":false,"hasNext":true}}
-						"""
-					.trim());
+
+		String body = this.mvc.perform(get("/entries"))
+			.andExpect(status().isOk())
+			.andReturn()
+			.getResponse()
+			.getContentAsString();
+
+		assertThatDocument(body) //
+			.elementHasText("#entries li:nth-child(1)", "entry2")
+			.elementAttributeHasText("#entries li:nth-child(1) > a", "href", "/entries/2")
+			.elementHasText("#entries li:nth-child(2)", "entry1")
+			.elementAttributeHasText("#entries li:nth-child(2) > a", "href", "/entries/1")
+			.elementHasHtml("#__INIT_DATA__",
+					"""
+							{"preLoadedEntries":{"content":[{"entryId":2,"frontMatter":{"title":"entry2","categories":null,"tags":null},"content":null,"created":null,"updated":null},{"entryId":1,"frontMatter":{"title":"entry1","categories":null,"tags":null},"content":null,"created":null,"updated":null}],"size":2,"hasPrevious":false,"hasNext":true}}
+							"""
+						.trim());
 	}
 
 	@Test
