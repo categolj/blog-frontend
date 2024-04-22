@@ -81,8 +81,8 @@ jobs:
         web: ./blog-frontend
         EOF
         pack build ghcr.io/${GITHUB_REPOSITORY_OWNER}/blog-frontend \
-          --env BP_OCI_SOURCE ${GITHUB_REF_NAME}@sha1:${GITHUB_SHA} \
-          --env BP_OCI_REVISION ${GITHUB_REF_NAME}@sha1:${GITHUB_SHA} \
+          --env BP_OCI_SOURCE=${GITHUB_REF_NAME}@sha1:${GITHUB_SHA} \
+          --env BP_OCI_REVISION=${GITHUB_REF_NAME}@sha1:${GITHUB_SHA} \
           --gid 1000 \
           --publish \
           --builder paketobuildpacks/builder-jammy-tiny \
