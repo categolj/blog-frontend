@@ -7,10 +7,40 @@ import ScrollToTop from "react-scroll-to-top";
 import {addCopyButton} from './utils/copy';
 import marked from './utils/marked.ts'
 import 'highlight.js/styles/default.min.css';
+import {styled} from "styled-components";
 
 export interface EntryProps {
     preLoadedEntry: EntryModel;
 }
+
+const Title = styled.h3`
+  font-size: 1.25rem;
+  margin: 0 0 0.5rem;
+
+  a {
+    color: #333;
+    text-decoration: none;
+  }
+`;
+
+const Meta = styled.p`
+  margin: 0;
+  color: #031b4e99;
+  display: inline-block;
+  width: 100%;
+`
+
+const Tags = styled.p`
+  color: #031b4e99;
+  float: right;
+  font-size: smaller;
+  margin: 0 1em 0 0;
+
+  a {
+    color: #031b4e99;
+    text-decoration: none;
+  }
+`
 
 const Entry: React.FC<EntryProps> = ({preLoadedEntry}) => {
     const {entryId} = useParams();
@@ -24,9 +54,17 @@ const Entry: React.FC<EntryProps> = ({preLoadedEntry}) => {
     }
     const contentHtml = marked.parse(entry.content, {async: false, gfm: true}) as string;
     return <>
-        <h3 id="title"><Link to={`/entries/${entry.entryId}`}>{entry.frontMatter.title}</Link></h3>
+        <Title id="title"><Link to={`/entries/${entry.entryId}`}>{entry.frontMatter.title}</Link></Title>
+        <Meta>
+            Created on <span title={entry.created.date}>{new Date(entry.created.date).toDateString()}</span> •
+            Last Updated on <span title={entry.updated.date}>{new Date(entry.updated.date).toDateString()}</span>
+            <Tags>🏷️ {entry.frontMatter.tags
+                .map<React.ReactNode>(t => <Link key={t.name}
+                                                 to={`/tags/${t.name}/entries`}>{t.name}</Link>)
+                .reduce((prev, curr) => [prev, ' | ', curr])}</Tags>
+        </Meta>
         <div id="entry" dangerouslySetInnerHTML={{__html: contentHtml}}/>
-        <ScrollToTop smooth />
+        <ScrollToTop smooth/>
     </>;
 };
 
