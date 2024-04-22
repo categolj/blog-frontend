@@ -86,6 +86,8 @@ jobs:
           --gid 1000 \
           --publish \
           --builder paketobuildpacks/builder-jammy-tiny \
+          --buildpack gcr.io/paketo-buildpacks/image-labels \
+          --buildpack gcr.io/paketo-buildpacks/procfile \
           --path pack
     - name: Revoke token
       if: always()
