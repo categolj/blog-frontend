@@ -22,7 +22,7 @@ blockquote, div.markdown-alert {
     font-size: .875rem;
 }
 
-.markdown-alert > p {
+blockquote > p, div.markdown-alert > p {
     margin: 0 0 0.25rem;
 }
 
