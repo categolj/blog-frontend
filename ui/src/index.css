@@ -14,8 +14,20 @@ img[alt=image], img[alt=alt_text] {
     border-radius: 18px;
 }
 
-blockquote {
-    margin: 10px 0;
+blockquote, div.markdown-alert {
+    margin: 0;
+    padding: 10px;
+    border-radius: .25rem;
+    border: 1px black dotted;
+    font-size: .875rem;
+}
+
+.markdown-alert > p {
+    margin: 0 0 0.25rem;
+}
+
+.octicon {
+    margin: 0 0.25rem 0 0;
 }
 
 pre {

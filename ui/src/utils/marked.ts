@@ -1,6 +1,7 @@
 import {Marked} from 'marked'
 import {getHeadingList, gfmHeadingId, HeadingData} from "marked-gfm-heading-id";
 import {markedHighlight} from "marked-highlight";
+import markedAlert from 'marked-alert'
 import hljs from 'highlight.js';
 
 function toc(headings: HeadingData[]) {
@@ -35,6 +36,16 @@ export default new Marked(
             return hljs.highlight(code, {language}).value;
         }
     }))
+    .use(markedAlert(), {
+        hooks: {
+            preprocess(markdown: string): string {
+                return markdown
+                    .replace('> ℹ️', '> [!NOTE]')
+                    .replace('> ⚠️', '> [!WARNING]')
+                    .replace('> 🚨', '> [!CAUTION]');
+            }
+        }
+    })
     .use(gfmHeadingId(), {
         hooks: {
             postprocess(html) {
