@@ -2,6 +2,7 @@ import {RouteObject} from "react-router-dom";
 import Entry, {EntryProps} from "./Entry.tsx";
 import Entries, {EntriesProps} from "./Entries.tsx";
 import Layout from "./components/Layout.tsx";
+import Tags, {TagsProps} from "./Tags.tsx";
 
 export default function routes(initData: object): RouteObject[] {
     return [
@@ -16,6 +17,9 @@ export default function routes(initData: object): RouteObject[] {
                 },
                 {
                     path: "/entries/:entryId", element: <Entry {...initData as EntryProps} />
+                },
+                {
+                    path: "/tags", element: <Tags {...initData as TagsProps} />
                 }
             ]
         },

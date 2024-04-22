@@ -20,3 +20,9 @@ export interface Entries {
     hasPrevious: boolean;
     size: number;
 }
+
+export interface Tag {
+    name: string,
+    version: string | undefined,
+    count: number
+}

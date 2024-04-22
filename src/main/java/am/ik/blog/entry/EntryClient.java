@@ -1,15 +1,16 @@
 package am.ik.blog.entry;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 import am.ik.blog.BlogApiProps;
 import am.ik.blog.model.Entry;
+import am.ik.blog.model.Tag;
 import am.ik.pagination.CursorPage;
 import am.ik.spring.http.client.RetryableClientHttpRequestInterceptor;
 
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.backoff.FixedBackOff;
@@ -23,6 +24,7 @@ public class EntryClient {
 	public EntryClient(RestClient.Builder restClientBuilder, BlogApiProps props) {
 		this.restClient = restClientBuilder.baseUrl(props.url())
 			.requestInterceptor(new RetryableClientHttpRequestInterceptor(new FixedBackOff(1_000, 2)))
+			.defaultHeaders(headers -> headers.setBasicAuth("blog-ui", "empty"))
 			.build();
 	}
 
@@ -35,18 +37,18 @@ public class EntryClient {
 	}
 
 	public ResponseEntity<Entry> getEntry(long entryId) {
-		return this.restClient.get()
-			.uri("/entries/{entryId}", entryId)
-			.headers(headers -> headers.setBasicAuth("blog-ui", "empty"))
-			.retrieve()
-			.toEntity(Entry.class);
+		return this.restClient.get().uri("/entries/{entryId}", entryId).retrieve().toEntity(Entry.class);
 	}
 
 	public ResponseEntity<Void> headEntry(long entryId, Instant lastModifiedDate) {
 		return this.restClient.head().uri("/entries/{entryId}", entryId).headers(headers -> {
-			headers.setBasicAuth("blog-ui", "empty");
 			headers.setIfModifiedSince(lastModifiedDate);
 		}).retrieve().toBodilessEntity();
+	}
+
+	public ResponseEntity<List<Tag>> getTags() {
+		return this.restClient.get().uri("/tags").retrieve().toEntity(new ParameterizedTypeReference<>() {
+		});
 	}
 
 }

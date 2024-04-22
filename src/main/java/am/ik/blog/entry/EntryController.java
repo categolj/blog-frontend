@@ -2,9 +2,11 @@ package am.ik.blog.entry;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 import am.ik.blog.model.Entry;
+import am.ik.blog.model.Tag;
 import am.ik.pagination.CursorPage;
 
 import org.springframework.http.CacheControl;
@@ -56,6 +58,11 @@ public class EntryController {
 				headers.setLastModified(lastModified);
 			}
 		}).cacheControl(swrCacheControl).body(response.getBody());
+	}
+
+	@GetMapping(path = "/api/tags")
+	public ResponseEntity<List<Tag>> getTags() {
+		return this.entryClient.getTags();
 	}
 
 }

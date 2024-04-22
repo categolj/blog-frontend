@@ -55,7 +55,7 @@ class SsrControllerTest {
 		.updated(author) //
 		.frontMatter(frontMatter() //
 			.title("Hello World!") //
-			.tags(List.of(new Tag("x"), new Tag("y"), new Tag("z"))) //
+			.tags(List.of(new Tag("x", 1), new Tag("y", 1), new Tag("z", 1))) //
 			.categories(List.of(new Category("a"), new Category("b"), new Category("c"))) //
 			.build()) //
 		.build();
@@ -77,7 +77,7 @@ class SsrControllerTest {
 			.elementHasText("#entry strong", "Hello world") //
 			.elementHasHtml("#__INIT_DATA__",
 					"""
-							{"preLoadedEntry":{"entryId":100,"frontMatter":{"title":"Hello World!","categories":[{"name":"a"},{"name":"b"},{"name":"c"}],"tags":[{"name":"x"},{"name":"y"},{"name":"z"}]},"content":"Welcome\\n**Hello world**, this is my first blog post.\\nI hope you like it!","created":{"name":"demo","date":"2024-04-01T00:00:00Z"},"updated":{"name":"demo","date":"2024-04-01T00:00:00Z"}}}
+							{"preLoadedEntry":{"entryId":100,"frontMatter":{"title":"Hello World!","categories":[{"name":"a"},{"name":"b"},{"name":"c"}],"tags":[{"name":"x","count":1},{"name":"y","count":1},{"name":"z","count":1}]},"content":"Welcome\\n**Hello world**, this is my first blog post.\\nI hope you like it!","created":{"name":"demo","date":"2024-04-01T00:00:00Z"},"updated":{"name":"demo","date":"2024-04-01T00:00:00Z"}}}
 							"""
 						.trim());
 	}
@@ -115,6 +115,29 @@ class SsrControllerTest {
 							{"preLoadedEntries":{"content":[{"entryId":2,"frontMatter":{"title":"entry2","categories":null,"tags":null},"content":null,"created":null,"updated":null},{"entryId":1,"frontMatter":{"title":"entry1","categories":null,"tags":null},"content":null,"created":null,"updated":null}],"size":2,"hasPrevious":false,"hasNext":true}}
 							"""
 						.trim());
+	}
+
+	@Test
+	void getTags() throws Exception {
+		given(this.entryClient.getTags())
+			.willReturn(ResponseEntity.ok(List.of(new Tag("A", 1), new Tag("B", 2), new Tag("C", 1))));
+
+		String body = this.mvc.perform(get("/tags"))
+			.andExpect(status().isOk())
+			.andReturn()
+			.getResponse()
+			.getContentAsString();
+
+		assertThatDocument(body) //
+			.elementHasText("#tags li:nth-child(1)", "A (1)")
+			.elementAttributeHasText("#tags li:nth-child(1) > a", "href", "/tags/A/entries")
+			.elementHasText("#tags li:nth-child(2)", "B (2)")
+			.elementAttributeHasText("#tags li:nth-child(2) > a", "href", "/tags/B/entries")
+			.elementHasText("#tags li:nth-child(3)", "C (1)")
+			.elementAttributeHasText("#tags li:nth-child(3) > a", "href", "/tags/C/entries")
+			.elementHasHtml("#__INIT_DATA__", """
+					{"preLoadedTags":[{"name":"A","count":1},{"name":"B","count":2},{"name":"C","count":1}]}
+					""".trim());
 	}
 
 	@Test
