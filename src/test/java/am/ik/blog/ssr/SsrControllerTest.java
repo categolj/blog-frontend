@@ -71,8 +71,8 @@ class SsrControllerTest {
 			.getContentAsString();
 
 		assertThatDocument(body) //
-			.elementHasText("#title > a", "Hello World!") //
-			.elementAttributeHasText("#title > a", "href", "/entries/100") //
+			.elementHasText("#entry-title > a", "Hello World!") //
+			.elementAttributeHasText("#entry-title > a", "href", "/entries/100") //
 			.elementHasText("#entry", "Welcome Hello world, this is my first blog post. I hope you like it!") //
 			.elementHasText("#entry strong", "Hello world") //
 			.elementHasHtml("#__INIT_DATA__",

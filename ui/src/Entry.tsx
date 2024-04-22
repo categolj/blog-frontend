@@ -53,15 +53,20 @@ const Entry: React.FC<EntryProps> = ({preLoadedEntry}) => {
         return <Loading/>
     }
     const contentHtml = marked.parse(entry.content, {async: false, gfm: true}) as string;
+    const categories = entry.frontMatter.categories
+        .map<React.ReactNode>(c => <Link key={c.name} to={`/categories`}>{c.name}</Link>)
+        .reduce((prev, curr) => [prev, ' > ', curr]);
+    const tags = entry.frontMatter.tags
+        .map<React.ReactNode>(t => <Link key={t.name}
+                                         to={`/tags/${t.name}/entries`}>{t.name}</Link>)
+        .reduce((prev, curr) => [prev, ' | ', curr]);
     return <>
-        <Title id="title"><Link to={`/entries/${entry.entryId}`}>{entry.frontMatter.title}</Link></Title>
-        <Meta>
+        <p id="entry-categories">{categories}</p>
+        <Title id="entry-title"><Link to={`/entries/${entry.entryId}`}>{entry.frontMatter.title}</Link></Title>
+        <Meta id="entry-meta">
             Created on <span title={entry.created.date}>{new Date(entry.created.date).toDateString()}</span> •
             Last Updated on <span title={entry.updated.date}>{new Date(entry.updated.date).toDateString()}</span>
-            <Tags>🏷️ {entry.frontMatter.tags
-                .map<React.ReactNode>(t => <Link key={t.name}
-                                                 to={`/tags/${t.name}/entries`}>{t.name}</Link>)
-                .reduce((prev, curr) => [prev, ' | ', curr])}</Tags>
+            <Tags id="entry-tags">🏷️ {tags}</Tags>
         </Meta>
         <div id="entry" dangerouslySetInnerHTML={{__html: contentHtml}}/>
         <ScrollToTop smooth/>
