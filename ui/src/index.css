@@ -50,6 +50,19 @@ code {
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
 }
 
+ul {
+    margin: 0 0 0 1.5rem;
+    padding: 0;
+}
+
+a {
+    color: #333;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-decoration-thickness: 0;
+    text-underline-offset: 2px;
+}
+
 /* https://github.com/markedjs/marked/blob/master/docs/css/style.css */
 
 .div-copy {
