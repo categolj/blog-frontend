@@ -2,7 +2,6 @@ package am.ik.blog.entry;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Optional;
 
 import am.ik.blog.BlogApiProps;
 import am.ik.blog.model.Category;
@@ -29,9 +28,9 @@ public class EntryClient {
 			.build();
 	}
 
-	public ResponseEntity<CursorPage<Entry, Instant>> getEntries(Optional<Instant> cursor) {
+	public ResponseEntity<CursorPage<Entry, Instant>> getEntries(EntryRequest request) {
 		return this.restClient.get()
-			.uri("/entries?cursor=%s".formatted(cursor.map(Instant::toString).orElse("")))
+			.uri(builder -> builder.path("/entries").queryParams(request.toQueryParams()).build())
 			.retrieve()
 			.toEntity(new ParameterizedTypeReference<>() {
 			});

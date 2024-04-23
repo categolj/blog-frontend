@@ -17,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -33,8 +32,8 @@ public class EntryController {
 	}
 
 	@GetMapping(path = "/api/entries")
-	public ResponseEntity<CursorPage<Entry, Instant>> getEntries(@RequestParam Optional<Instant> cursor) {
-		ResponseEntity<CursorPage<Entry, Instant>> response = this.entryClient.getEntries(cursor);
+	public ResponseEntity<CursorPage<Entry, Instant>> getEntries(EntryRequest request) {
+		ResponseEntity<CursorPage<Entry, Instant>> response = this.entryClient.getEntries(request);
 		return ResponseEntity.ok().headers(headers -> {
 			CursorPage<Entry, Instant> page = response.getBody();
 			if (page != null && page.size() > 0) {

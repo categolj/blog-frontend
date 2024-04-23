@@ -4,9 +4,10 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 import am.ik.blog.entry.EntryClient;
+import am.ik.blog.entry.EntryRequest;
+import am.ik.blog.entry.EntryRequestBuilder;
 import am.ik.blog.model.Category;
 import am.ik.blog.model.Entry;
 import am.ik.blog.model.Tag;
@@ -30,12 +31,12 @@ public class SsrController {
 
 	@GetMapping(path = { "/" })
 	public String index() {
-		return this.entries();
+		return this.entries(EntryRequestBuilder.entryRequest().build());
 	}
 
 	@GetMapping(path = { "/entries" })
-	public String entries() {
-		CursorPage<Entry, Instant> entries = this.entryClient.getEntries(Optional.empty()).getBody();
+	public String entries(EntryRequest request) {
+		CursorPage<Entry, Instant> entries = this.entryClient.getEntries(request).getBody();
 		return this.reactRenderer.render("/", Map.of("preLoadedEntries", Objects.requireNonNull(entries)));
 	}
 
