@@ -17,6 +17,7 @@ const Navi = () => {
         <NaviList id='navi'>
             <li><Link to={'/'}>Home</Link></li>
             <li><Link to={'/tags'}>Tags</Link></li>
+            <li><Link to={'/categories'}>Categories</Link></li>
         </NaviList>
     </>;
 };

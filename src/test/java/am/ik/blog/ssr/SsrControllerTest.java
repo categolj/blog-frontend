@@ -141,6 +141,40 @@ class SsrControllerTest {
 	}
 
 	@Test
+	void getCategories() throws Exception {
+		given(this.entryClient.getCategories())
+			.willReturn(ResponseEntity.ok(List.of(List.of(new Category("a"), new Category("b")),
+					List.of(new Category("a"), new Category("b"), new Category("c")),
+					List.of(new Category("x"), new Category("y"), new Category("z")))));
+
+		String body = this.mvc.perform(get("/categories"))
+			.andExpect(status().isOk())
+			.andReturn()
+			.getResponse()
+			.getContentAsString();
+
+		assertThatDocument(body) //
+			.elementHasText("#categories li:nth-child(1)", "a > b")
+			.elementAttributeHasText("#categories li:nth-child(1) a:nth-of-type(1)", "href", "/categories/a/entries")
+			.elementAttributeHasText("#categories li:nth-child(1) a:nth-of-type(2)", "href", "/categories/a,b/entries")
+			.elementHasText("#categories li:nth-child(2)", "a > b > c")
+			.elementAttributeHasText("#categories li:nth-child(2) a:nth-of-type(1)", "href", "/categories/a/entries")
+			.elementAttributeHasText("#categories li:nth-child(2) a:nth-of-type(2)", "href", "/categories/a,b/entries")
+			.elementAttributeHasText("#categories li:nth-child(2) a:nth-of-type(3)", "href",
+					"/categories/a,b,c/entries")
+			.elementHasText("#categories li:nth-child(3)", "x > y > z")
+			.elementAttributeHasText("#categories li:nth-child(3) a:nth-of-type(1)", "href", "/categories/x/entries")
+			.elementAttributeHasText("#categories li:nth-child(3) a:nth-of-type(2)", "href", "/categories/x,y/entries")
+			.elementAttributeHasText("#categories li:nth-child(3) a:nth-of-type(3)", "href",
+					"/categories/x,y,z/entries")
+			.elementHasHtml("#__INIT_DATA__",
+					"""
+							{"preLoadedCategories":[[{"name":"a"},{"name":"b"}],[{"name":"a"},{"name":"b"},{"name":"c"}],[{"name":"x"},{"name":"y"},{"name":"z"}]]}
+							"""
+						.trim());
+	}
+
+	@Test
 	void concurrentAccess() throws Exception {
 		given(this.entryClient.getEntry(100L)).willReturn(ResponseEntity.ok(entry100));
 		int n = 32;

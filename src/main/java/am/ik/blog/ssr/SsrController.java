@@ -7,6 +7,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import am.ik.blog.entry.EntryClient;
+import am.ik.blog.model.Category;
 import am.ik.blog.model.Entry;
 import am.ik.blog.model.Tag;
 import am.ik.pagination.CursorPage;
@@ -49,6 +50,13 @@ public class SsrController {
 	public String tags() {
 		List<Tag> tags = this.entryClient.getTags().getBody();
 		return this.reactRenderer.render("/tags", Map.of("preLoadedTags", Objects.requireNonNull(tags)));
+	}
+
+	@GetMapping(path = { "/categories" })
+	public String categories() {
+		List<List<Category>> categories = this.entryClient.getCategories().getBody();
+		return this.reactRenderer.render("/categories",
+				Map.of("preLoadedCategories", Objects.requireNonNull(categories)));
 	}
 
 }

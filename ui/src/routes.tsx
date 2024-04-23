@@ -3,6 +3,7 @@ import Entry, {EntryProps} from "./Entry.tsx";
 import Entries, {EntriesProps} from "./Entries.tsx";
 import Layout from "./components/Layout.tsx";
 import Tags, {TagsProps} from "./Tags.tsx";
+import Categories, {CategoriesProps} from "./Categories.tsx";
 
 export default function routes(initData: object): RouteObject[] {
     return [
@@ -20,6 +21,9 @@ export default function routes(initData: object): RouteObject[] {
                 },
                 {
                     path: "/tags", element: <Tags {...initData as TagsProps} />
+                },
+                {
+                    path: "/categories", element: <Categories {...initData as CategoriesProps} />
                 }
             ]
         },

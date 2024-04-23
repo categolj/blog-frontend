@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
+import am.ik.blog.model.Category;
 import am.ik.blog.model.Entry;
 import am.ik.blog.model.Tag;
 import am.ik.pagination.CursorPage;
@@ -63,6 +64,11 @@ public class EntryController {
 	@GetMapping(path = "/api/tags")
 	public ResponseEntity<List<Tag>> getTags() {
 		return ResponseEntity.ok(this.entryClient.getTags().getBody());
+	}
+
+	@GetMapping(path = "/api/categories")
+	public ResponseEntity<List<List<Category>>> getCategories() {
+		return ResponseEntity.ok(this.entryClient.getCategories().getBody());
 	}
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import am.ik.blog.BlogApiProps;
+import am.ik.blog.model.Category;
 import am.ik.blog.model.Entry;
 import am.ik.blog.model.Tag;
 import am.ik.pagination.CursorPage;
@@ -48,6 +49,11 @@ public class EntryClient {
 
 	public ResponseEntity<List<Tag>> getTags() {
 		return this.restClient.get().uri("/tags").retrieve().toEntity(new ParameterizedTypeReference<>() {
+		});
+	}
+
+	public ResponseEntity<List<List<Category>>> getCategories() {
+		return this.restClient.get().uri("/categories").retrieve().toEntity(new ParameterizedTypeReference<>() {
 		});
 	}
 
