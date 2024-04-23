@@ -8,6 +8,7 @@ const NaviList = styled.ul`
     list-style: none;
     display: inline;
     padding-right: 1em;
+    font-weight: bold;
   }
 `;
 

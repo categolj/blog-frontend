@@ -20,7 +20,6 @@ const Title = styled.h3`
 
   a {
     color: #333;
-    text-decoration: none;
   }
 `;
 
@@ -39,7 +38,6 @@ const Tags = styled.p`
 
   a {
     color: #031b4e99;
-    text-decoration: none;
   }
 `
 

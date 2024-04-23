@@ -63,6 +63,26 @@ a {
     text-underline-offset: 2px;
 }
 
+h2:before {
+    content: "## "
+}
+
+h3:before {
+    content: "### "
+}
+
+h4:before {
+    content: "#### "
+}
+
+h5:before {
+    content: "##### "
+}
+
+h6:before {
+    content: "###### "
+}
+
 /* https://github.com/markedjs/marked/blob/master/docs/css/style.css */
 
 .div-copy {
