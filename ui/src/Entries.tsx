@@ -24,7 +24,6 @@ const Entries: React.FC<EntriesProps> = ({preLoadedEntries}) => {
     if (url && tag) {
         url += `&tag=${tag}`;
     }
-    console.log(url);
     const fetcher: Fetcher<EntriesModel, string> = (url) => fetch(url).then(res => res.json());
     const {data, isLoading} = useSWR(url, fetcher);
     const entries = data || preLoadedEntries;
