@@ -11,7 +11,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 
-@Builder
+@Builder(toBuilder = "from")
 public record EntryRequest(@Nullable String query, @Nullable String tag, @Nullable List<String> categories,
 		@Nullable Instant cursor, Integer size) {
 

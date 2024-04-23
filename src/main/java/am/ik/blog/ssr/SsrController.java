@@ -13,6 +13,8 @@ import am.ik.blog.model.Entry;
 import am.ik.blog.model.Tag;
 import am.ik.pagination.CursorPage;
 
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,35 +31,40 @@ public class SsrController {
 		this.entryClient = entryClient;
 	}
 
-	@GetMapping(path = { "/" })
+	@GetMapping(path = "/")
 	public String index() {
 		return this.entries(EntryRequestBuilder.entryRequest().build());
 	}
 
-	@GetMapping(path = { "/entries" })
+	@GetMapping(path = "/entries")
 	public String entries(EntryRequest request) {
 		CursorPage<Entry, Instant> entries = this.entryClient.getEntries(request).getBody();
 		return this.reactRenderer.render("/", Map.of("preLoadedEntries", Objects.requireNonNull(entries)));
 	}
 
-	@GetMapping(path = { "/entries/{entryId}" })
+	@GetMapping(path = "/entries/{entryId}")
 	public String post(@PathVariable long entryId) {
 		Entry entry = this.entryClient.getEntry(entryId).getBody();
 		return this.reactRenderer.render("/entries/%d".formatted(entryId),
 				Map.of("preLoadedEntry", Objects.requireNonNull(entry)));
 	}
 
-	@GetMapping(path = { "/tags" })
+	@GetMapping(path = "/tags")
 	public String tags() {
 		List<Tag> tags = this.entryClient.getTags().getBody();
 		return this.reactRenderer.render("/tags", Map.of("preLoadedTags", Objects.requireNonNull(tags)));
 	}
 
-	@GetMapping(path = { "/categories" })
+	@GetMapping(path = "/categories")
 	public String categories() {
 		List<List<Category>> categories = this.entryClient.getCategories().getBody();
 		return this.reactRenderer.render("/categories",
 				Map.of("preLoadedCategories", Objects.requireNonNull(categories)));
+	}
+
+	@GetMapping(path = { "/tags/*/entries", "/categories/*/entries" })
+	public Resource noSsr() {
+		return new ClassPathResource("META-INF/resources/index.html");
 	}
 
 }
