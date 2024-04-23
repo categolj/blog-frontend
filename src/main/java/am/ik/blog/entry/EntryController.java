@@ -62,7 +62,7 @@ public class EntryController {
 
 	@GetMapping(path = "/api/tags")
 	public ResponseEntity<List<Tag>> getTags() {
-		return this.entryClient.getTags();
+		return ResponseEntity.ok(this.entryClient.getTags().getBody());
 	}
 
 }
