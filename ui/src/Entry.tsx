@@ -11,7 +11,7 @@ import {styled} from "styled-components";
 import Category from "./components/Category.tsx";
 
 export interface EntryProps {
-    preLoadedEntry: EntryModel;
+    preLoadedEntry?: EntryModel;
 }
 
 const Title = styled.h3`

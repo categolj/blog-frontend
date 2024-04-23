@@ -5,7 +5,7 @@ import Loading from "./components/Loading.tsx";
 import Category from "./components/Category.tsx";
 
 export interface CategoriesProps {
-    preLoadedCategories: CategoryModel[][];
+    preLoadedCategories?: CategoryModel[][];
 }
 
 const Categories: React.FC<CategoriesProps> = ({preLoadedCategories}) => {

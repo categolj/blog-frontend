@@ -5,7 +5,7 @@ import useSWR, {Fetcher} from 'swr';
 import Loading from "./components/Loading.tsx";
 
 export interface TagsProps {
-    preLoadedTags: TagsModel[];
+    preLoadedTags?: TagsModel[];
 }
 
 const Tags: React.FC<TagsProps> = ({preLoadedTags}) => {

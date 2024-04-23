@@ -7,7 +7,7 @@ import Category from "./components/Category.tsx";
 import {styled} from "styled-components";
 
 export interface EntriesProps {
-    preLoadedEntries: EntriesModel;
+    preLoadedEntries?: EntriesModel;
 }
 
 const Tag = styled.p`
@@ -17,7 +17,7 @@ const Tag = styled.p`
 const Entries: React.FC<EntriesProps> = ({preLoadedEntries}) => {
     const isPreLoaded = !!preLoadedEntries;
     const {categories, tag} = useParams();
-    let url = isPreLoaded ? null : '/api/entries?a';
+    let url = isPreLoaded ? null : '/api/entries?size=30';
     if (url && categories) {
         url += `&categories=${categories}`;
     }

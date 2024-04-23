@@ -23,13 +23,13 @@ export default function routes(initData: object): RouteObject[] {
                     path: "/tags", element: <Tags {...initData as TagsProps} />
                 },
                 {
-                    path: "/tags/:tag/entries", element: <Entries {...initData as EntriesProps} />
+                    path: "/tags/:tag/entries", element: <Entries/>
                 },
                 {
                     path: "/categories", element: <Categories {...initData as CategoriesProps} />
                 },
                 {
-                    path: "/categories/:categories/entries", element: <Entries {...initData as EntriesProps} />
+                    path: "/categories/:categories/entries", element: <Entries/>
                 }
             ]
         },
