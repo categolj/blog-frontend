@@ -1,5 +1,13 @@
 import {Link} from 'react-router-dom';
 import {styled} from "styled-components";
+import SearchBox from "./SearchBox.tsx";
+
+const NaviContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 600px;
+`;
 
 const NaviList = styled.ul`
   margin: 0;
@@ -13,13 +21,14 @@ const NaviList = styled.ul`
 `;
 
 const Navi = () => {
-    return <>
+    return <NaviContainer>
         <NaviList id='navi'>
             <li><Link to={'/'}>Home</Link></li>
             <li><Link to={'/tags'}>Tags</Link></li>
             <li><Link to={'/categories'}>Categories</Link></li>
         </NaviList>
-    </>;
+        <SearchBox/>
+    </NaviContainer>;
 };
 
 export default Navi;
