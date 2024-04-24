@@ -2,6 +2,7 @@ import Header from './Header.tsx';
 import {Outlet} from 'react-router-dom';
 import Footer from "./Footer.tsx";
 import Navi from "./Navi.tsx";
+import SearchBox from "./SearchBox.tsx";
 import {styled} from "styled-components";
 
 const Container = styled.div`
@@ -16,6 +17,7 @@ const Container = styled.div`
 const Layout = () => {
     return <Container>
         <Header/>
+        <SearchBox/>
         <Navi/>
         <hr/>
         <main>
