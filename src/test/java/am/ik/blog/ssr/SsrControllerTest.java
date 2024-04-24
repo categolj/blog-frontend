@@ -2,6 +2,7 @@ package am.ik.blog.ssr;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -9,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 import am.ik.blog.entry.EntryClient;
 import am.ik.blog.model.Author;
+import am.ik.blog.model.AuthorBuilder;
 import am.ik.blog.model.Category;
 import am.ik.blog.model.Entry;
 import am.ik.blog.model.Tag;
@@ -89,12 +91,16 @@ class SsrControllerTest {
 			.frontMatter(frontMatter() //
 				.title("entry2") //
 				.build()) //
+			.created(author) //
+			.updated(AuthorBuilder.from(author).date(Objects.requireNonNull(author.date()).plusDays(1)).build()) //
 			.build();
 		Entry entry1 = entry() //
 			.entryId(1L) //
 			.frontMatter(frontMatter() //
 				.title("entry1") //
 				.build()) //
+			.created(author) //
+			.updated(author) //
 			.build();
 		given(this.entryClient.getEntries(any()))
 			.willReturn(ResponseEntity.ok(new CursorPage<>(List.of(entry2, entry1), 2, Entry::toCursor, false, true)));
@@ -106,13 +112,13 @@ class SsrControllerTest {
 			.getContentAsString();
 
 		assertThatDocument(body) //
-			.elementHasText("#entries li:nth-child(1)", "entry2")
+			.elementHasText("#entries li:nth-child(1)", "entry2 Last Updated on Tue Apr 02 2024")
 			.elementAttributeHasText("#entries li:nth-child(1) > a", "href", "/entries/2")
-			.elementHasText("#entries li:nth-child(2)", "entry1")
+			.elementHasText("#entries li:nth-child(2)", "entry1 Last Updated on Mon Apr 01 2024")
 			.elementAttributeHasText("#entries li:nth-child(2) > a", "href", "/entries/1")
 			.elementHasHtml("#__INIT_DATA__",
 					"""
-							{"preLoadedEntries":{"content":[{"entryId":2,"frontMatter":{"title":"entry2","categories":null,"tags":null},"content":null,"created":null,"updated":null},{"entryId":1,"frontMatter":{"title":"entry1","categories":null,"tags":null},"content":null,"created":null,"updated":null}],"size":2,"hasPrevious":false,"hasNext":true}}
+							{"preLoadedEntries":{"content":[{"entryId":2,"frontMatter":{"title":"entry2","categories":null,"tags":null},"content":null,"created":{"name":"demo","date":"2024-04-01T00:00:00Z"},"updated":{"name":"demo","date":"2024-04-02T00:00:00Z"}},{"entryId":1,"frontMatter":{"title":"entry1","categories":null,"tags":null},"content":null,"created":{"name":"demo","date":"2024-04-01T00:00:00Z"},"updated":{"name":"demo","date":"2024-04-01T00:00:00Z"}}],"size":2,"hasPrevious":false,"hasNext":true}}
 							"""
 						.trim());
 	}
