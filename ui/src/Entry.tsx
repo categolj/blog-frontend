@@ -23,7 +23,7 @@ const Title = styled.h3`
   }
 `;
 
-const Meta = styled.p`
+const Meta = styled.div`
   margin: 0;
   color: #031b4e99;
   display: inline-block;
