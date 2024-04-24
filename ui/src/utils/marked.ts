@@ -36,6 +36,7 @@ export default new Marked(
             return hljs.highlight(code, {language}).value;
         }
     }))
+    .use({async: false, gfm: true, breaks: true})
     .use(markedAlert(), {
         hooks: {
             preprocess(markdown: string): string {
