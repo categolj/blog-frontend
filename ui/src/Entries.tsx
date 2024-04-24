@@ -25,9 +25,10 @@ const LastUpdated = styled.span`
 const Entries: React.FC<EntriesProps> = ({preLoadedEntries}) => {
     const {categories, tag} = useParams();
     const [searchParams] = useSearchParams();
-    const query = searchParams.get("query");
+    const query = searchParams.get('query');
+    const limit = searchParams.has('limit') ? Number(searchParams.get('limit')) : 30;
     const isPreLoaded = preLoadedEntries && !query;
-    let url = isPreLoaded ? null : '/api/entries?size=30';
+    let url = isPreLoaded ? null : `/api/entries?size=${limit}`;
     if (url && categories) {
         url += `&categories=${categories}`;
     }
