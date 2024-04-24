@@ -52,10 +52,10 @@ const Entry: React.FC<EntryProps> = ({preLoadedEntry}) => {
         return <Loading/>
     }
     const contentHtml = marked.parse(entry.content, {async: false, gfm: true}) as string;
-    const tags = entry.frontMatter.tags
+    const tags = entry.frontMatter.tags.length > 0 ? entry.frontMatter.tags
         .map<React.ReactNode>(t => <Link key={t.name}
                                          to={`/tags/${t.name}/entries`}>{t.name}</Link>)
-        .reduce((prev, curr) => [prev, ' | ', curr]);
+        .reduce((prev, curr) => [prev, ' | ', curr]) : '';
     return <>
         <p id="entry-categories"><Category categories={entry.frontMatter.categories}/></p>
         <Title id="entry-title"><Link to={`/entries/${entry.entryId}`}>{entry.frontMatter.title}</Link></Title>
