@@ -79,6 +79,7 @@ public class ReactRenderer implements AutoCloseable {
 					}
 				};
 				global = globalThis;
+				require('url-search-params-polyfill');
 				""");
 		Path mainServer = Paths.get(getRoot("server").getAbsolutePath(), "main-server.js");
 		this.mainServerSource = Source.newBuilder("js", mainServer.toFile())
