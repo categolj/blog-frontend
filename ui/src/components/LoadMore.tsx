@@ -19,6 +19,8 @@ const Button = styled.button`
   border-radius: 0.35rem;
   transition: background-color 0.3s;
   margin-top: 1rem;
+  margin-bottom: 1rem;
+  width: 400px;
 
   &:hover {
     background-color: #333;
