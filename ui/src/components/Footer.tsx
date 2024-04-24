@@ -7,7 +7,6 @@ const Foot = styled.footer`
 
   a {
     color: #333;
-    text-decoration: none;
   }
 `;
 
@@ -16,7 +15,7 @@ const Footer: React.FC = () => {
         <hr/>
         <Foot>
             <Link to={`/`}>IK.AM</Link> — &copy; 2010-{new Date().getFullYear()}
-            &nbsp;<Link to={`/aboutme`}>Toshiaki Maki</Link>
+            &nbsp;Toshiaki Maki (<Link to={`/aboutme`}>About</Link>)
         </Foot>
     </>;
 };

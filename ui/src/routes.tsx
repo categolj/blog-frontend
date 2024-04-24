@@ -6,6 +6,7 @@ import Tags, {TagsProps} from "./Tags.tsx";
 import Categories, {CategoriesProps} from "./Categories.tsx";
 import en from 'javascript-time-ago/locale/en'
 import TimeAgo from "javascript-time-ago";
+import AboutMe from "./AboutMe.tsx";
 
 TimeAgo.addDefaultLocale(en);
 export default function routes(initData: object): RouteObject[] {
@@ -33,6 +34,9 @@ export default function routes(initData: object): RouteObject[] {
                 },
                 {
                     path: "/categories/:categories/entries", element: <Entries/>
+                },
+                {
+                    path: "/aboutme", element: <AboutMe/>
                 }
             ]
         },

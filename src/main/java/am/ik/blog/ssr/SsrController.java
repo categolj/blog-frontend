@@ -62,6 +62,11 @@ public class SsrController {
 				Map.of("preLoadedCategories", Objects.requireNonNull(categories)));
 	}
 
+	@GetMapping(path = "/aboutme")
+	public String aboutme() {
+		return this.reactRenderer.render("/aboutme", Map.of());
+	}
+
 	@GetMapping(path = { "/tags/*/entries", "/categories/*/entries" })
 	public Resource noSsr() {
 		return new ClassPathResource("META-INF/resources/index.html");
