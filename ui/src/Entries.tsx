@@ -5,6 +5,7 @@ import useSWR, {Fetcher} from 'swr';
 import Loading from "./components/Loading.tsx";
 import Category from "./components/Category.tsx";
 import {styled} from "styled-components";
+import ReactTimeAgo from "react-time-ago";
 
 export interface EntriesProps {
     preLoadedEntries?: EntriesModel;
@@ -51,7 +52,9 @@ const Entries: React.FC<EntriesProps> = ({preLoadedEntries}) => {
             <ul>
                 {entries.content.map(entry => <li key={entry.entryId}><Link
                     to={`/entries/${entry.entryId}`}>{entry.frontMatter.title}</Link>&nbsp;
-                    <LastUpdated>Last Updated on {new Date(entry.updated.date).toDateString()}</LastUpdated></li>)}
+                    <LastUpdated>Last Updated <ReactTimeAgo date={new Date(entry.updated.date)}
+                                                            locale="en-US"/></LastUpdated>
+                </li>)}
             </ul>
         </div>
     </>)

@@ -112,9 +112,9 @@ class SsrControllerTest {
 			.getContentAsString();
 
 		assertThatDocument(body) //
-			.elementHasText("#entries li:nth-child(1)", "entry2 Last Updated on Tue Apr 02 2024")
+			.elementMatchesText("#entries li:nth-child(1)", "entry2 Last Updated \\d+ \\w+ ago")
 			.elementAttributeHasText("#entries li:nth-child(1) > a", "href", "/entries/2")
-			.elementHasText("#entries li:nth-child(2)", "entry1 Last Updated on Mon Apr 01 2024")
+			.elementMatchesText("#entries li:nth-child(2)", "entry1 Last Updated \\d+ \\w+ ago")
 			.elementAttributeHasText("#entries li:nth-child(2) > a", "href", "/entries/1")
 			.elementHasHtml("#__INIT_DATA__",
 					"""
