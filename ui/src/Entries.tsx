@@ -13,15 +13,19 @@ export interface EntriesProps {
 const Tag = styled.p`
   color: #031b4e99;
 `
-const Query = styled.span`
+const Query = styled.p`
   color: #031b4e99;
   font-size: small;
 `
+const LastUpdated = styled.span`
+  color: #031b4e99;
+  font-size: smaller;
+`
 const Entries: React.FC<EntriesProps> = ({preLoadedEntries}) => {
-    const isPreLoaded = !!preLoadedEntries;
     const {categories, tag} = useParams();
     const [searchParams] = useSearchParams();
     const query = searchParams.get("query");
+    const isPreLoaded = preLoadedEntries && !query;
     let url = isPreLoaded ? null : '/api/entries?size=30';
     if (url && categories) {
         url += `&categories=${categories}`;
@@ -34,7 +38,7 @@ const Entries: React.FC<EntriesProps> = ({preLoadedEntries}) => {
     }
     const fetcher: Fetcher<EntriesModel, string> = (url) => fetch(url).then(res => res.json());
     const {data, isLoading} = useSWR(url, fetcher);
-    const entries = data || preLoadedEntries;
+    const entries = isPreLoaded ? preLoadedEntries : data;
     if (isLoading || !entries) {
         return <Loading/>
     }
@@ -42,10 +46,12 @@ const Entries: React.FC<EntriesProps> = ({preLoadedEntries}) => {
         <div id="entries">
             {categories && <Category categories={categories.split(',').map(c => ({name: c}))}/>}
             {tag && <Tag>🏷️ {tag}</Tag>}
-            <h2>Entries {query && <Query>({query})</Query>}</h2>
+            {query && <Query>Query: {query}</Query>}
+            <h2>Entries</h2>
             <ul>
-                {entries.content.map(post => <li key={post.entryId}><Link
-                    to={`/entries/${post.entryId}`}>{post.frontMatter.title}</Link></li>)}
+                {entries.content.map(entry => <li key={entry.entryId}><Link
+                    to={`/entries/${entry.entryId}`}>{entry.frontMatter.title}</Link>&nbsp;
+                    <LastUpdated>Last Updated on {new Date(entry.updated.date).toDateString()}</LastUpdated></li>)}
             </ul>
         </div>
     </>)
