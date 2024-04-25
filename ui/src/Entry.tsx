@@ -28,6 +28,9 @@ const Meta = styled.div`
   color: #031b4e99;
   display: inline-block;
   width: 100%;
+  a {
+    color: #031b4e99;
+  }
 `
 
 const Tags = styled.p`
@@ -65,6 +68,11 @@ const Entry: React.FC<EntryProps> = ({preLoadedEntry}) => {
             <Tags id="entry-tags">🏷️ {tags}</Tags>
         </Meta>
         <div id="entry" dangerouslySetInnerHTML={{__html: contentHtml}}/>
+        <Meta>
+            Found a mistake? Update <a
+            href={`https://github.com/making/blog.ik.am/blob/master/content/${entry.entryId.toString().padStart(5, '0')}.md`}>the
+            entry</a>.
+        </Meta>
         <ScrollToTop smooth/>
     </>;
 };
