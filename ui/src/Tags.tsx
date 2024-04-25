@@ -1,16 +1,16 @@
 import React from 'react'
-import {Tag as TagsModel} from "./types.ts";
 import {Link} from "react-router-dom";
+import {TagService, TagAndCount as TagModel} from "./clients/entry";
 import useSWR, {Fetcher} from 'swr';
 import Loading from "./components/Loading.tsx";
 
 export interface TagsProps {
-    preLoadedTags?: TagsModel[];
+    preLoadedTags?: TagModel[];
 }
 
 const Tags: React.FC<TagsProps> = ({preLoadedTags}) => {
     const isPreLoaded = !!preLoadedTags;
-    const fetcher: Fetcher<TagsModel[], string> = (url) => fetch(url).then(res => res.json());
+    const fetcher: Fetcher<TagModel[], string> = () => TagService.tags();
     const {data, isLoading} = useSWR(isPreLoaded ? null : '/api/tags', fetcher);
     const tags = data || preLoadedTags;
     if (isLoading || !tags) {

@@ -1,5 +1,5 @@
 import React from "react";
-import {Entry} from "../types.ts";
+import {Entry} from "../clients/entry";
 import styled from 'styled-components';
 
 interface LoadMoreProps {

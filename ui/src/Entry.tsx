@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import {Link, useParams} from "react-router-dom";
 import useSWR, {Fetcher} from 'swr';
-import {Entry as EntryModel} from "./types.ts";
+import {Entry as EntryModel, EntryService} from "./clients/entry";
 import Loading from "./components/Loading.tsx";
 import ScrollToTop from "react-scroll-to-top";
 import {addCopyButton} from './utils/copy';
@@ -28,6 +28,7 @@ const Meta = styled.div`
   color: #031b4e99;
   display: inline-block;
   width: 100%;
+
   a {
     color: #031b4e99;
   }
@@ -47,7 +48,7 @@ const Tags = styled.p`
 const Entry: React.FC<EntryProps> = ({preLoadedEntry}) => {
     const {entryId} = useParams();
     const isPreLoaded = preLoadedEntry && preLoadedEntry.entryId == Number(entryId);
-    const fetcher: Fetcher<EntryModel, string> = (entryId) => fetch(`/api/entries/${entryId}`).then(res => res.json());
+    const fetcher: Fetcher<EntryModel, string> = (entryId) => EntryService.getEntry({entryId: Number(entryId)});
     const {data, isLoading} = useSWR(isPreLoaded ? null : entryId, fetcher);
     const entry = data || preLoadedEntry;
     useEffect(addCopyButton, [entry]);
@@ -63,8 +64,10 @@ const Entry: React.FC<EntryProps> = ({preLoadedEntry}) => {
         <p id="entry-categories"><Category categories={entry.frontMatter.categories}/></p>
         <Title id="entry-title"><Link to={`/entries/${entry.entryId}`}>{entry.frontMatter.title}</Link></Title>
         <Meta id="entry-meta">
-            Created on <span title={entry.created.date}>{new Date(entry.created.date).toDateString()}</span> •
-            Last Updated on <span title={entry.updated.date}>{new Date(entry.updated.date).toDateString()}</span>
+            Created on <span
+            title={entry.created.date}>{entry.created.date ? new Date(entry.created.date).toDateString() : 'N/A'}</span> •
+            Last Updated on <span
+            title={entry.updated.date}>{entry.updated.date ? new Date(entry.updated.date).toDateString() : 'N/A'}</span>
             <Tags id="entry-tags">🏷️ {tags}</Tags>
         </Meta>
         <div id="entry" dangerouslySetInnerHTML={{__html: contentHtml}}/>

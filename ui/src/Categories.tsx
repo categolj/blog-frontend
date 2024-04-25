@@ -1,5 +1,5 @@
 import React from 'react'
-import {Category as CategoryModel} from "./types.ts";
+import {Category as CategoryModel, CategoryService} from "./clients/entry";
 import useSWR, {Fetcher} from 'swr';
 import Loading from "./components/Loading.tsx";
 import Category from "./components/Category.tsx";
@@ -10,7 +10,7 @@ export interface CategoriesProps {
 
 const Categories: React.FC<CategoriesProps> = ({preLoadedCategories}) => {
     const isPreLoaded = !!preLoadedCategories;
-    const fetcher: Fetcher<CategoryModel[][], string> = (url) => fetch(url).then(res => res.json());
+    const fetcher: Fetcher<CategoryModel[][], string> = () => CategoryService.categories();
     const {data, isLoading} = useSWR(isPreLoaded ? null : '/api/categories', fetcher);
     const categories = data || preLoadedCategories;
     if (isLoading || !categories) {
