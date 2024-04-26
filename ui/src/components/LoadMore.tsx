@@ -20,7 +20,11 @@ const Button = styled.button`
   transition: background-color 0.3s;
   margin-top: 1rem;
   margin-bottom: 1rem;
-  width: 400px;
+  width: 500px;
+
+  @media (max-width: 800px) {
+    width: 320px;
+  }
 
   &:hover {
     background-color: #333;
@@ -30,6 +34,7 @@ const Button = styled.button`
     outline: none;
   }
 `;
+
 const LoadMore: React.FC<LoadMoreProps> = ({data, limit, size, setSize, isPreLoaded}) => {
     if (!isPreLoaded && (!data || data[data.length - 1].length < limit)) return null;
     return <Button onClick={() => setSize(size + 1)}>Load More</Button>;

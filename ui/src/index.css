@@ -20,7 +20,7 @@ blockquote, div.markdown-alert {
     padding: 10px;
     border-radius: .25rem;
     border: 1px black dotted;
-    font-size: .875rem;
+    font-size: 12px;
 }
 
 blockquote > p, div.markdown-alert > p {
@@ -35,7 +35,7 @@ pre {
     border: 1px black solid;
     border-radius: .375rem;
     line-height: 1.25em;
-    font-size: .875rem;
+    font-size: 12px;
     display: flex;
     position: relative;
     padding: 10px;

@@ -7,6 +7,9 @@ const SearchInput = styled.input`
   border: 1px solid black;
   border-radius: .375rem;
   padding: .25rem .5rem;
+  @media (max-width: 800px) {
+    width: 100px;
+  }
 `;
 
 const SearchBox = () => {
