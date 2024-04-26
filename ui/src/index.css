@@ -8,17 +8,21 @@ body {
     box-sizing: border-box;
 }
 
+img {
+    max-width: 100%;
+    border-radius: 10px;
+    padding: 5px;
+}
+
 img[alt=image], img[alt=alt_text] {
     width: 100%;
     max-width: 1024px;
-    padding: 10px;
-    border-radius: 18px;
 }
 
 blockquote, div.markdown-alert {
     margin: 0;
     padding: 10px;
-    border-radius: .25rem;
+    border-radius: 5px;
     border: 1px black dotted;
     font-size: 12px;
 }
@@ -33,7 +37,7 @@ blockquote > p, div.markdown-alert > p {
 
 pre {
     border: 1px black solid;
-    border-radius: .375rem;
+    border-radius: 5px;
     line-height: 1.25em;
     font-size: 12px;
     display: flex;
