@@ -2,13 +2,17 @@ package am.ik.blog.entry;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
-import am.ik.blog.model.Category;
-import am.ik.blog.model.Entry;
-import am.ik.blog.model.Tag;
-import am.ik.pagination.CursorPage;
+import am.ik.blog.entry.api.CategoryApi;
+import am.ik.blog.entry.api.TagApi;
+import am.ik.blog.entry.model.Category;
+import am.ik.blog.entry.model.CursorPageEntryInstant;
+import am.ik.blog.entry.model.Entry;
+import am.ik.blog.entry.model.TagAndCount;
 
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
@@ -24,20 +28,27 @@ public class EntryController {
 
 	private final EntryClient entryClient;
 
+	private final TagApi tagApi;
+
+	private final CategoryApi categoryApi;
+
 	private static final CacheControl swrCacheControl = CacheControl.maxAge(Duration.ofHours(1))
 		.staleWhileRevalidate(Duration.ofMinutes(10));
 
-	public EntryController(EntryClient entryClient) {
+	public EntryController(EntryClient entryClient, TagApi tagApi, CategoryApi categoryApi) {
 		this.entryClient = entryClient;
+		this.tagApi = tagApi;
+		this.categoryApi = categoryApi;
 	}
 
 	@GetMapping(path = "/api/entries")
-	public ResponseEntity<CursorPage<Entry, Instant>> getEntries(EntryRequest request) {
-		ResponseEntity<CursorPage<Entry, Instant>> response = this.entryClient.getEntries(request);
+	public ResponseEntity<CursorPageEntryInstant> getEntries(EntryRequest request) {
+		ResponseEntity<CursorPageEntryInstant> response = this.entryClient.getEntries(request);
 		return ResponseEntity.ok().headers(headers -> {
-			CursorPage<Entry, Instant> page = response.getBody();
-			if (page != null && page.size() > 0) {
-				headers.setLastModified(page.content().get(0).toCursor());
+			var page = response.getBody();
+			if (page != null && Objects.requireNonNull(page.getSize()) > 0) {
+				OffsetDateTime updated = Objects.requireNonNull(page.getContent()).get(0).getUpdated().getDate();
+				headers.setLastModified(Objects.requireNonNull(updated).toInstant());
 			}
 		}).cacheControl(swrCacheControl).body(response.getBody());
 	}
@@ -61,13 +72,13 @@ public class EntryController {
 	}
 
 	@GetMapping(path = "/api/tags")
-	public ResponseEntity<List<Tag>> getTags() {
-		return ResponseEntity.ok(this.entryClient.getTags().getBody());
+	public ResponseEntity<List<TagAndCount>> getTags() {
+		return ResponseEntity.ok(this.tagApi.tags());
 	}
 
 	@GetMapping(path = "/api/categories")
 	public ResponseEntity<List<List<Category>>> getCategories() {
-		return ResponseEntity.ok(this.entryClient.getCategories().getBody());
+		return ResponseEntity.ok(this.categoryApi.categories());
 	}
 
 }

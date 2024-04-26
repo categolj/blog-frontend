@@ -1,17 +1,13 @@
 package am.ik.blog.ssr;
 
-import java.time.Instant;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 import am.ik.blog.entry.EntryClient;
 import am.ik.blog.entry.EntryRequest;
 import am.ik.blog.entry.EntryRequestBuilder;
-import am.ik.blog.model.Category;
-import am.ik.blog.model.Entry;
-import am.ik.blog.model.Tag;
-import am.ik.pagination.CursorPage;
+import am.ik.blog.entry.api.CategoryApi;
+import am.ik.blog.entry.api.TagApi;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -26,9 +22,15 @@ public class SsrController {
 
 	private final EntryClient entryClient;
 
-	public SsrController(ReactRenderer reactRenderer, EntryClient entryClient) {
+	private final TagApi tagApi;
+
+	private final CategoryApi categoryApi;
+
+	public SsrController(ReactRenderer reactRenderer, EntryClient entryClient, TagApi tagApi, CategoryApi categoryApi) {
 		this.reactRenderer = reactRenderer;
 		this.entryClient = entryClient;
+		this.tagApi = tagApi;
+		this.categoryApi = categoryApi;
 	}
 
 	@GetMapping(path = "/")
@@ -38,26 +40,26 @@ public class SsrController {
 
 	@GetMapping(path = "/entries")
 	public String entries(EntryRequest request) {
-		CursorPage<Entry, Instant> entries = this.entryClient.getEntries(request).getBody();
+		var entries = this.entryClient.getEntries(request).getBody();
 		return this.reactRenderer.render("/", Map.of("preLoadedEntries", Objects.requireNonNull(entries)));
 	}
 
 	@GetMapping(path = "/entries/{entryId}")
 	public String post(@PathVariable long entryId) {
-		Entry entry = this.entryClient.getEntry(entryId).getBody();
+		var entry = this.entryClient.getEntry(entryId).getBody();
 		return this.reactRenderer.render("/entries/%d".formatted(entryId),
 				Map.of("preLoadedEntry", Objects.requireNonNull(entry)));
 	}
 
 	@GetMapping(path = "/tags")
 	public String tags() {
-		List<Tag> tags = this.entryClient.getTags().getBody();
+		var tags = this.tagApi.tags();
 		return this.reactRenderer.render("/tags", Map.of("preLoadedTags", Objects.requireNonNull(tags)));
 	}
 
 	@GetMapping(path = "/categories")
 	public String categories() {
-		List<List<Category>> categories = this.entryClient.getCategories().getBody();
+		var categories = this.categoryApi.categories();
 		return this.reactRenderer.render("/categories",
 				Map.of("preLoadedCategories", Objects.requireNonNull(categories)));
 	}
