@@ -65,6 +65,11 @@
 			<version>0.2.0</version>
 		</dependency>
 		<dependency>
+			<groupId>am.ik.blog</groupId>
+			<artifactId>blog-api-client</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
 			<groupId>cc.jilt</groupId>
 			<artifactId>jilt</artifactId>
 			<version>1.5</version>
@@ -105,34 +110,6 @@
 
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.openapitools</groupId>
-				<artifactId>openapi-generator-maven-plugin</artifactId>
-				<version>7.5.0</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-						<configuration>
-							<inputSpec>https://blog-api-blog.apps.ik.am/v3/api-docs</inputSpec>
-							<generatorName>java</generatorName>
-							<library>resttemplate</library>
-							<apiPackage>am.ik.blog.entry.api</apiPackage>
-							<modelPackage>am.ik.blog.entry.model</modelPackage>
-							<invokerPackage>am.ik.blog.entry.invoker</invokerPackage>
-							<generateApiTests>false</generateApiTests>
-							<generateModelTests>false</generateModelTests>
-							<configOptions>
-								<annotationLibrary>none</annotationLibrary>
-								<sourceFolder>src/main/java</sourceFolder>
-								<dateLibrary>java8</dateLibrary>
-								<useJakartaEe>true</useJakartaEe>
-							</configOptions>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 			<plugin>
 				<groupId>io.github.git-commit-id</groupId>
 				<artifactId>git-commit-id-maven-plugin</artifactId>
@@ -256,5 +233,16 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<repositories>
+		<repository>
+			<id>sonatype-snapshots</id>
+			<name>Sonatype Snapshots</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 
 </project>
