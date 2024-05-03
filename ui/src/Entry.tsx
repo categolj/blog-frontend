@@ -72,9 +72,11 @@ const Entry: React.FC<EntryProps> = ({preLoadedEntry}) => {
         </Meta>
         <div id="entry" dangerouslySetInnerHTML={{__html: contentHtml}}/>
         <Meta>
-            Found a mistake? Update <a
-            href={`https://github.com/making/blog.ik.am/blob/master/content/${entry.entryId.toString().padStart(5, '0')}.md`}>the
-            entry</a>.
+            <blockquote>
+                Found a mistake? Update <a
+                href={`https://github.com/making/blog.ik.am/blob/master/content/${entry.entryId.toString().padStart(5, '0')}.md`}>the
+                entry</a>.
+            </blockquote>
         </Meta>
         <ScrollToTop smooth/>
     </>;

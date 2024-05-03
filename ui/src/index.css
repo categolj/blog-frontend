@@ -20,7 +20,7 @@ img[alt=image], img[alt=alt_text] {
 }
 
 blockquote, div.markdown-alert {
-    margin: 0;
+    margin: 5px 0;
     padding: 10px;
     border-radius: 5px;
     border: 1px black dotted;
