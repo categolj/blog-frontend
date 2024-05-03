@@ -10,7 +10,8 @@
     "build:server": "tsc && vite build --ssr src/main-server.tsx --outDir ../target/classes/server --emptyOutDir",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "generate-entry-client": "openapi-ts --input https://blog-api-blog.apps.ik.am/v3/api-docs --output ./src/clients/entry --client fetch --schemas false --base /api"
+    "generate-entry-client": "openapi-ts --input https://blog-api-blog.apps.ik.am/v3/api-docs --output ./src/clients/entry --client fetch --schemas false --base /api",
+    "generate-note-client": "openapi-ts --input https://note-api-note.apps.ik.am/v3/api-docs --output ./src/clients/note --client fetch --schemas false --base /api"
   },
   "dependencies": {
     "highlight.js": "^11.9.0",

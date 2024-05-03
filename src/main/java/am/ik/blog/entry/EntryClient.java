@@ -5,12 +5,10 @@ import java.time.Instant;
 import am.ik.blog.BlogApiProps;
 import am.ik.blog.entry.model.CursorPageEntryInstant;
 import am.ik.blog.entry.model.Entry;
-import am.ik.spring.http.client.RetryableClientHttpRequestInterceptor;
 
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.util.backoff.FixedBackOff;
 import org.springframework.web.client.RestClient;
 
 @Component
@@ -20,7 +18,6 @@ public class EntryClient {
 
 	public EntryClient(RestClient.Builder restClientBuilder, BlogApiProps props) {
 		this.restClient = restClientBuilder.baseUrl(props.url())
-			.requestInterceptor(new RetryableClientHttpRequestInterceptor(new FixedBackOff(1_000, 2)))
 			.defaultHeaders(headers -> headers.setBasicAuth("blog-ui", "empty"))
 			.build();
 	}
