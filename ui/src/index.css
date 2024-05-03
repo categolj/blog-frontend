@@ -31,6 +31,13 @@ blockquote > p, div.markdown-alert > p {
     margin: 0 0 0.25rem;
 }
 
+table, td, th {
+    border-collapse: collapse;
+    border: 1px solid #333;
+    padding: 5px;
+    overflow-x: auto;
+}
+
 .octicon {
     margin: 0 0.25rem 0 0;
 }
