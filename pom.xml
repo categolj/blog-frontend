@@ -121,7 +121,9 @@
 				<configuration>
 					<compilerArgs>
 						<arg>-XDcompilePolicy=simple</arg>
-						<arg>-Xplugin:ErrorProne -Xep:NullAway:ERROR -XepOpt:NullAway:AnnotatedPackages=am.ik.blog -XepExcludedPaths:(.*/test/java/.*|.*/target/generated-sources/.*)</arg>
+						<arg>-Xplugin:ErrorProne -Xep:NullAway:ERROR -XepOpt:NullAway:AnnotatedPackages=am.ik.blog
+							-XepExcludedPaths:(.*/test/java/.*|.*/target/generated-sources/.*)
+						</arg>
 					</compilerArgs>
 					<annotationProcessorPaths>
 						<path>
@@ -164,7 +166,25 @@
 							</systemPropertyVariables>
 						</configuration>
 					</execution>
+					<execution>
+						<goals>
+							<goal>build-info</goal>
+						</goals>
+					</execution>
 				</executions>
+				<configuration>
+					<layers>
+						<enabled>true</enabled>
+					</layers>
+					<additionalProperties>
+						<spring.boot.version>${project.parent.version}
+						</spring.boot.version>
+						<spring.framework.version>${spring-framework.version}
+						</spring.framework.version>
+						<spring.security.version>${spring-security.version}
+						</spring.security.version>
+					</additionalProperties>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>io.spring.javaformat</groupId>
@@ -253,10 +273,12 @@
 						<configuration>
 							<target>
 								<delete>
-									<fileset dir="${project.build.directory}/classes/polyfill" includes="**/*" excludes="**/*.js, **/*.json"/>
+									<fileset dir="${project.build.directory}/classes/polyfill" includes="**/*"
+											 excludes="**/*.js, **/*.json"/>
 								</delete>
 								<delete>
-									<fileset dir="${project.build.directory}/classes/polyfill" includes="**/test/**, **/tests/**"/>
+									<fileset dir="${project.build.directory}/classes/polyfill"
+											 includes="**/test/**, **/tests/**"/>
 								</delete>
 							</target>
 						</configuration>

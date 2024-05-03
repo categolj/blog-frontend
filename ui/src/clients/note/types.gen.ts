@@ -31,6 +31,11 @@ export type SendLinkInput = {
     email?: string;
 };
 
+export type TokenInput = {
+    username?: string;
+    password?: string;
+};
+
 export type OAuth2Error = {
     error_description: string;
     error: string;
@@ -61,11 +66,6 @@ export type NoteSummary = {
     updatedDate?: string;
 };
 
-export type ErrorResponse = {
-    message: string;
-    noteUrl: string;
-};
-
 export type Author = {
     name: string;
     date: string;
@@ -83,6 +83,11 @@ export type NoteDetails = {
     noteUrl: string;
     created?: Author;
     updated: Author;
+};
+
+export type ErrorResponse = {
+    message: string;
+    noteUrl: string;
 };
 
 export type $OpenApiTs = {
@@ -226,8 +231,7 @@ export type $OpenApiTs = {
     '/oauth/token': {
         post: {
             req: {
-                password: string;
-                username: string;
+                input: TokenInput;
             };
             res: {
                 /**

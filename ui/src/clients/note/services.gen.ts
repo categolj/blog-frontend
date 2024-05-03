@@ -183,8 +183,7 @@ export class PasswordResetService {
 export class TokenService {
     /**
      * @param data The data for the request.
-     * @param data.username
-     * @param data.password
+     * @param data.input
      * @returns OAuth2Token OK
      * @throws ApiError
      */
@@ -193,8 +192,7 @@ export class TokenService {
             method: 'POST',
             url: '/oauth/token',
             query: {
-                username: data.username,
-                password: data.password
+                input: data.input
             },
             errors: {
                 401: 'Unauthorized'
