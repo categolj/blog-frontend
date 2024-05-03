@@ -26,6 +26,7 @@ const Navi = () => {
             <li><Link to={'/'}>Home</Link></li>
             <li><Link to={'/tags'}>Tags</Link></li>
             <li><Link to={'/categories'}>Categories</Link></li>
+            <li><Link to={'/notes'}>Notes</Link></li>
         </NaviList>
         <SearchBox/>
     </NaviContainer>;
