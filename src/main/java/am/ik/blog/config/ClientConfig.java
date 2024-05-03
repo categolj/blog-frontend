@@ -66,6 +66,11 @@ public class ClientConfig {
 	}
 
 	@Bean
+	public am.ik.blog.entry.api.InfoApi entryInfoApi(am.ik.blog.entry.invoker.ApiClient apiClient) {
+		return new am.ik.blog.entry.api.InfoApi(apiClient);
+	}
+
+	@Bean
 	public NoteApi noteApi(am.ik.note.invoker.ApiClient apiClient) {
 		return new NoteApi(apiClient);
 	}
@@ -83,6 +88,11 @@ public class ClientConfig {
 	@Bean
 	public PasswordResetApi passwordResetApi(am.ik.note.invoker.ApiClient apiClient) {
 		return new PasswordResetApi(apiClient);
+	}
+
+	@Bean
+	public am.ik.note.api.InfoApi noteInfoApi(am.ik.note.invoker.ApiClient apiClient) {
+		return new am.ik.note.api.InfoApi(apiClient);
 	}
 
 }

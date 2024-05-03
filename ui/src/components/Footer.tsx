@@ -15,7 +15,7 @@ const Footer: React.FC = () => {
         <hr/>
         <Foot>
             <Link to={`/`}>IK.AM</Link> — &copy; 2010-{new Date().getFullYear()}
-            &nbsp;Toshiaki Maki (<Link to={`/aboutme`}>About</Link>)
+            &nbsp;Toshiaki Maki (<Link to={`/aboutme`}>About</Link>) / <Link to={'/info'}>Info</Link>
         </Foot>
     </>;
 };

@@ -14,6 +14,7 @@
     "generate-note-client": "openapi-ts --input https://note-api-note.apps.ik.am/v3/api-docs --output ./src/clients/note --client fetch --schemas false --base /api"
   },
   "dependencies": {
+    "@kevincobain2000/json-to-html-table": "^1.0.4",
     "highlight.js": "^11.9.0",
     "javascript-time-ago": "^2.5.10",
     "marked": "^12.0.2",

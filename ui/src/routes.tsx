@@ -8,6 +8,7 @@ import en from 'javascript-time-ago/locale/en'
 import TimeAgo from "javascript-time-ago";
 import AboutMe from "./AboutMe.tsx";
 import Error404 from "./components/Error404.tsx";
+import Info from "./Info.tsx";
 
 TimeAgo.addDefaultLocale(en);
 export default function routes(initData: object): RouteObject[] {
@@ -41,6 +42,9 @@ export default function routes(initData: object): RouteObject[] {
                 },
                 {
                     path: "/aboutme", element: <AboutMe/>
+                },
+                {
+                    path: "/info", element: <Info/>
                 }
             ]
         },

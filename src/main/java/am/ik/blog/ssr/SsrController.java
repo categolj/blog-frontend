@@ -69,7 +69,7 @@ public class SsrController {
 		return this.reactRenderer.render("/aboutme", Map.of());
 	}
 
-	@GetMapping(path = { "/tags/*/entries", "/categories/*/entries" })
+	@GetMapping(path = { "/tags/*/entries", "/categories/*/entries", "/note/**", "/notes/**", "/info" })
 	public Resource noSsr() {
 		return new ClassPathResource("META-INF/resources/index.html");
 	}
