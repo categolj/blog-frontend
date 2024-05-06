@@ -11,6 +11,7 @@ import Error404 from "./components/Error404.tsx";
 import Info from "./Info.tsx";
 import Login from "./note/Login.tsx";
 import Notes from "./note/Notes.tsx";
+import Note from "./note/Note.tsx";
 
 TimeAgo.addDefaultLocale(en);
 export default function routes(initData: object): RouteObject[] {
@@ -47,6 +48,9 @@ export default function routes(initData: object): RouteObject[] {
                 },
                 {
                     path: "/notes", element: <Notes/>
+                },
+                {
+                    path: "/notes/:entryId", element: <Note/>
                 },
                 {
                     path: "/aboutme", element: <AboutMe/>

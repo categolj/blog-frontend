@@ -7,43 +7,14 @@ import ScrollToTop from "react-scroll-to-top";
 import {addCopyButton} from './utils/copy';
 import marked from './utils/marked.ts'
 import 'highlight.js/styles/default.min.css';
-import {styled} from "styled-components";
 import Category from "./components/Category.tsx";
+import {Title} from "./styled/Title.tsx";
+import {Meta} from "./styled/Meta.tsx";
+import {Tags} from "./styled/Tags.tsx";
 
 export interface EntryProps {
     preLoadedEntry?: EntryModel;
 }
-
-const Title = styled.h3`
-  font-size: 1.5rem;
-  margin: 0 0 0.5rem;
-
-  a {
-    color: #333;
-  }
-`;
-
-const Meta = styled.div`
-  margin: 0;
-  color: #031b4e99;
-  display: inline-block;
-  width: 100%;
-
-  a {
-    color: #031b4e99;
-  }
-`
-
-const Tags = styled.p`
-  color: #031b4e99;
-  float: right;
-  font-size: smaller;
-  margin: 0 1em 0 0;
-
-  a {
-    color: #031b4e99;
-  }
-`
 
 const Entry: React.FC<EntryProps> = ({preLoadedEntry}) => {
     const {entryId} = useParams();
