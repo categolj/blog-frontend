@@ -6,7 +6,6 @@ import java.util.UUID;
 import am.ik.blog.NoteApiProps;
 import am.ik.note.api.NoteApi;
 import am.ik.note.model.NoteDetails;
-import am.ik.note.model.NoteId;
 import am.ik.note.model.NoteSummary;
 import am.ik.note.model.SubscribeOutput;
 
