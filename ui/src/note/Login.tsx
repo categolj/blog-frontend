@@ -92,6 +92,7 @@ const Login: React.FC = () => {
                 type='email'
                 name='username'
                 id='username'
+                autoComplete='email'
                 value={username}
                 onChange={handleInputChange}
                 disabled={freeze}
@@ -102,6 +103,7 @@ const Login: React.FC = () => {
                 type='password'
                 name='password'
                 id='password'
+                autoComplete='current-password'
                 value={password}
                 onChange={handleInputChange}
                 disabled={freeze}
@@ -123,6 +125,7 @@ const Login: React.FC = () => {
                 type='email'
                 name='email'
                 id='email'
+                autoComplete='email'
                 value={email}
                 onChange={handleInputChange}
                 disabled={freeze}
