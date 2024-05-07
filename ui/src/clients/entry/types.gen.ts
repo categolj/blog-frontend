@@ -68,6 +68,184 @@ export type CursorPageEntryInstant = {
     hasNext?: boolean;
 };
 
+export type GetEntryForTenantData = {
+    entryId: number;
+    excludeContent?: boolean;
+    tenantId: string;
+};
+
+export type GetEntryForTenantResponse = Entry;
+
+export type PutEntryFromMarkdownForTenant1Data = {
+    entryId: number;
+    requestBody: EntryRequest;
+    tenantId: string;
+};
+
+export type PutEntryFromMarkdownForTenant1Response = {
+    [key: string]: unknown;
+};
+
+export type DeleteEntryForTenantData = {
+    entryId: number;
+    tenantId: string;
+};
+
+export type DeleteEntryForTenantResponse = unknown;
+
+export type GetEntryData = {
+    entryId: number;
+    excludeContent?: boolean;
+    ifModifiedSince?: string;
+};
+
+export type GetEntryResponse = Entry;
+
+export type PutEntryFromMarkdown1Data = {
+    entryId: number;
+    requestBody: EntryRequest;
+};
+
+export type PutEntryFromMarkdown1Response = {
+    [key: string]: unknown;
+};
+
+export type DeleteEntryData = {
+    entryId: number;
+};
+
+export type DeleteEntryResponse = unknown;
+
+export type GetEntriesForTenant1Data = {
+    categories?: Array<(string)>;
+    createdBy?: string;
+    cursor?: string;
+    excludeContent?: boolean;
+    page?: number;
+    query?: string;
+    size?: number;
+    tag?: string;
+    tenantId: string;
+    updatedBy?: string;
+};
+
+export type GetEntriesForTenant1Response = CursorPageEntryInstant | OffsetPageEntry;
+
+export type PostEntryFromMarkdownForTenant1Data = {
+    requestBody: EntryRequest;
+    tenantId: string;
+};
+
+export type PostEntryFromMarkdownForTenant1Response = {
+    [key: string]: unknown;
+};
+
+export type GetEntries1Data = {
+    categories?: Array<(string)>;
+    createdBy?: string;
+    cursor?: string;
+    excludeContent?: boolean;
+    page?: number;
+    query?: string;
+    size?: number;
+    tag?: string;
+    updatedBy?: string;
+};
+
+export type GetEntries1Response = CursorPageEntryInstant | OffsetPageEntry;
+
+export type PostEntryFromMarkdown1Data = {
+    requestBody: EntryRequest;
+};
+
+export type PostEntryFromMarkdown1Response = {
+    [key: string]: unknown;
+};
+
+export type GetEntryAsMarkdownForTenantData = {
+    entryId: number;
+    excludeContent?: boolean;
+    tenantId: string;
+};
+
+export type GetEntryAsMarkdownForTenantResponse = string;
+
+export type ExportEntriesForTenantData = {
+    tenantId: string;
+};
+
+export type ExportEntriesForTenantResponse = {
+    [key: string]: unknown;
+};
+
+export type GetEntryAsMarkdownData = {
+    entryId: number;
+    excludeContent?: boolean;
+};
+
+export type GetEntryAsMarkdownResponse = string;
+
+export type GetTemplateMarkdownResponse = string;
+
+export type ExportEntriesResponse = {
+    [key: string]: unknown;
+};
+
+export type WebhookData = {
+    requestBody: string;
+};
+
+export type WebhookResponse = Array<{
+    [key: string]: (number);
+}>;
+
+export type WebhookForTenantData = {
+    requestBody: string;
+    tenantId: string;
+    xHubSignature256: string;
+};
+
+export type WebhookForTenantResponse = Array<{
+    [key: string]: (number);
+}>;
+
+export type ImportEntriesForTenantData = {
+    from?: number;
+    tenantId: string;
+    to?: number;
+};
+
+export type ImportEntriesForTenantResponse = Array<(string)>;
+
+export type ImportEntriesData = {
+    from?: number;
+    to?: number;
+};
+
+export type ImportEntriesResponse = Array<(string)>;
+
+export type TagsForTenantData = {
+    tenantId: string;
+};
+
+export type TagsForTenantResponse = Array<TagAndCount>;
+
+export type TagsResponse = Array<TagAndCount>;
+
+export type CategoriesForTenantData = {
+    tenantId: string;
+};
+
+export type CategoriesForTenantResponse = Array<Array<Category>>;
+
+export type CategoriesResponse = Array<Array<Category>>;
+
+export type InfoResponse = {
+    [key: string]: {
+        [key: string]: unknown;
+    };
+};
+
 export type $OpenApiTs = {
     '/tenants/{tenantId}/entries/{entryId}': {
         get: {

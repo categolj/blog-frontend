@@ -3,7 +3,7 @@
 import type { CancelablePromise } from './core/CancelablePromise';
 import { OpenAPI } from './core/OpenAPI';
 import { request as __request } from './core/request';
-import type { $OpenApiTs } from './types.gen';
+import type { GetNoteByEntryIdData, GetNoteByEntryIdResponse, PutNoteData, PutNoteResponse, SubscribeData, SubscribeResponse, GetNotesResponse, DeleteByEntryIdData, DeleteByEntryIdResponse, GetNoteByNoteIdData, GetNoteByNoteIdResponse, CreateReaderData, CreateReaderResponse, ActivateData, ActivateResponse, ResetData, ResetResponse, SendLinkData, SendLinkResponse, TokenData, TokenResponse, InfoResponse } from './types.gen';
 
 export class NoteService {
     /**
@@ -12,7 +12,7 @@ export class NoteService {
      * @returns NoteDetails OK
      * @throws ApiError
      */
-    public static getNoteByEntryId(data: $OpenApiTs['/notes/{entryId}']['get']['req']): CancelablePromise<$OpenApiTs['/notes/{entryId}']['get']['res'][200]> {
+    public static getNoteByEntryId(data: GetNoteByEntryIdData): CancelablePromise<GetNoteByEntryIdResponse> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/notes/{entryId}',
@@ -32,7 +32,7 @@ export class NoteService {
      * @returns unknown OK
      * @throws ApiError
      */
-    public static putNote(data: $OpenApiTs['/notes/{entryId}']['put']['req']): CancelablePromise<$OpenApiTs['/notes/{entryId}']['put']['res'][200]> {
+    public static putNote(data: PutNoteData): CancelablePromise<PutNoteResponse> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/notes/{entryId}',
@@ -50,7 +50,7 @@ export class NoteService {
      * @returns SubscribeOutput OK
      * @throws ApiError
      */
-    public static subscribe(data: $OpenApiTs['/notes/{noteId}/subscribe']['post']['req']): CancelablePromise<$OpenApiTs['/notes/{noteId}/subscribe']['post']['res'][200]> {
+    public static subscribe(data: SubscribeData): CancelablePromise<SubscribeResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/notes/{noteId}/subscribe',
@@ -64,7 +64,7 @@ export class NoteService {
      * @returns NoteSummary OK
      * @throws ApiError
      */
-    public static getNotes(): CancelablePromise<$OpenApiTs['/notes']['get']['res'][200]> {
+    public static getNotes(): CancelablePromise<GetNotesResponse> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/notes'
@@ -77,7 +77,7 @@ export class NoteService {
      * @returns ResponseMessage OK
      * @throws ApiError
      */
-    public static deleteByEntryId(data: $OpenApiTs['/notes']['delete']['req']): CancelablePromise<$OpenApiTs['/notes']['delete']['res'][200]> {
+    public static deleteByEntryId(data: DeleteByEntryIdData): CancelablePromise<DeleteByEntryIdResponse> {
         return __request(OpenAPI, {
             method: 'DELETE',
             url: '/notes',
@@ -93,7 +93,7 @@ export class NoteService {
      * @returns NoteDetails OK
      * @throws ApiError
      */
-    public static getNoteByNoteId(data: $OpenApiTs['/notes/{noteId}']['get']['req']): CancelablePromise<$OpenApiTs['/notes/{noteId}']['get']['res'][200]> {
+    public static getNoteByNoteId(data: GetNoteByNoteIdData): CancelablePromise<GetNoteByNoteIdResponse> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/notes/{noteId}',
@@ -115,7 +115,7 @@ export class ReaderService {
      * @returns ResponseMessage OK
      * @throws ApiError
      */
-    public static createReader(data: $OpenApiTs['/readers']['post']['req']): CancelablePromise<$OpenApiTs['/readers']['post']['res'][200]> {
+    public static createReader(data: CreateReaderData): CancelablePromise<CreateReaderResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/readers',
@@ -131,7 +131,7 @@ export class ReaderService {
      * @returns ResponseMessage OK
      * @throws ApiError
      */
-    public static activate(data: $OpenApiTs['/readers/{readerId}/activations/{activationLinkId}']['post']['req']): CancelablePromise<$OpenApiTs['/readers/{readerId}/activations/{activationLinkId}']['post']['res'][200]> {
+    public static activate(data: ActivateData): CancelablePromise<ActivateResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/readers/{readerId}/activations/{activationLinkId}',
@@ -154,7 +154,7 @@ export class PasswordResetService {
      * @returns ResponseMessage OK
      * @throws ApiError
      */
-    public static reset(data: $OpenApiTs['/password_reset']['post']['req']): CancelablePromise<$OpenApiTs['/password_reset']['post']['res'][200]> {
+    public static reset(data: ResetData): CancelablePromise<ResetResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/password_reset',
@@ -169,7 +169,7 @@ export class PasswordResetService {
      * @returns ResponseMessage OK
      * @throws ApiError
      */
-    public static sendLink(data: $OpenApiTs['/password_reset/send_link']['post']['req']): CancelablePromise<$OpenApiTs['/password_reset/send_link']['post']['res'][200]> {
+    public static sendLink(data: SendLinkData): CancelablePromise<SendLinkResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/password_reset/send_link',
@@ -187,7 +187,7 @@ export class TokenService {
      * @returns OAuth2Token OK
      * @throws ApiError
      */
-    public static token(data: $OpenApiTs['/oauth/token']['post']['req']): CancelablePromise<$OpenApiTs['/oauth/token']['post']['res'][200]> {
+    public static token(data: TokenData): CancelablePromise<TokenResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/oauth/token',
@@ -207,7 +207,7 @@ export class InfoService {
      * @returns unknown OK
      * @throws ApiError
      */
-    public static info(): CancelablePromise<$OpenApiTs['/info']['get']['res'][200]> {
+    public static info(): CancelablePromise<InfoResponse> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/info'

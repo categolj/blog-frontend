@@ -90,6 +90,76 @@ export type ErrorResponse = {
     noteUrl: string;
 };
 
+export type GetNoteByEntryIdData = {
+    entryId: number;
+};
+
+export type GetNoteByEntryIdResponse = NoteDetails;
+
+export type PutNoteData = {
+    entryId: number;
+    requestBody: PutNoteInput;
+};
+
+export type PutNoteResponse = unknown;
+
+export type SubscribeData = {
+    noteId: NoteId;
+};
+
+export type SubscribeResponse = SubscribeOutput;
+
+export type GetNotesResponse = Array<NoteSummary>;
+
+export type DeleteByEntryIdData = {
+    entryId: number;
+};
+
+export type DeleteByEntryIdResponse = ResponseMessage;
+
+export type GetNoteByNoteIdData = {
+    noteId: NoteId;
+};
+
+export type GetNoteByNoteIdResponse = NoteDetails;
+
+export type CreateReaderData = {
+    requestBody: CreateReaderInput;
+};
+
+export type CreateReaderResponse = ResponseMessage;
+
+export type ActivateData = {
+    activationLinkId: ActivationLinkId;
+    readerId: ReaderId;
+};
+
+export type ActivateResponse = ResponseMessage;
+
+export type ResetData = {
+    requestBody: PasswordResetInput;
+};
+
+export type ResetResponse = ResponseMessage;
+
+export type SendLinkData = {
+    requestBody: SendLinkInput;
+};
+
+export type SendLinkResponse = ResponseMessage;
+
+export type TokenData = {
+    input: TokenInput;
+};
+
+export type TokenResponse = OAuth2Token;
+
+export type InfoResponse = {
+    [key: string]: {
+        [key: string]: unknown;
+    };
+};
+
 export type $OpenApiTs = {
     '/notes/{entryId}': {
         get: {

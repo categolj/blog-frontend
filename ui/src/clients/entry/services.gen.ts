@@ -3,7 +3,7 @@
 import type { CancelablePromise } from './core/CancelablePromise';
 import { OpenAPI } from './core/OpenAPI';
 import { request as __request } from './core/request';
-import type { $OpenApiTs } from './types.gen';
+import type { GetEntryForTenantData, GetEntryForTenantResponse, PutEntryFromMarkdownForTenant1Data, PutEntryFromMarkdownForTenant1Response, DeleteEntryForTenantData, DeleteEntryForTenantResponse, GetEntryData, GetEntryResponse, PutEntryFromMarkdown1Data, PutEntryFromMarkdown1Response, DeleteEntryData, DeleteEntryResponse, GetEntriesForTenant1Data, GetEntriesForTenant1Response, PostEntryFromMarkdownForTenant1Data, PostEntryFromMarkdownForTenant1Response, GetEntries1Data, GetEntries1Response, PostEntryFromMarkdown1Data, PostEntryFromMarkdown1Response, GetEntryAsMarkdownForTenantData, GetEntryAsMarkdownForTenantResponse, ExportEntriesForTenantData, ExportEntriesForTenantResponse, GetEntryAsMarkdownData, GetEntryAsMarkdownResponse, GetTemplateMarkdownResponse, ExportEntriesResponse, WebhookData, WebhookResponse, WebhookForTenantData, WebhookForTenantResponse, ImportEntriesForTenantData, ImportEntriesForTenantResponse, ImportEntriesData, ImportEntriesResponse, TagsForTenantData, TagsForTenantResponse, TagsResponse, CategoriesForTenantData, CategoriesForTenantResponse, CategoriesResponse, InfoResponse } from './types.gen';
 
 export class EntryService {
     /**
@@ -14,7 +14,7 @@ export class EntryService {
      * @returns Entry OK
      * @throws ApiError
      */
-    public static getEntryForTenant(data: $OpenApiTs['/tenants/{tenantId}/entries/{entryId}']['get']['req']): CancelablePromise<$OpenApiTs['/tenants/{tenantId}/entries/{entryId}']['get']['res'][200]> {
+    public static getEntryForTenant(data: GetEntryForTenantData): CancelablePromise<GetEntryForTenantResponse> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/tenants/{tenantId}/entries/{entryId}',
@@ -42,7 +42,7 @@ export class EntryService {
      * @returns unknown OK
      * @throws ApiError
      */
-    public static putEntryFromMarkdownForTenant1(data: $OpenApiTs['/tenants/{tenantId}/entries/{entryId}']['put']['req']): CancelablePromise<$OpenApiTs['/tenants/{tenantId}/entries/{entryId}']['put']['res'][200]> {
+    public static putEntryFromMarkdownForTenant1(data: PutEntryFromMarkdownForTenant1Data): CancelablePromise<PutEntryFromMarkdownForTenant1Response> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/tenants/{tenantId}/entries/{entryId}',
@@ -68,7 +68,7 @@ export class EntryService {
      * @returns unknown OK
      * @throws ApiError
      */
-    public static deleteEntryForTenant(data: $OpenApiTs['/tenants/{tenantId}/entries/{entryId}']['delete']['req']): CancelablePromise<$OpenApiTs['/tenants/{tenantId}/entries/{entryId}']['delete']['res'][200]> {
+    public static deleteEntryForTenant(data: DeleteEntryForTenantData): CancelablePromise<DeleteEntryForTenantResponse> {
         return __request(OpenAPI, {
             method: 'DELETE',
             url: '/tenants/{tenantId}/entries/{entryId}',
@@ -93,7 +93,7 @@ export class EntryService {
      * @returns Entry OK
      * @throws ApiError
      */
-    public static getEntry(data: $OpenApiTs['/entries/{entryId}']['get']['req']): CancelablePromise<$OpenApiTs['/entries/{entryId}']['get']['res'][200]> {
+    public static getEntry(data: GetEntryData): CancelablePromise<GetEntryResponse> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/entries/{entryId}',
@@ -122,7 +122,7 @@ export class EntryService {
      * @returns unknown OK
      * @throws ApiError
      */
-    public static putEntryFromMarkdown1(data: $OpenApiTs['/entries/{entryId}']['put']['req']): CancelablePromise<$OpenApiTs['/entries/{entryId}']['put']['res'][200]> {
+    public static putEntryFromMarkdown1(data: PutEntryFromMarkdown1Data): CancelablePromise<PutEntryFromMarkdown1Response> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/entries/{entryId}',
@@ -146,7 +146,7 @@ export class EntryService {
      * @returns unknown OK
      * @throws ApiError
      */
-    public static deleteEntry(data: $OpenApiTs['/entries/{entryId}']['delete']['req']): CancelablePromise<$OpenApiTs['/entries/{entryId}']['delete']['res'][200]> {
+    public static deleteEntry(data: DeleteEntryData): CancelablePromise<DeleteEntryResponse> {
         return __request(OpenAPI, {
             method: 'DELETE',
             url: '/entries/{entryId}',
@@ -177,7 +177,7 @@ export class EntryService {
      * @returns unknown OK
      * @throws ApiError
      */
-    public static getEntriesForTenant1(data: $OpenApiTs['/tenants/{tenantId}/entries']['get']['req']): CancelablePromise<$OpenApiTs['/tenants/{tenantId}/entries']['get']['res'][200]> {
+    public static getEntriesForTenant1(data: GetEntriesForTenant1Data): CancelablePromise<GetEntriesForTenant1Response> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/tenants/{tenantId}/entries',
@@ -211,7 +211,7 @@ export class EntryService {
      * @returns unknown OK
      * @throws ApiError
      */
-    public static postEntryFromMarkdownForTenant1(data: $OpenApiTs['/tenants/{tenantId}/entries']['post']['req']): CancelablePromise<$OpenApiTs['/tenants/{tenantId}/entries']['post']['res'][200]> {
+    public static postEntryFromMarkdownForTenant1(data: PostEntryFromMarkdownForTenant1Data): CancelablePromise<PostEntryFromMarkdownForTenant1Response> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/tenants/{tenantId}/entries',
@@ -243,7 +243,7 @@ export class EntryService {
      * @returns unknown OK
      * @throws ApiError
      */
-    public static getEntries1(data: $OpenApiTs['/entries']['get']['req'] = {}): CancelablePromise<$OpenApiTs['/entries']['get']['res'][200]> {
+    public static getEntries1(data: GetEntries1Data = {}): CancelablePromise<GetEntries1Response> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/entries',
@@ -273,7 +273,7 @@ export class EntryService {
      * @returns unknown OK
      * @throws ApiError
      */
-    public static postEntryFromMarkdown1(data: $OpenApiTs['/entries']['post']['req']): CancelablePromise<$OpenApiTs['/entries']['post']['res'][200]> {
+    public static postEntryFromMarkdown1(data: PostEntryFromMarkdown1Data): CancelablePromise<PostEntryFromMarkdown1Response> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/entries',
@@ -296,7 +296,7 @@ export class EntryService {
      * @returns string OK
      * @throws ApiError
      */
-    public static getEntryAsMarkdownForTenant(data: $OpenApiTs['/tenants/{tenantId}/entries/{entryId}.md']['get']['req']): CancelablePromise<$OpenApiTs['/tenants/{tenantId}/entries/{entryId}.md']['get']['res'][200]> {
+    public static getEntryAsMarkdownForTenant(data: GetEntryAsMarkdownForTenantData): CancelablePromise<GetEntryAsMarkdownForTenantResponse> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/tenants/{tenantId}/entries/{entryId}.md',
@@ -322,7 +322,7 @@ export class EntryService {
      * @returns unknown OK
      * @throws ApiError
      */
-    public static exportEntriesForTenant(data: $OpenApiTs['/tenants/{tenantId}/entries.zip']['get']['req']): CancelablePromise<$OpenApiTs['/tenants/{tenantId}/entries.zip']['get']['res'][200]> {
+    public static exportEntriesForTenant(data: ExportEntriesForTenantData): CancelablePromise<ExportEntriesForTenantResponse> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/tenants/{tenantId}/entries.zip',
@@ -345,7 +345,7 @@ export class EntryService {
      * @returns string OK
      * @throws ApiError
      */
-    public static getEntryAsMarkdown(data: $OpenApiTs['/entries/{entryId}.md']['get']['req']): CancelablePromise<$OpenApiTs['/entries/{entryId}.md']['get']['res'][200]> {
+    public static getEntryAsMarkdown(data: GetEntryAsMarkdownData): CancelablePromise<GetEntryAsMarkdownResponse> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/entries/{entryId}.md',
@@ -368,7 +368,7 @@ export class EntryService {
      * @returns string OK
      * @throws ApiError
      */
-    public static getTemplateMarkdown(): CancelablePromise<$OpenApiTs['/entries/template.md']['get']['res'][200]> {
+    public static getTemplateMarkdown(): CancelablePromise<GetTemplateMarkdownResponse> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/entries/template.md',
@@ -385,7 +385,7 @@ export class EntryService {
      * @returns unknown OK
      * @throws ApiError
      */
-    public static exportEntries(): CancelablePromise<$OpenApiTs['/entries.zip']['get']['res'][200]> {
+    public static exportEntries(): CancelablePromise<ExportEntriesResponse> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/entries.zip',
@@ -407,7 +407,7 @@ export class WebhookService {
      * @returns number OK
      * @throws ApiError
      */
-    public static webhook(data: $OpenApiTs['/webhook']['post']['req']): CancelablePromise<$OpenApiTs['/webhook']['post']['res'][200]> {
+    public static webhook(data: WebhookData): CancelablePromise<WebhookResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/webhook',
@@ -430,7 +430,7 @@ export class WebhookService {
      * @returns number OK
      * @throws ApiError
      */
-    public static webhookForTenant(data: $OpenApiTs['/tenants/{tenantId}/webhook']['post']['req']): CancelablePromise<$OpenApiTs['/tenants/{tenantId}/webhook']['post']['res'][200]> {
+    public static webhookForTenant(data: WebhookForTenantData): CancelablePromise<WebhookForTenantResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/tenants/{tenantId}/webhook',
@@ -462,7 +462,7 @@ export class AdminService {
      * @returns string OK
      * @throws ApiError
      */
-    public static importEntriesForTenant(data: $OpenApiTs['/tenants/{tenantId}/admin/import']['post']['req']): CancelablePromise<$OpenApiTs['/tenants/{tenantId}/admin/import']['post']['res'][200]> {
+    public static importEntriesForTenant(data: ImportEntriesForTenantData): CancelablePromise<ImportEntriesForTenantResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/tenants/{tenantId}/admin/import',
@@ -489,7 +489,7 @@ export class AdminService {
      * @returns string OK
      * @throws ApiError
      */
-    public static importEntries(data: $OpenApiTs['/admin/import']['post']['req'] = {}): CancelablePromise<$OpenApiTs['/admin/import']['post']['res'][200]> {
+    public static importEntries(data: ImportEntriesData = {}): CancelablePromise<ImportEntriesResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/admin/import',
@@ -515,7 +515,7 @@ export class TagService {
      * @returns TagAndCount OK
      * @throws ApiError
      */
-    public static tagsForTenant(data: $OpenApiTs['/tenants/{tenantId}/tags']['get']['req']): CancelablePromise<$OpenApiTs['/tenants/{tenantId}/tags']['get']['res'][200]> {
+    public static tagsForTenant(data: TagsForTenantData): CancelablePromise<TagsForTenantResponse> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/tenants/{tenantId}/tags',
@@ -535,7 +535,7 @@ export class TagService {
      * @returns TagAndCount OK
      * @throws ApiError
      */
-    public static tags(): CancelablePromise<$OpenApiTs['/tags']['get']['res'][200]> {
+    public static tags(): CancelablePromise<TagsResponse> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/tags',
@@ -557,7 +557,7 @@ export class CategoryService {
      * @returns Category OK
      * @throws ApiError
      */
-    public static categoriesForTenant(data: $OpenApiTs['/tenants/{tenantId}/categories']['get']['req']): CancelablePromise<$OpenApiTs['/tenants/{tenantId}/categories']['get']['res'][200]> {
+    public static categoriesForTenant(data: CategoriesForTenantData): CancelablePromise<CategoriesForTenantResponse> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/tenants/{tenantId}/categories',
@@ -577,7 +577,7 @@ export class CategoryService {
      * @returns Category OK
      * @throws ApiError
      */
-    public static categories(): CancelablePromise<$OpenApiTs['/categories']['get']['res'][200]> {
+    public static categories(): CancelablePromise<CategoriesResponse> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/categories',
@@ -597,7 +597,7 @@ export class InfoService {
      * @returns unknown OK
      * @throws ApiError
      */
-    public static info(): CancelablePromise<$OpenApiTs['/info']['get']['res'][200]> {
+    public static info(): CancelablePromise<InfoResponse> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/info',
