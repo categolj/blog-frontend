@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {Link, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import useSWR, {Fetcher} from 'swr';
 import Loading from "../components/Loading.tsx";
 import ScrollToTop from "react-scroll-to-top";
@@ -8,14 +8,18 @@ import marked from '../utils/marked.ts'
 import 'highlight.js/styles/default.min.css';
 import {Title} from "../styled/Title.tsx";
 import {Meta} from "../styled/Meta.tsx";
-import {NoteDetails, NoteService} from "../clients/note";
-
+import {ApiError, NoteDetails, NoteService} from "../clients/note";
 
 const Note: React.FC = () => {
+    const navigate = useNavigate();
     const {entryId} = useParams();
     const fetcher: Fetcher<NoteDetails, string> = (entryId) => NoteService.getNoteByEntryId({entryId: Number(entryId)});
-    const {data, isLoading} = useSWR(entryId, fetcher);
+    const {data, isLoading, error} = useSWR(entryId, fetcher);
     useEffect(addCopyButton, [data]);
+    if (error && (error as ApiError).status === 401) {
+        navigate('/note/login');
+        return <></>;
+    }
     if (isLoading || !data) {
         return <Loading/>
     }
