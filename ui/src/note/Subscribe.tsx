@@ -9,15 +9,11 @@ const Subscribe: React.FC = () => {
     const {noteId} = useParams();
     const fetcher: Fetcher<SubscribeOutput, string> = (noteId) => NoteService.subscribe({noteId: noteId as NoteId});
     const {data, isLoading, error} = useSWR<SubscribeOutput, ApiError>(noteId, fetcher);
-    if (isLoading || !data) {
-        return <Loading/>
-    }
     let message = {
         status: 'info',
         text: <></>
     };
     if (error) {
-        console.log(error);
         if (error.status === 401) {
             message = {
                 status: 'warning',
@@ -39,8 +35,9 @@ const Subscribe: React.FC = () => {
                 text: <>'まだアクセスできないNoteです'</>
             };
         }
-    }
-    if (data.subscribed) {
+    } else if (isLoading || !data) {
+        return <Loading/>
+    } else if (data.subscribed) {
         message.text = <>既に購読状態になっています。<Link
             to={`/notes/${data.entryId}`}>記事</Link>にアクセスしてください。</>;
     } else {
