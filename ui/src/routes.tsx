@@ -12,6 +12,7 @@ import Info from "./Info.tsx";
 import Login from "./note/Login.tsx";
 import Notes from "./note/Notes.tsx";
 import Note from "./note/Note.tsx";
+import Subscribe from "./note/Subscribe.tsx";
 
 TimeAgo.addDefaultLocale(en);
 export default function routes(initData: object): RouteObject[] {
@@ -51,6 +52,9 @@ export default function routes(initData: object): RouteObject[] {
                 },
                 {
                     path: "/notes/:entryId", element: <Note/>
+                },
+                {
+                    path: "/notes/:noteId/subscribe", element: <Subscribe/>
                 },
                 {
                     path: "/aboutme", element: <AboutMe/>

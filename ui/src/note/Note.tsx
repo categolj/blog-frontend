@@ -14,14 +14,14 @@ const Note: React.FC = () => {
     const navigate = useNavigate();
     const {entryId} = useParams();
     const fetcher: Fetcher<NoteDetails, string> = (entryId) => NoteService.getNoteByEntryId({entryId: Number(entryId)});
-    const {data, isLoading, error} = useSWR(entryId, fetcher);
+    const {data, isLoading, error} = useSWR<NoteDetails, ApiError>(entryId, fetcher);
     useEffect(addCopyButton, [data]);
-    if (error && (error as ApiError).status === 401) {
-        navigate('/note/login');
-        return <></>;
-    }
     if (isLoading || !data) {
         return <Loading/>
+    }
+    if (error && error.status === 401) {
+        navigate('/note/login');
+        return <></>;
     }
     const contentHtml = marked.parse(data.content, {async: false, gfm: true}) as string;
     return <>
