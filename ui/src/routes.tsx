@@ -1,12 +1,12 @@
 import {RouteObject} from "react-router-dom";
-import Entry, {EntryProps} from "./Entry.tsx";
-import Entries, {EntriesProps} from "./Entries.tsx";
+import Entry, {EntryProps} from "./entry/Entry.tsx";
+import Entries, {EntriesProps} from "./entry/Entries.tsx";
 import Layout from "./components/Layout.tsx";
-import Tags, {TagsProps} from "./Tags.tsx";
-import Categories, {CategoriesProps} from "./Categories.tsx";
+import Tags, {TagsProps} from "./entry/Tags.tsx";
+import Categories, {CategoriesProps} from "./entry/Categories.tsx";
 import en from 'javascript-time-ago/locale/en'
 import TimeAgo from "javascript-time-ago";
-import AboutMe from "./AboutMe.tsx";
+import AboutMe from "./components/AboutMe.tsx";
 import Error404 from "./components/Error404.tsx";
 import Info from "./Info.tsx";
 import Login from "./note/Login.tsx";
