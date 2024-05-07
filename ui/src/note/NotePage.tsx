@@ -10,7 +10,7 @@ import {Title} from "../styled/Title.tsx";
 import {Meta} from "../styled/Meta.tsx";
 import {ApiError, NoteDetails, NoteService} from "../clients/note";
 
-const Note: React.FC = () => {
+const NotePage: React.FC = () => {
     const navigate = useNavigate();
     const {entryId} = useParams();
     const fetcher: Fetcher<NoteDetails, string> = (entryId) => NoteService.getNoteByEntryId({entryId: Number(entryId)});
@@ -37,4 +37,4 @@ const Note: React.FC = () => {
     </>;
 };
 
-export default Note;
+export default NotePage;

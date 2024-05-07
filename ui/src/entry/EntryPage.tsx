@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import {Link, useParams} from "react-router-dom";
 import useSWR, {Fetcher} from 'swr';
-import {Entry as EntryModel, EntryService} from "../clients/entry";
+import {Entry, EntryService} from "../clients/entry";
 import Loading from "../components/Loading.tsx";
 import ScrollToTop from "react-scroll-to-top";
 import {addCopyButton} from '../utils/copy.ts';
@@ -13,13 +13,13 @@ import {Meta} from "../styled/Meta.tsx";
 import {Tags} from "../styled/Tags.tsx";
 
 export interface EntryProps {
-    preLoadedEntry?: EntryModel;
+    preLoadedEntry?: Entry;
 }
 
-const Entry: React.FC<EntryProps> = ({preLoadedEntry}) => {
+const EntryPage: React.FC<EntryProps> = ({preLoadedEntry}) => {
     const {entryId} = useParams();
     const isPreLoaded = preLoadedEntry && preLoadedEntry.entryId == Number(entryId);
-    const fetcher: Fetcher<EntryModel, string> = (entryId) => EntryService.getEntry({entryId: Number(entryId)});
+    const fetcher: Fetcher<Entry, string> = (entryId) => EntryService.getEntry({entryId: Number(entryId)});
     const {data, isLoading} = useSWR(isPreLoaded ? null : entryId, fetcher);
     const entry = data || preLoadedEntry;
     useEffect(addCopyButton, [entry]);
@@ -53,4 +53,4 @@ const Entry: React.FC<EntryProps> = ({preLoadedEntry}) => {
     </>;
 };
 
-export default Entry;
+export default EntryPage;

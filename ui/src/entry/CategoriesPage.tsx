@@ -8,7 +8,7 @@ export interface CategoriesProps {
     preLoadedCategories?: CategoryModel[][];
 }
 
-const Categories: React.FC<CategoriesProps> = ({preLoadedCategories}) => {
+const CategoriesPage: React.FC<CategoriesProps> = ({preLoadedCategories}) => {
     const isPreLoaded = !!preLoadedCategories;
     const fetcher: Fetcher<CategoryModel[][], string> = () => CategoryService.categories();
     const {data, isLoading} = useSWR(isPreLoaded ? null : '/api/categories', fetcher);
@@ -26,4 +26,4 @@ const Categories: React.FC<CategoriesProps> = ({preLoadedCategories}) => {
     </>)
 }
 
-export default Categories
+export default CategoriesPage

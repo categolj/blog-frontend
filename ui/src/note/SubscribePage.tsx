@@ -5,7 +5,7 @@ import Loading from "../components/Loading.tsx";
 import 'highlight.js/styles/default.min.css';
 import {ApiError, NoteId, NoteService, SubscribeOutput} from "../clients/note";
 
-const Subscribe: React.FC = () => {
+const SubscribePage: React.FC = () => {
     const {noteId} = useParams();
     const fetcher: Fetcher<SubscribeOutput, string> = (noteId) => NoteService.subscribe({noteId: noteId as NoteId});
     const {data, isLoading, error} = useSWR<SubscribeOutput, ApiError>(noteId, fetcher);
@@ -52,4 +52,4 @@ const Subscribe: React.FC = () => {
     </>;
 };
 
-export default Subscribe;
+export default SubscribePage;

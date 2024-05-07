@@ -1,18 +1,18 @@
 import {RouteObject} from "react-router-dom";
-import Entry, {EntryProps} from "./entry/Entry.tsx";
-import Entries, {EntriesProps} from "./entry/Entries.tsx";
+import EntryPage, {EntryProps} from "./entry/EntryPage.tsx";
+import EntriesPage, {EntriesProps} from "./entry/EntriesPage.tsx";
 import Layout from "./components/Layout.tsx";
-import Tags, {TagsProps} from "./entry/Tags.tsx";
-import Categories, {CategoriesProps} from "./entry/Categories.tsx";
+import TagsPage, {TagsProps} from "./entry/TagsPage.tsx";
+import CategoriesPage, {CategoriesProps} from "./entry/CategoriesPage.tsx";
 import en from 'javascript-time-ago/locale/en'
 import TimeAgo from "javascript-time-ago";
-import AboutMe from "./components/AboutMe.tsx";
-import Error404 from "./components/Error404.tsx";
-import Info from "./Info.tsx";
-import Login from "./note/Login.tsx";
-import Notes from "./note/Notes.tsx";
-import Note from "./note/Note.tsx";
-import Subscribe from "./note/Subscribe.tsx";
+import AboutMePage from "./components/AboutMePage.tsx";
+import Error404Page from "./components/Error404Page.tsx";
+import InfoPage from "./components/InfoPage.tsx";
+import LoginPage from "./note/LoginPage.tsx";
+import NotesPage from "./note/NotesPage.tsx";
+import NotePage from "./note/NotePage.tsx";
+import SubscribePage from "./note/SubscribePage.tsx";
 
 TimeAgo.addDefaultLocale(en);
 export default function routes(initData: object): RouteObject[] {
@@ -21,46 +21,46 @@ export default function routes(initData: object): RouteObject[] {
             element: <Layout/>,
             children: [
                 {
-                    path: "*", element: <Error404/>
+                    path: "*", element: <Error404Page/>
                 },
                 {
-                    path: "/", element: <Entries {...initData as EntriesProps} />
+                    path: "/", element: <EntriesPage {...initData as EntriesProps} />
                 },
                 {
-                    path: "/entries", element: <Entries {...initData as EntriesProps} />
+                    path: "/entries", element: <EntriesPage {...initData as EntriesProps} />
                 },
                 {
-                    path: "/entries/:entryId", element: <Entry {...initData as EntryProps} />
+                    path: "/entries/:entryId", element: <EntryPage {...initData as EntryProps} />
                 },
                 {
-                    path: "/tags", element: <Tags {...initData as TagsProps} />
+                    path: "/tags", element: <TagsPage {...initData as TagsProps} />
                 },
                 {
-                    path: "/tags/:tag/entries", element: <Entries/>
+                    path: "/tags/:tag/entries", element: <EntriesPage/>
                 },
                 {
-                    path: "/categories", element: <Categories {...initData as CategoriesProps} />
+                    path: "/categories", element: <CategoriesPage {...initData as CategoriesProps} />
                 },
                 {
-                    path: "/categories/:categories/entries", element: <Entries/>
+                    path: "/categories/:categories/entries", element: <EntriesPage/>
                 },
                 {
-                    path: "/note/login", element: <Login/>
+                    path: "/note/login", element: <LoginPage/>
                 },
                 {
-                    path: "/notes", element: <Notes/>
+                    path: "/notes", element: <NotesPage/>
                 },
                 {
-                    path: "/notes/:entryId", element: <Note/>
+                    path: "/notes/:entryId", element: <NotePage/>
                 },
                 {
-                    path: "/notes/:noteId/subscribe", element: <Subscribe/>
+                    path: "/notes/:noteId/subscribe", element: <SubscribePage/>
                 },
                 {
-                    path: "/aboutme", element: <AboutMe/>
+                    path: "/aboutme", element: <AboutMePage/>
                 },
                 {
-                    path: "/info", element: <Info/>
+                    path: "/info", element: <InfoPage/>
                 }
             ]
         },

@@ -25,7 +25,7 @@ const Button = styled.button`
   padding: 8px;
 `;
 
-const Login: React.FC = () => {
+const LoginPage: React.FC = () => {
     const navigate = useNavigate();
     const [message, setMessage] = useState<string>('');
     const [freeze, setFreeze] = useState(false);
@@ -137,4 +137,4 @@ const Login: React.FC = () => {
     </>;
 };
 
-export default Login;
+export default LoginPage;

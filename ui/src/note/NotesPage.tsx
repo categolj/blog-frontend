@@ -14,7 +14,7 @@ interface JWT {
     preferred_username: string;
 }
 
-const Notes: React.FC = () => {
+const NotesPage: React.FC = () => {
     const navigate = useNavigate();
     const notesFetcher: Fetcher<NoteSummary[], string> = () => NoteService.getNotes();
     const meFetcher: Fetcher<JWT, string> = () => fetch('/api/me').then(res => res.json());
@@ -67,4 +67,4 @@ const Notes: React.FC = () => {
     </>;
 };
 
-export default Notes;
+export default NotesPage;

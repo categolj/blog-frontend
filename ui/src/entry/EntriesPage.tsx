@@ -1,5 +1,5 @@
 import React from 'react'
-import {CursorPageEntryInstant as EntriesModel, Entry, EntryService} from "../clients/entry";
+import {CursorPageEntryInstant, Entry, EntryService} from "../clients/entry";
 import {Link, useParams, useSearchParams} from "react-router-dom";
 import {Fetcher} from 'swr';
 import useSWRInfinite from "swr/infinite";
@@ -10,7 +10,7 @@ import ReactTimeAgo from "react-time-ago";
 import {styled} from "styled-components";
 
 export interface EntriesProps {
-    preLoadedEntries?: EntriesModel;
+    preLoadedEntries?: CursorPageEntryInstant;
 }
 
 const Tag = styled.p`
@@ -24,7 +24,7 @@ const LastUpdated = styled.span`
   color: #031b4e99;
   font-size: smaller;
 `
-const Entries: React.FC<EntriesProps> = ({preLoadedEntries}) => {
+const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries}) => {
     const {categories, tag} = useParams();
     const [searchParams] = useSearchParams();
     const query = searchParams.get('query');
@@ -69,4 +69,4 @@ const Entries: React.FC<EntriesProps> = ({preLoadedEntries}) => {
     </>)
 }
 
-export default Entries
+export default EntriesPage

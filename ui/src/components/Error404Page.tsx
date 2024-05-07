@@ -1,7 +1,7 @@
 import React from "react";
 import {Link} from "react-router-dom";
 
-const Error404: React.FC = () => {
+const Error404Page: React.FC = () => {
     return <div>
         <h2>Not Found</h2>
         <p>
@@ -11,4 +11,4 @@ const Error404: React.FC = () => {
 
 };
 
-export default Error404;
+export default Error404Page;
