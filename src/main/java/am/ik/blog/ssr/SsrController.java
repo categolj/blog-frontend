@@ -9,8 +9,6 @@ import am.ik.blog.entry.EntryRequestBuilder;
 import am.ik.blog.entry.api.CategoryApi;
 import am.ik.blog.entry.api.TagApi;
 
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -69,9 +67,14 @@ public class SsrController {
 		return this.reactRenderer.render("/aboutme", Map.of());
 	}
 
+	@GetMapping(path = { "/note/login" })
+	public String noteLogin() {
+		return this.reactRenderer.render("/note/login", Map.of());
+	}
+
 	@GetMapping(path = { "/tags/*/entries", "/categories/*/entries", "/note/**", "/notes/**", "/info" })
-	public Resource noSsr() {
-		return new ClassPathResource("META-INF/resources/index.html");
+	public String noSsr() {
+		return this.reactRenderer.render("/", Map.of());
 	}
 
 }
