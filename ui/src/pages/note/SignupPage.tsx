@@ -36,9 +36,12 @@ const SignupPage: React.FC = () => {
                 }
             });
             setMessage({
-                status: 'info',
+                status: 'success',
                 text: <>{response.message}</>
             });
+            setEmail('');
+            setPassword('');
+            setConfirmPassword('');
         } catch (e) {
             setMessage({
                 status: 'error',

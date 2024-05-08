@@ -37,6 +37,8 @@ const PasswordResetPage: React.FC = () => {
                     受信までに時間がかかる場合があります。届いていない場合は、お手数ですが迷惑メールボックスを確認して下さい。<br/>
                     <Link to={`/note/login`}>こちら</Link>からログインしてください。</>
             });
+            setNewPassword('');
+            setConfirmPassword('');
         } catch (e) {
             setMessage({
                 status: 'error',
