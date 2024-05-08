@@ -1,12 +1,12 @@
 import React, {ChangeEvent, FormEvent, useState} from 'react';
 import {Link} from 'react-router-dom';
-import {ApiResult} from '../clients/note/core/ApiResult.ts';
-import {Button} from "../styled/Button.tsx";
-import {Input} from "../styled/Input.tsx";
-import {Label} from "../styled/Label.tsx";
-import {Form} from "../styled/Form.tsx";
-import {ReaderService} from "../clients/note";
-import Message, {MessageProps} from "../components/Message.tsx";
+import {ApiResult} from '../../clients/note/core/ApiResult.ts';
+import {Button} from "../../styled/Button.tsx";
+import {Input} from "../../styled/Input.tsx";
+import {Label} from "../../styled/Label.tsx";
+import {Form} from "../../styled/Form.tsx";
+import {ReaderService} from "../../clients/note";
+import Message, {MessageProps} from "../../components/Message.tsx";
 
 const SignupPage: React.FC = () => {
     const [message, setMessage] = useState<MessageProps>({status: 'info', text: null});

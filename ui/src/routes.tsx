@@ -1,19 +1,19 @@
 import {RouteObject} from "react-router-dom";
-import EntryPage, {EntryProps} from "./entry/EntryPage.tsx";
-import EntriesPage, {EntriesProps} from "./entry/EntriesPage.tsx";
+import EntryPage, {EntryProps} from "./pages/entry/EntryPage.tsx";
+import EntriesPage, {EntriesProps} from "./pages/entry/EntriesPage.tsx";
 import Layout from "./components/Layout.tsx";
-import TagsPage, {TagsProps} from "./entry/TagsPage.tsx";
-import CategoriesPage, {CategoriesProps} from "./entry/CategoriesPage.tsx";
+import TagsPage, {TagsProps} from "./pages/entry/TagsPage.tsx";
+import CategoriesPage, {CategoriesProps} from "./pages/entry/CategoriesPage.tsx";
 import en from 'javascript-time-ago/locale/en'
 import TimeAgo from "javascript-time-ago";
-import AboutMePage from "./components/AboutMePage.tsx";
-import Error404Page from "./components/Error404Page.tsx";
+import AboutMePage from "./pages/etc/AboutMePage.tsx";
+import Error404Page from "./pages/etc/Error404Page.tsx";
 import InfoPage from "./components/InfoPage.tsx";
-import LoginPage from "./note/LoginPage.tsx";
-import NotesPage from "./note/NotesPage.tsx";
-import NotePage from "./note/NotePage.tsx";
-import SubscribePage from "./note/SubscribePage.tsx";
-import SignupPage from "./note/SignupPage.tsx";
+import LoginPage from "./pages/note/LoginPage.tsx";
+import NotesPage from "./pages/note/NotesPage.tsx";
+import NotePage from "./pages/note/NotePage.tsx";
+import SubscribePage from "./pages/note/SubscribePage.tsx";
+import SignupPage from "./pages/note/SignupPage.tsx";
 
 TimeAgo.addDefaultLocale(en);
 export default function routes(initData: object): RouteObject[] {

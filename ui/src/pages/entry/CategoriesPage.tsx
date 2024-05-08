@@ -1,8 +1,8 @@
 import React from 'react'
-import {Category as CategoryModel, CategoryService} from "../clients/entry";
+import {Category as CategoryModel, CategoryService} from "../../clients/entry";
 import useSWR, {Fetcher} from 'swr';
-import Loading from "../components/Loading.tsx";
-import Category from "../components/Category.tsx";
+import Loading from "../../components/Loading.tsx";
+import Category from "../../components/Category.tsx";
 
 export interface CategoriesProps {
     preLoadedCategories?: CategoryModel[][];

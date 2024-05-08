@@ -1,7 +1,7 @@
 import React from 'react';
 import useSWR, {Fetcher} from "swr";
-import {NoteService, NoteSummary} from "../clients/note";
-import Loading from "../components/Loading.tsx";
+import {NoteService, NoteSummary} from "../../clients/note";
+import Loading from "../../components/Loading.tsx";
 import {Link, useNavigate} from "react-router-dom";
 import styled from "styled-components";
 import ReactTimeAgo from "react-time-ago";

@@ -1,8 +1,8 @@
 import React from 'react'
 import {Link} from "react-router-dom";
-import {TagAndCount, TagService} from "../clients/entry";
+import {TagAndCount, TagService} from "../../clients/entry";
 import useSWR, {Fetcher} from 'swr';
-import Loading from "../components/Loading.tsx";
+import Loading from "../../components/Loading.tsx";
 
 export interface TagsProps {
     preLoadedTags?: TagAndCount[];

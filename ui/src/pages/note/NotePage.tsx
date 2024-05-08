@@ -1,14 +1,14 @@
 import React, {useEffect} from "react";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import useSWR, {Fetcher} from 'swr';
-import Loading from "../components/Loading.tsx";
+import Loading from "../../components/Loading.tsx";
 import ScrollToTop from "react-scroll-to-top";
-import {addCopyButton} from '../utils/copy';
-import marked from '../utils/marked.ts'
+import {addCopyButton} from '../../utils/copy.ts';
+import marked from '../../utils/marked.ts'
 import 'highlight.js/styles/default.min.css';
-import {Title} from "../styled/Title.tsx";
-import {Meta} from "../styled/Meta.tsx";
-import {ApiError, NoteDetails, NoteService} from "../clients/note";
+import {Title} from "../../styled/Title.tsx";
+import {Meta} from "../../styled/Meta.tsx";
+import {ApiError, NoteDetails, NoteService} from "../../clients/note";
 
 const NotePage: React.FC = () => {
     const navigate = useNavigate();

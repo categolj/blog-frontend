@@ -1,16 +1,16 @@
 import React, {useEffect} from "react";
 import {Link, useParams} from "react-router-dom";
 import useSWR, {Fetcher} from 'swr';
-import {Entry, EntryService} from "../clients/entry";
-import Loading from "../components/Loading.tsx";
+import {Entry, EntryService} from "../../clients/entry";
+import Loading from "../../components/Loading.tsx";
 import ScrollToTop from "react-scroll-to-top";
-import {addCopyButton} from '../utils/copy.ts';
-import marked from '../utils/marked.ts'
+import {addCopyButton} from '../../utils/copy.ts';
+import marked from '../../utils/marked.ts'
 import 'highlight.js/styles/default.min.css';
-import Category from "../components/Category.tsx";
-import {Title} from "../styled/Title.tsx";
-import {Meta} from "../styled/Meta.tsx";
-import {Tags} from "../styled/Tags.tsx";
+import Category from "../../components/Category.tsx";
+import {Title} from "../../styled/Title.tsx";
+import {Meta} from "../../styled/Meta.tsx";
+import {Tags} from "../../styled/Tags.tsx";
 
 export interface EntryProps {
     preLoadedEntry?: Entry;

@@ -1,11 +1,11 @@
 import React from 'react'
-import {CursorPageEntryInstant, Entry, EntryService} from "../clients/entry";
+import {CursorPageEntryInstant, Entry, EntryService} from "../../clients/entry";
 import {Link, useParams, useSearchParams} from "react-router-dom";
 import {Fetcher} from 'swr';
 import useSWRInfinite from "swr/infinite";
-import Loading from "../components/Loading.tsx";
-import Category from "../components/Category.tsx";
-import LoadMore from "../components/LoadMore.tsx";
+import Loading from "../../components/Loading.tsx";
+import Category from "../../components/Category.tsx";
+import LoadMore from "../../components/LoadMore.tsx";
 import ReactTimeAgo from "react-time-ago";
 import {styled} from "styled-components";
 
