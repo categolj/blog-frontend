@@ -2,6 +2,7 @@ package am.ik.blog.ssr;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 import am.ik.blog.entry.EntryClient;
 import am.ik.blog.entry.EntryRequest;
@@ -77,8 +78,12 @@ public class SsrController {
 		return this.reactRenderer.render("/note/signup", Map.of());
 	}
 
-	@GetMapping(path = { "/tags/*/entries", "/categories/*/entries", "/notes/**", "/note/readers/*/activations/*",
-			"/info" })
+	@GetMapping(path = { "/note/password_reset/{resetId}" })
+	public String notePasswordReset(@PathVariable UUID resetId) {
+		return this.reactRenderer.render("/note/password_reset/" + resetId, Map.of());
+	}
+
+	@GetMapping(path = { "/tags/*/entries", "/categories/*/entries", "/notes/**", "/note/**", "/info" })
 	public String noSsr() {
 		return this.reactRenderer.render("/", Map.of());
 	}

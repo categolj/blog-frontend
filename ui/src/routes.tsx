@@ -15,6 +15,7 @@ import NotePage from "./pages/note/NotePage.tsx";
 import SubscribePage from "./pages/note/SubscribePage.tsx";
 import SignupPage from "./pages/note/SignupPage.tsx";
 import ActivationPage from "./pages/note/ActivationPage.tsx";
+import PasswordResetPage from "./pages/note/PasswordResetPage.tsx";
 
 TimeAgo.addDefaultLocale(en);
 export default function routes(initData: object): RouteObject[] {
@@ -54,6 +55,9 @@ export default function routes(initData: object): RouteObject[] {
                 },
                 {
                     path: "/note/readers/:readerId/activations/:activationLinkId", element: <ActivationPage/>
+                },
+                {
+                    path: "/note/password_reset/:resetId", element: <PasswordResetPage/>
                 },
                 {
                     path: "/notes", element: <NotesPage/>

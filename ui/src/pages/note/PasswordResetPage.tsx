@@ -1,0 +1,84 @@
+import React, {ChangeEvent, FormEvent, useState} from 'react';
+import {ApiResult} from '../../clients/note/core/ApiResult.ts';
+import {Button} from "../../styled/Button.tsx";
+import {Input} from "../../styled/Input.tsx";
+import {Label} from "../../styled/Label.tsx";
+import {Form} from "../../styled/Form.tsx";
+import {PasswordResetService} from "../../clients/note";
+import Message, {MessageProps} from "../../components/Message.tsx";
+import {Link, useParams} from "react-router-dom";
+
+const PasswordResetPage: React.FC = () => {
+    const {resetId} = useParams();
+
+    const [message, setMessage] = useState<MessageProps>({status: 'info', text: null});
+    const [freeze, setFreeze] = useState(false);
+    const [newPassword, setNewPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const {name, value} = e.target;
+        if (name === 'password') {
+            setNewPassword(value);
+        } else if (name == 'confirmPassword') {
+            setConfirmPassword(value);
+        }
+    };
+
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        try {
+            await PasswordResetService.reset({requestBody: {newPassword, resetId}});
+            setMessage({
+                status: 'success',
+                text: <>パスワードがリセットされました。<br/>
+                    <code>noreply@sendgrid.net</code>から<code>【はじめるSpring Boot
+                        3】パスワードリセットリンク通知</code>という件名のメールです。<br/>
+                    受信までに時間がかかる場合があります。届いていない場合は、お手数ですが迷惑メールボックスを確認して下さい。<br/>
+                    <Link to={`/note/login`}>こちら</Link>からログインしてください。</>
+            });
+        } catch (e) {
+            setMessage({
+                status: 'error',
+                text: (e as ApiResult).body || (e as ApiResult).statusText
+            });
+        }
+    }
+
+    return <>
+        <h2>Password Reset</h2>
+        <Message {...message} />
+        <Form onSubmit={async event => {
+            setFreeze(true);
+            await handleSubmit(event);
+            setFreeze(false);
+        }}>
+            <Label htmlFor='password'>Password</Label>
+            <Input
+                type='password'
+                name='password'
+                id='password'
+                autoComplete='new-password'
+                value={newPassword}
+                onChange={handleInputChange}
+                disabled={freeze}
+                required={true}
+            />
+            <Label htmlFor='confirmPassword'>Password (confirm)</Label>
+            <Input
+                type='password'
+                name='confirmPassword'
+                id='confirmPassword'
+                autoComplete='new-password'
+                value={confirmPassword}
+                onChange={handleInputChange}
+                disabled={freeze}
+                required={true}
+            />
+            <Button type='submit'
+                    disabled={freeze}>Password Reset</Button>
+        </Form>
+    </>;
+};
+
+export default PasswordResetPage;
