@@ -1,6 +1,7 @@
 import React from "react";
 import {Link, useParams} from "react-router-dom";
-import useSWR, {Fetcher} from 'swr';
+import {Fetcher} from 'swr';
+import useSWRImmutable from 'swr/immutable';
 import Loading from "../../components/Loading.tsx";
 import 'highlight.js/styles/default.min.css';
 import {ApiError, NoteId, NoteService, SubscribeOutput} from "../../clients/note";
@@ -9,7 +10,7 @@ import Message, {MessageProps} from "../../components/Message.tsx";
 const SubscribePage: React.FC = () => {
     const {noteId} = useParams();
     const fetcher: Fetcher<SubscribeOutput, string> = (noteId) => NoteService.subscribe({noteId: noteId as NoteId});
-    const {data, isLoading, error} = useSWR<SubscribeOutput, ApiError>(noteId, fetcher);
+    const {data, isLoading, error} = useSWRImmutable<SubscribeOutput, ApiError>(noteId, fetcher);
     let message = {
         status: 'info',
         text: <></>
