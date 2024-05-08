@@ -11,6 +11,7 @@ import Category from "../../components/Category.tsx";
 import {Title} from "../../styled/Title.tsx";
 import {Meta} from "../../styled/Meta.tsx";
 import {Tags} from "../../styled/Tags.tsx";
+import {Helmet} from 'react-helmet-async';
 
 export interface EntryProps {
     preLoadedEntry?: Entry;
@@ -31,7 +32,16 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry}) => {
         .map<React.ReactNode>(t => <Link key={t.name}
                                          to={`/tags/${t.name}/entries`}>{t.name}</Link>)
         .reduce((prev, curr) => [prev, ' | ', curr]) : '';
+    const description = entry.content.substring(0, 200).replace(/[\n\r]/g, '') + '...';
     return <>
+        <Helmet prioritizeSeoTags>
+            <title>{entry.frontMatter.title} - IK.AM</title>
+            <meta property='og:title' content={entry.frontMatter.title}/>
+            <meta property='og:url' content={`https://ik.am/entries/${entry.entryId}`}/>
+            <meta property='og:description' content={description}/>
+            <meta name='description' content={description}/>
+            <link rel='canonical' href={`https://ik.am/entries/${entry.entryId}`}/>
+        </Helmet>
         <p id="entry-categories"><Category categories={entry.frontMatter.categories}/></p>
         <Title id="entry-title"><Link to={`/entries/${entry.entryId}`}>{entry.frontMatter.title}</Link></Title>
         <Meta id="entry-meta">

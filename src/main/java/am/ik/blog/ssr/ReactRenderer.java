@@ -113,14 +113,20 @@ public class ReactRenderer implements AutoCloseable {
 	public String render(String url, Map<String, Object> input) {
 		try {
 			String s = this.objectMapper.writeValueAsString(input);
-			String html = this.renderCache.lock((int) Thread.currentThread().threadId(), render -> {
+			Rendered rendered = this.renderCache.lock((int) Thread.currentThread().threadId(), render -> {
 				Value executed = render.execute(url, s);
-				Value member = executed.getMember("html");
-				return member == null ? "" : member.asString();
+				Value html = executed.getMember("html");
+				Value head = executed.getMember("head");
+				return new Rendered(html == null ? "" : html.asString(), head == null ? "" : head.asString());
 			});
-			return this.template.replace("<!--app-html-->", html).replace("<!--app-init-data-->", """
-					<script id="__INIT_DATA__" type="application/json">%s</script>
-					""".formatted(s));
+			String head = rendered.head();
+			boolean containsTitle = head.contains("<title");
+			return (containsTitle ? this.template.replaceFirst("<title>.+</title>", "") : this.template)
+				.replace("<!--app-html-->", rendered.html())
+				.replace("<!--app-head-->", head)
+				.replace("<!--app-init-data-->", """
+						<script id="__INIT_DATA__" type="application/json">%s</script>
+						""".formatted(s));
 		}
 		catch (IOException e) {
 			throw new UncheckedIOException(e);
@@ -229,6 +235,9 @@ public class ReactRenderer implements AutoCloseable {
 			this.cache.values().forEach(this.closer);
 		}
 
+	}
+
+	record Rendered(String html, String head) {
 	}
 
 }
