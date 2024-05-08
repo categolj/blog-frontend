@@ -19,6 +19,10 @@ const NaviList = styled.ul`
     font-weight: bold;
   }
   
+  li a {
+    text-decoration: none;
+  }
+
   li a.active {
     border-bottom: dashed;
     border-width: 1px;
