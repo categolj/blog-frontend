@@ -58,6 +58,7 @@ const LoginPage: React.FC = () => {
                 status: 'info',
                 text: <>{response.message}</>
             });
+            setEmail('');
         } catch (e) {
             setMessage((e as ApiResult).body || (e as ApiResult).statusText);
         }
