@@ -27,23 +27,27 @@ const SubscribePage: React.FC = () => {
         if (error.status === 404) {
             message = {
                 status: 'error',
-                text: <>'存在しないNoteです'</>
+                text: <>存在しないNoteです</>
             };
         }
         if (error.status === 403) {
             message = {
                 status: 'error',
-                text: <>'まだアクセスできないNoteです'</>
+                text: <>まだアクセスできないNoteです</>
             };
         }
     } else if (isLoading || !data) {
         return <Loading/>
     } else if (data.subscribed) {
-        message.text = <>既に購読状態になっています。<Link
-            to={`/notes/${data.entryId}`}>記事</Link>にアクセスしてください。</>;
+        message = {
+            status: 'info',
+            text: <>既に購読状態になっています。<Link to={`/notes/${data.entryId}`}>記事</Link>にアクセスしてください。</>
+        };
     } else {
-        message.text = <>記事が購読状態になりました。<Link
-            to={`/notes/${data.entryId}`}>記事</Link>にアクセスしてください。</>;
+        message = {
+            status: 'success',
+            text: <>記事が購読状態になりました。<Link to={`/notes/${data.entryId}`}>記事</Link>にアクセスしてください。</>
+        };
     }
     return <>
         <h2>Subscribe</h2>

@@ -14,6 +14,7 @@ import NotesPage from "./pages/note/NotesPage.tsx";
 import NotePage from "./pages/note/NotePage.tsx";
 import SubscribePage from "./pages/note/SubscribePage.tsx";
 import SignupPage from "./pages/note/SignupPage.tsx";
+import ActivationPage from "./pages/note/ActivationPage.tsx";
 
 TimeAgo.addDefaultLocale(en);
 export default function routes(initData: object): RouteObject[] {
@@ -50,6 +51,9 @@ export default function routes(initData: object): RouteObject[] {
                 },
                 {
                     path: "/note/signup", element: <SignupPage/>
+                },
+                {
+                    path: "/note/readers/:readerId/activations/:activationLinkId", element: <ActivationPage/>
                 },
                 {
                     path: "/notes", element: <NotesPage/>

@@ -2,7 +2,7 @@ import React, {ReactElement} from "react";
 
 
 export interface MessageProps {
-    status: 'info' | 'warning' | 'error',
+    status: 'success' | 'info' | 'warning' | 'error',
     text: ReactElement | null,
 }
 
