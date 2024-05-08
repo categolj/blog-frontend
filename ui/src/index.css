@@ -23,7 +23,7 @@ blockquote, div.markdown-alert {
     margin: 5px 0;
     padding: 10px;
     border-radius: 5px;
-    border: 1px black dotted;
+    border: 1px var(--fg) dotted;
     font-size: 12px;
 }
 
@@ -33,7 +33,7 @@ blockquote > p, div.markdown-alert > p {
 
 table, td, th {
     border-collapse: collapse;
-    border: 1px solid #333;
+    border: 1px solid var(--fg2);
     padding: 5px;
     overflow-x: auto;
 }
@@ -43,14 +43,14 @@ table, td, th {
 }
 
 pre {
-    border: 1px black solid;
+    border: 1px var(--fg) solid;
     border-radius: 5px;
     line-height: 1.25em;
     font-size: 12px;
     display: flex;
     position: relative;
     padding: 10px;
-    background: #fafafa;
+    background: var(--code);
     overflow-x: auto;
 }
 
@@ -68,7 +68,7 @@ ul {
 }
 
 a {
-    color: #333;
+    color: var(--fg2);
     text-decoration: underline;
     text-decoration-style: dotted;
     text-decoration-thickness: 1px;
@@ -135,8 +135,8 @@ h6:before {
     /* basic styles */
     padding: 2px 7px;
     border-radius: 5px;
-    background: #444;
-    color: #fff;
+    background: var(--fg2);
+    color: var(--bg);
     text-align: center;
 
     opacity: 0; /* hide by default */
@@ -162,7 +162,7 @@ h6:before {
     /* the arrow */
     border-style: solid;
     border-width: 2px 2px 5px 8px;
-    border-color: transparent transparent transparent #444;
+    border-color: transparent transparent transparent var(--fg2);
 
     opacity: 0;
     transition: opacity .3s;

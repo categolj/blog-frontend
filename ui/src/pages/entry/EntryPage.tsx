@@ -8,7 +8,7 @@ import {addCopyButton} from '../../utils/copy.ts';
 import marked from '../../utils/marked.ts'
 import 'highlight.js/styles/default.min.css';
 import Category from "../../components/Category.tsx";
-import {Title} from "../../styled/Title.tsx";
+import {Title2} from "../../styled/Title2.tsx";
 import {Meta} from "../../styled/Meta.tsx";
 import {Tags} from "../../styled/Tags.tsx";
 import {Helmet} from 'react-helmet-async';
@@ -44,7 +44,7 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry}) => {
             <link rel='canonical' href={`https://ik.am/entries/${entry.entryId}`}/>
         </Helmet>
         <p id="entry-categories"><Category categories={entry.frontMatter.categories}/></p>
-        <Title id="entry-title"><Link to={`/entries/${entry.entryId}`}>{entry.frontMatter.title}</Link></Title>
+        <Title2 id="entry-title"><Link to={`/entries/${entry.entryId}`}>{entry.frontMatter.title}</Link></Title2>
         <Meta id="entry-meta">
             Created on <span
             title={entry.created.date}>{entry.created.date ? new Date(entry.created.date).toDateString() : 'N/A'}</span> •

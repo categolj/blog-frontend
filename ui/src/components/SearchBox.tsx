@@ -1,16 +1,6 @@
 import {FormEvent, useState} from 'react';
 import {useNavigate} from "react-router-dom";
-import {styled} from "styled-components";
-
-const SearchInput = styled.input`
-  font-size: 1em;
-  border: 1px solid black;
-  border-radius: .375rem;
-  padding: .25rem .5rem;
-  @media (max-width: 800px) {
-    width: 100px;
-  }
-`;
+import {SearchInput} from "../styled/SearchInput.tsx";
 
 const SearchBox = () => {
     const navigate = useNavigate();

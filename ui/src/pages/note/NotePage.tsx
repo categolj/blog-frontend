@@ -7,7 +7,7 @@ import ScrollToTop from "react-scroll-to-top";
 import {addCopyButton} from '../../utils/copy.ts';
 import marked from '../../utils/marked.ts'
 import 'highlight.js/styles/default.min.css';
-import {Title} from "../../styled/Title.tsx";
+import {Title2} from "../../styled/Title2.tsx";
 import {Meta} from "../../styled/Meta.tsx";
 import {ApiError, NoteDetails, NoteService} from "../../clients/note";
 import Message from "../../components/Message.tsx";
@@ -32,7 +32,7 @@ const NotePage: React.FC = () => {
     }
     const contentHtml = marked.parse(data.content, {async: false, gfm: true}) as string;
     return <>
-        <Title id="entry-title"><Link to={`/entries/${data.entryId}`}>{data.frontMatter.title}</Link></Title>
+        <Title2 id="entry-title"><Link to={`/entries/${data.entryId}`}>{data.frontMatter.title}</Link></Title2>
         <Meta id="entry-meta">
             Created on <span
             title={data.created && data.created.date}>{data.created && data.created.date ? new Date(data.created.date).toDateString() : 'N/A'}</span> •

@@ -7,24 +7,15 @@ import Loading from "../../components/Loading.tsx";
 import Category from "../../components/Category.tsx";
 import LoadMore from "../../components/LoadMore.tsx";
 import ReactTimeAgo from "react-time-ago";
-import {styled} from "styled-components";
 import {Helmet} from "react-helmet-async";
+import {Tag} from "../../styled/Tag.tsx";
+import {Query} from "../../styled/Query.tsx";
+import {LastUpdated} from "../../styled/LastUpdated.tsx";
 
 export interface EntriesProps {
     preLoadedEntries?: CursorPageEntryInstant;
 }
 
-const Tag = styled.p`
-  color: #031b4e99;
-`
-const Query = styled.p`
-  color: #031b4e99;
-  font-size: small;
-`
-const LastUpdated = styled.span`
-  color: #031b4e99;
-  font-size: smaller;
-`
 const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries}) => {
     const {categories, tag} = useParams();
     const [searchParams] = useSearchParams();
