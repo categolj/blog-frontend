@@ -10,6 +10,7 @@ import am.ik.blog.entry.EntryRequestBuilder;
 import am.ik.blog.entry.api.CategoryApi;
 import am.ik.blog.entry.api.TagApi;
 
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,7 +41,9 @@ public class SsrController {
 	@GetMapping(path = "/entries")
 	public String entries(EntryRequest request) {
 		var entries = this.entryClient.getEntries(request).getBody();
-		return this.reactRenderer.render("/", Map.of("preLoadedEntries", Objects.requireNonNull(entries)));
+		return this.reactRenderer.render(
+				"/entries" + ((StringUtils.hasText(request.query()) ? "?query=" + request.query() : "")),
+				Map.of("preLoadedEntries", Objects.requireNonNull(entries)));
 	}
 
 	@GetMapping(path = "/entries/{entryId}")
