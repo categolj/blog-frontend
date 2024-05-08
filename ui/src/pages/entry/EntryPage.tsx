@@ -32,14 +32,15 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry}) => {
         .map<React.ReactNode>(t => <Link key={t.name}
                                          to={`/tags/${t.name}/entries`}>{t.name}</Link>)
         .reduce((prev, curr) => [prev, ' | ', curr]) : '';
-    const description = entry.content.substring(0, 200).replace(/[\n\r]/g, '') + '...';
+    const metaTitle = `${entry.frontMatter.title} - IK.AM`;
+    const metaDescription = entry.content.substring(0, 200).replace(/[\n\r]/g, '') + '...';
     return <>
         <Helmet prioritizeSeoTags>
-            <title>{entry.frontMatter.title} - IK.AM</title>
-            <meta property='og:title' content={entry.frontMatter.title}/>
+            <title>{metaTitle}</title>
+            <meta property='og:title' content={metaTitle}/>
             <meta property='og:url' content={`https://ik.am/entries/${entry.entryId}`}/>
-            <meta property='og:description' content={description}/>
-            <meta name='description' content={description}/>
+            <meta property='og:description' content={metaDescription}/>
+            <meta name='description' content={metaDescription}/>
             <link rel='canonical' href={`https://ik.am/entries/${entry.entryId}`}/>
         </Helmet>
         <p id="entry-categories"><Category categories={entry.frontMatter.categories}/></p>
