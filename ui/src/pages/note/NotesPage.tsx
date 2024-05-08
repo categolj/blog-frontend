@@ -1,5 +1,5 @@
 import React from 'react';
-import {Fetcher} from "swr";
+import useSWR, {Fetcher} from "swr";
 import useSWRImmutable from "swr/immutable";
 import {NoteService, NoteSummary} from "../../clients/note";
 import Loading from "../../components/Loading.tsx";
@@ -18,9 +18,9 @@ interface JWT {
 const NotesPage: React.FC = () => {
     const navigate = useNavigate();
     const notesFetcher: Fetcher<NoteSummary[], string> = () => NoteService.getNotes();
-    const meFetcher: Fetcher<JWT, string> = () => fetch('/api/me').then(res => res.json());
+    const meFetcher: Fetcher<JWT, string> = (url) => fetch(url).then(res => res.json());
     const {data, isLoading, error} = useSWRImmutable<NoteSummary[]>('/notes', notesFetcher);
-    const {data: me} = useSWRImmutable<JWT>('/me', meFetcher);
+    const {data: me} = useSWR<JWT>('/api/me', meFetcher);
     if (!isLoading && error) {
         navigate('/note/login');
         return <></>;
