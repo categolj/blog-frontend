@@ -33,7 +33,7 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry}) => {
                                          to={`/tags/${t.name}/entries`}>{t.name}</Link>)
         .reduce((prev, curr) => [prev, ' | ', curr]) : '';
     const metaTitle = `${entry.frontMatter.title} - IK.AM`;
-    const metaDescription = entry.content.substring(0, 200).replace(/[\n\r]/g, '') + '...';
+    const metaDescription = entry.content.substring(0, 150).replace(/[\n\r]/g, '') + '...';
     return <>
         <Helmet prioritizeSeoTags>
             <title>{metaTitle}</title>
