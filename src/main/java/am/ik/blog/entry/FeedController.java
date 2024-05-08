@@ -30,7 +30,7 @@ public class FeedController {
 		this.entryClient = entryClient;
 	}
 
-	@GetMapping(path = { "/feed", "/rss" }, produces = MediaType.APPLICATION_RSS_XML_VALUE)
+	@GetMapping(path = { "/feed", "/rss" }, produces = MediaType.APPLICATION_XML_VALUE)
 	public String feed(UriComponentsBuilder builder) {
 		String baseUrl = builder.path("").build().toString();
 		ResponseEntity<CursorPageEntryInstant> response = this.entryClient.getEntries(entryRequest().build());
