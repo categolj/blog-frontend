@@ -4,6 +4,7 @@ import useSWR, {Fetcher} from 'swr';
 import Loading from "../components/Loading.tsx";
 import 'highlight.js/styles/default.min.css';
 import {ApiError, NoteId, NoteService, SubscribeOutput} from "../clients/note";
+import Message, {MessageProps} from "../components/Message.tsx";
 
 const SubscribePage: React.FC = () => {
     const {noteId} = useParams();
@@ -46,9 +47,7 @@ const SubscribePage: React.FC = () => {
     }
     return <>
         <h2>Subscribe</h2>
-        <p>
-            <strong>{message.status}</strong>: {message.text}
-        </p>
+        <Message {...message as MessageProps} />
     </>;
 };
 

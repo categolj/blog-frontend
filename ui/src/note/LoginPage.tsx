@@ -1,33 +1,16 @@
 import React, {ChangeEvent, FormEvent, useState} from 'react';
-import styled from 'styled-components';
 import {Link, useNavigate} from 'react-router-dom';
 import {PasswordResetService} from '../clients/note';
 import {ApiResult} from '../clients/note/core/ApiResult.ts';
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  width: 600px;
-  max-width: 100%;
-  margin-left: 0;
-`;
-
-const Label = styled.label`
-  margin-bottom: 8px;
-`;
-
-const Input = styled.input`
-  margin-bottom: 16px;
-  padding: 8px;
-`;
-
-const Button = styled.button`
-  padding: 8px;
-`;
+import {Button} from "../styled/Button.tsx";
+import {Input} from "../styled/Input.tsx";
+import {Label} from "../styled/Label.tsx";
+import {Form} from "../styled/Form.tsx";
+import Message, {MessageProps} from "../components/Message.tsx";
 
 const LoginPage: React.FC = () => {
     const navigate = useNavigate();
-    const [message, setMessage] = useState<string>('');
+    const [message, setMessage] = useState<MessageProps>({status: 'info', text: null});
     const [freeze, setFreeze] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -57,7 +40,10 @@ const LoginPage: React.FC = () => {
                 return <></>;
             }
             const error = await response.json();
-            setMessage(JSON.stringify(error, null, 2));
+            setMessage({
+                status: 'error',
+                text: <pre><code>{JSON.stringify(error, null, 2)}</code></pre>
+            });
         } catch (e) {
             setMessage((e as ApiResult).body || (e as ApiResult).statusText);
         }
@@ -68,14 +54,17 @@ const LoginPage: React.FC = () => {
             const response = await PasswordResetService.sendLink({
                 requestBody: {email}
             });
-            setMessage(JSON.stringify(response, null, 2));
+            setMessage({
+                status: 'info',
+                text: <>{response.message}</>
+            });
         } catch (e) {
             setMessage((e as ApiResult).body || (e as ApiResult).statusText);
         }
     }
     return <>
         <h2>Login</h2>
-        {message && <pre><code>{message}</code></pre>}
+        <Message {...message}/>
         <p>
             当システムに登録済みのEmailアドレスをパスワード入力し、ログインして下さい。<br/>
             <strong>note.comのアカウントではありません</strong>。&quot;はじめるSpring Boot3&quot;を読むには、<a

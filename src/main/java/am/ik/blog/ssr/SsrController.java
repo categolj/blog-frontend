@@ -72,7 +72,12 @@ public class SsrController {
 		return this.reactRenderer.render("/note/login", Map.of());
 	}
 
-	@GetMapping(path = { "/tags/*/entries", "/categories/*/entries", "/note/**", "/notes/**", "/info" })
+	@GetMapping(path = { "/note/signup" })
+	public String noteSignup() {
+		return this.reactRenderer.render("/note/signup", Map.of());
+	}
+
+	@GetMapping(path = { "/tags/*/entries", "/categories/*/entries", "/notes/**", "/info" })
 	public String noSsr() {
 		return this.reactRenderer.render("/", Map.of());
 	}
