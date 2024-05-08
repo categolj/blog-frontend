@@ -21,6 +21,7 @@ const NaviList = styled.ul`
   
   li a.active {
     border-bottom: dashed;
+    border-width: 1px;
   }
 `;
 
