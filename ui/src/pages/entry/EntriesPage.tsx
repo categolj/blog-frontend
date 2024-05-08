@@ -8,6 +8,7 @@ import Category from "../../components/Category.tsx";
 import LoadMore from "../../components/LoadMore.tsx";
 import ReactTimeAgo from "react-time-ago";
 import {styled} from "styled-components";
+import {Helmet} from "react-helmet-async";
 
 export interface EntriesProps {
     preLoadedEntries?: CursorPageEntryInstant;
@@ -52,6 +53,13 @@ const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries}) => {
         return <Loading/>
     }
     return (<>
+        <Helmet prioritizeSeoTags>
+            <meta property='og:title' content='IK.AM'/>
+            <meta property='og:url' content='https://ik.am'/>
+            <meta property='og:description' content="@making's tech note"/>
+            <meta name='description' content="@making's tech note"/>
+            <link rel='canonical' href='https://ik.am'/>
+        </Helmet>
         <div id="entries">
             {categories && <p><Category categories={categories.split(',').map(c => ({name: c}))}/></p>}
             {tag && <Tag>🏷️ {tag}</Tag>}
