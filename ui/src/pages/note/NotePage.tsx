@@ -1,6 +1,7 @@
 import React, {useEffect} from "react";
 import {Link, useNavigate, useParams} from "react-router-dom";
-import useSWR, {Fetcher} from 'swr';
+import {Fetcher} from 'swr';
+import useSWRImmutable from 'swr/immutable';
 import Loading from "../../components/Loading.tsx";
 import ScrollToTop from "react-scroll-to-top";
 import {addCopyButton} from '../../utils/copy.ts';
@@ -15,7 +16,7 @@ const NotePage: React.FC = () => {
     const navigate = useNavigate();
     const {entryId} = useParams();
     const fetcher: Fetcher<NoteDetails, string> = (entryId) => NoteService.getNoteByEntryId({entryId: Number(entryId)});
-    const {data, isLoading, error} = useSWR<NoteDetails, ApiError>(entryId, fetcher);
+    const {data, isLoading, error} = useSWRImmutable<NoteDetails, ApiError>(entryId, fetcher);
     useEffect(addCopyButton, [data]);
     if (error) {
         if (error.status === 401) {
