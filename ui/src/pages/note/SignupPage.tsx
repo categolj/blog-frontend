@@ -1,11 +1,10 @@
 import React, {ChangeEvent, FormEvent, useState} from 'react';
 import {Link} from 'react-router-dom';
-import {ApiResult} from '../../clients/note/core/ApiResult.ts';
 import {Button} from "../../styled/Button.tsx";
 import {Input} from "../../styled/Input.tsx";
 import {Label} from "../../styled/Label.tsx";
 import {Form} from "../../styled/Form.tsx";
-import {ReaderService} from "../../clients/note";
+import {ApiError, ReaderService} from "../../clients/note";
 import Message, {MessageProps} from "../../components/Message.tsx";
 
 const SignupPage: React.FC = () => {
@@ -28,6 +27,13 @@ const SignupPage: React.FC = () => {
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        if (password !== confirmPassword) {
+            setMessage({
+                status: 'error',
+                text: <><code>password</code> and <code>confirmPassword</code> must be same</>,
+            });
+            return;
+        }
         try {
             const response = await ReaderService.createReader({
                 requestBody: {
@@ -43,9 +49,10 @@ const SignupPage: React.FC = () => {
             setPassword('');
             setConfirmPassword('');
         } catch (e) {
+            const error = e as ApiError;
             setMessage({
                 status: 'error',
-                text: (e as ApiResult).body || (e as ApiResult).statusText
+                text: <>{error.body || error.statusText}</>
             });
         }
     }

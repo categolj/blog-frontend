@@ -26,6 +26,13 @@ const PasswordResetPage: React.FC = () => {
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        if (newPassword !== confirmPassword) {
+            setMessage({
+                status: 'error',
+                text: <><code>password</code> and <code>confirmPassword</code> must be same</>,
+            });
+            return;
+        }
         try {
             await PasswordResetService.reset({requestBody: {newPassword, resetId}});
             setMessage({
