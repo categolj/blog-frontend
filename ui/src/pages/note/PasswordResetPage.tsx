@@ -1,10 +1,9 @@
 import React, {ChangeEvent, FormEvent, useState} from 'react';
-import {ApiResult} from '../../clients/note/core/ApiResult.ts';
 import {Button} from "../../styled/Button.tsx";
 import {Input} from "../../styled/Input.tsx";
 import {Label} from "../../styled/Label.tsx";
 import {Form} from "../../styled/Form.tsx";
-import {PasswordResetService} from "../../clients/note";
+import {ApiError, PasswordResetService} from "../../clients/note";
 import Message, {MessageProps} from "../../components/Message.tsx";
 import {Link, useParams} from "react-router-dom";
 
@@ -40,10 +39,19 @@ const PasswordResetPage: React.FC = () => {
             setNewPassword('');
             setConfirmPassword('');
         } catch (e) {
-            setMessage({
-                status: 'error',
-                text: (e as ApiResult).body || (e as ApiResult).statusText
-            });
+            const error = e as ApiError;
+            if (error.status === 404) {
+                setMessage({
+                    status: 'error',
+                    text: <>Invalid password reset link</>
+                });
+                return;
+            } else {
+                setMessage({
+                    status: 'error',
+                    text: <>{error.body || error.statusText}</>
+                });
+            }
         }
     }
 
