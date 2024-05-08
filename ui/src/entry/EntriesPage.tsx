@@ -53,7 +53,7 @@ const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries}) => {
     }
     return (<>
         <div id="entries">
-            {categories && <Category categories={categories.split(',').map(c => ({name: c}))}/>}
+            {categories && <p><Category categories={categories.split(',').map(c => ({name: c}))}/></p>}
             {tag && <Tag>🏷️ {tag}</Tag>}
             {query && <Query>Query: {query}</Query>}
             <h2>Entries</h2>
