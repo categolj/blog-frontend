@@ -30,7 +30,7 @@ const ActivationPage: React.FC = () => {
                 status: 'error',
                 text: <>
                     Activation failed!<br/>
-                    <pre><code>{JSON.stringify(error.body, null, 2)}</code></pre>
+                    {error.body || error.statusText}
                 </>
             };
         }

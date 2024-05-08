@@ -9,6 +9,7 @@ import 'highlight.js/styles/default.min.css';
 import {Title} from "../../styled/Title.tsx";
 import {Meta} from "../../styled/Meta.tsx";
 import {ApiError, NoteDetails, NoteService} from "../../clients/note";
+import Message from "../../components/Message.tsx";
 
 const NotePage: React.FC = () => {
     const navigate = useNavigate();
@@ -16,12 +17,17 @@ const NotePage: React.FC = () => {
     const fetcher: Fetcher<NoteDetails, string> = (entryId) => NoteService.getNoteByEntryId({entryId: Number(entryId)});
     const {data, isLoading, error} = useSWR<NoteDetails, ApiError>(entryId, fetcher);
     useEffect(addCopyButton, [data]);
-    if (isLoading || !data) {
+    if (error) {
+        if (error.status === 401) {
+            navigate('/note/login');
+            return <></>;
+        } else if (error.status === 403) {
+            return <Message status={'error'} text={<>未購読です。</>}/>
+        } else {
+            return <Message status={'error'} text={<>{error.body || error.statusText}</>}/>
+        }
+    } else if (isLoading || !data) {
         return <Loading/>
-    }
-    if (error && error.status === 401) {
-        navigate('/note/login');
-        return <></>;
     }
     const contentHtml = marked.parse(data.content, {async: false, gfm: true}) as string;
     return <>
