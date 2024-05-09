@@ -54,7 +54,8 @@ pre {
     display: flex;
     position: relative;
     padding: 10px;
-    background: var(--code);
+    color: var(--code-fg);
+    background: var(--code-bg);
     overflow-x: auto;
 }
 

@@ -5,7 +5,8 @@ export const GlobalStyle = createGlobalStyle`
     --fg: #000;
     --fg2: #333;
     --bg: #fff;
-    --code: #f6f5f5;
+    --code-fg: #333;
+    --code-bg: #f6f5f5;
     --meta: #031b4e99;
   }
 
@@ -13,7 +14,8 @@ export const GlobalStyle = createGlobalStyle`
     --fg: #fff;
     --fg2: #ddd;
     --bg: #000;
-    --code: #757474;
+    --code-fg: #061433;
+    --code-bg: #dbdde7;
     --meta: #ccd2ecff;
   }
 `
