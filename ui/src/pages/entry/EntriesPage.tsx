@@ -13,10 +13,10 @@ import Loading from "../../components/Loading.tsx";
 import Category from "../../components/Category.tsx";
 import LoadMore from "../../components/LoadMore.tsx";
 import ReactTimeAgo from "react-time-ago";
-import {Helmet} from "react-helmet-async";
 import {Tag} from "../../styled/Tag.tsx";
 import {Query} from "../../styled/Query.tsx";
 import {LastUpdated} from "../../styled/LastUpdated.tsx";
+import {OGP} from "../../components/OGP.tsx";
 
 export interface EntriesProps {
     preLoadedEntries?: CursorPageEntryInstant;
@@ -57,13 +57,7 @@ const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries, tenantId}) => {
     const translationLink = tenantId ? <Link to={`/entries`}>🇯🇵 Japanese</Link> :
         <Link to={`/entries/en`}>🇬🇧 English</Link>;
     return (<>
-        <Helmet prioritizeSeoTags>
-            <meta property='og:title' content='IK.AM'/>
-            <meta property='og:url' content='https://ik.am'/>
-            <meta property='og:description' content="@making's tech note"/>
-            <meta name='description' content="@making's tech note"/>
-            <link rel='canonical' href='https://ik.am'/>
-        </Helmet>
+        <OGP />
         <div id="entries">
             {categories && <p><Category categories={categories.split(',').map(c => ({name: c}))}/></p>}
             {tag && <Tag>🏷️ {tag}</Tag>}

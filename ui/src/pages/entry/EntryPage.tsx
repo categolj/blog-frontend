@@ -10,9 +10,9 @@ import Category from "../../components/Category.tsx";
 import {Title2} from "../../styled/Title2.tsx";
 import {Meta} from "../../styled/Meta.tsx";
 import {Tags} from "../../styled/Tags.tsx";
-import {Helmet} from 'react-helmet-async';
 import Message from "../../components/Message.tsx";
 import Counter from "../../components/Counter.tsx";
+import {OGP} from "../../components/OGP.tsx";
 
 export interface EntryProps {
     preLoadedEntry?: Entry;
@@ -64,19 +64,12 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch
         .map<React.ReactNode>(t => <Link key={t.name}
                                          to={`/tags/${t.name}/entries`}>{t.name}</Link>)
         .reduce((prev, curr) => [prev, ' | ', curr]) : '';
-    const metaTitle = `${entry.frontMatter.title} - IK.AM`;
     const metaDescription = entry.content.substring(0, 150).replace(/[\n\r]/g, '') + '...';
     const translationLink = tenantId ? <Link to={`/entries/${entryId}`}>🇯🇵 Japanese</Link> :
         <Link to={`/entries/${entryId}/en`}>🇬🇧 English</Link>;
     return <>
-        <Helmet prioritizeSeoTags>
-            <title>{metaTitle}</title>
-            <meta property='og:title' content={metaTitle}/>
-            <meta property='og:url' content={`https://ik.am/entries/${entry.entryId}`}/>
-            <meta property='og:description' content={metaDescription}/>
-            <meta name='description' content={metaDescription}/>
-            <link rel='canonical' href={`https://ik.am/entries/${entry.entryId}`}/>
-        </Helmet>
+        <OGP title={`${entry.frontMatter.title} - IK.AM`} url={`https://ik.am/entries/${entry.entryId}`}
+             description={metaDescription}/>
         <p id="entry-categories"><Category categories={entry.frontMatter.categories}/></p>
         <Title2 id="entry-title"><Link to={`/entries/${entry.entryId}`}>{entry.frontMatter.title}</Link></Title2>
         <Meta id="entry-meta">

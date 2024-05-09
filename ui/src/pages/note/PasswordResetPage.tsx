@@ -6,6 +6,7 @@ import {Form} from "../../styled/Form.tsx";
 import {ApiError, PasswordResetService} from "../../clients/note";
 import Message, {MessageProps} from "../../components/Message.tsx";
 import {Link, useParams} from "react-router-dom";
+import {OGP} from "../../components/OGP.tsx";
 
 const PasswordResetPage: React.FC = () => {
     const {resetId} = useParams();
@@ -63,6 +64,7 @@ const PasswordResetPage: React.FC = () => {
     }
 
     return <>
+        <OGP title={`はじめるSpring Boot 3`} url={`https://ik.am/notes`}/>
         <h2>Password Reset</h2>
         <Message {...message} />
         <Form onSubmit={async event => {

@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import {TagAndCount, TagService} from "../../clients/entry";
 import useSWR, {Fetcher} from 'swr';
 import Loading from "../../components/Loading.tsx";
+import {OGP} from "../../components/OGP.tsx";
 
 export interface TagsProps {
     preLoadedTags?: TagAndCount[];
@@ -17,6 +18,7 @@ const TagsPage: React.FC<TagsProps> = ({preLoadedTags}) => {
         return <Loading/>
     }
     return (<>
+        <OGP title={`Tags - IK.AM`} />
         <div id="tags">
             <h2>Tags</h2>
             <ul>

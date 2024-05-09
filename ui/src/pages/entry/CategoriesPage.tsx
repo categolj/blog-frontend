@@ -3,6 +3,7 @@ import {Category as CategoryModel, CategoryService} from "../../clients/entry";
 import useSWR, {Fetcher} from 'swr';
 import Loading from "../../components/Loading.tsx";
 import Category from "../../components/Category.tsx";
+import {OGP} from "../../components/OGP.tsx";
 
 export interface CategoriesProps {
     preLoadedCategories?: CategoryModel[][];
@@ -17,6 +18,7 @@ const CategoriesPage: React.FC<CategoriesProps> = ({preLoadedCategories}) => {
         return <Loading/>
     }
     return (<>
+        <OGP title={`Categories - IK.AM`} />
         <div id="categories">
             <h2>Categories</h2>
             <ul>

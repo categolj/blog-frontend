@@ -6,6 +6,7 @@ import Loading from "../../components/Loading.tsx";
 import {Link, useNavigate} from "react-router-dom";
 import styled from "styled-components";
 import ReactTimeAgo from "react-time-ago";
+import {OGP} from "../../components/OGP.tsx";
 
 const Button = styled.button`
   padding: 8px;
@@ -36,6 +37,7 @@ const NotesPage: React.FC = () => {
         return <></>;
     }
     return <>
+        <OGP title={`はじめるSpring Boot 3`} url={`https://ik.am/notes`}/>
         <h2>Notes</h2>
         <p>
             ようこそ {me && me.preferred_username} さん <Button onClick={handleLogout}>Logout</Button>

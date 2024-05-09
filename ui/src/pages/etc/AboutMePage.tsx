@@ -1,8 +1,10 @@
 import React from "react";
+import {OGP} from "../../components/OGP.tsx";
 
 const AboutMePage: React.FC = () => {
 
     return <>
+        <OGP title={`About Me - IK.AM`} />
         <h2>About Me</h2>
         <img src={"https://avatars.githubusercontent.com/u/106908?s=200"}
              width={180}

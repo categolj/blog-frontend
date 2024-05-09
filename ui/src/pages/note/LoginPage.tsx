@@ -7,6 +7,7 @@ import {Input} from "../../styled/Input.tsx";
 import {Label} from "../../styled/Label.tsx";
 import {Form} from "../../styled/Form.tsx";
 import Message, {MessageProps} from "../../components/Message.tsx";
+import {OGP} from "../../components/OGP.tsx";
 
 const LoginPage: React.FC = () => {
     const navigate = useNavigate();
@@ -64,6 +65,7 @@ const LoginPage: React.FC = () => {
         }
     }
     return <>
+        <OGP title={`はじめるSpring Boot 3`} url={`https://ik.am/notes`}/>
         <h2>Login</h2>
         <Message {...message}/>
         <p>

@@ -6,6 +6,7 @@ import {Label} from "../../styled/Label.tsx";
 import {Form} from "../../styled/Form.tsx";
 import {ApiError, ReaderService} from "../../clients/note";
 import Message, {MessageProps} from "../../components/Message.tsx";
+import {OGP} from "../../components/OGP.tsx";
 
 const SignupPage: React.FC = () => {
     const [message, setMessage] = useState<MessageProps>({status: 'info', text: null});
@@ -58,6 +59,7 @@ const SignupPage: React.FC = () => {
     }
 
     return <>
+        <OGP title={`はじめるSpring Boot 3`} url={`https://ik.am/notes`}/>
         <h2>Sign up</h2>
         <Message {...message} />
         <p>
