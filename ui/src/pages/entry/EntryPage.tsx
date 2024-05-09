@@ -6,12 +6,12 @@ import Loading from "../../components/Loading.tsx";
 import ScrollToTop from "react-scroll-to-top";
 import {addCopyButton} from '../../utils/copy.ts';
 import marked from '../../utils/marked.ts'
-import 'highlight.js/styles/default.min.css';
 import Category from "../../components/Category.tsx";
 import {Title2} from "../../styled/Title2.tsx";
 import {Meta} from "../../styled/Meta.tsx";
 import {Tags} from "../../styled/Tags.tsx";
 import {Helmet} from 'react-helmet-async';
+import 'highlight.js/styles/arta.min.css';
 
 export interface EntryProps {
     preLoadedEntry?: Entry;
