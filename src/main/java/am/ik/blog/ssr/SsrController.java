@@ -48,7 +48,7 @@ public class SsrController {
 	}
 
 	@GetMapping(path = { "/entries/{entryId:[0-9]+}", "/entries/{entryId:[0-9]+}/{tenantId:[a-z]+}" })
-	public String post(@PathVariable long entryId, @Nullable @PathVariable(required = false) String tenantId) {
+	public String entry(@PathVariable long entryId, @Nullable @PathVariable(required = false) String tenantId) {
 		var entry = this.entryClient.getEntry(entryId, tenantId).getBody();
 		return this.reactRenderer.render("/entries/%d".formatted(entryId),
 				Map.of("preLoadedEntry", Objects.requireNonNull(entry)));
