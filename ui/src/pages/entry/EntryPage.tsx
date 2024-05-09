@@ -13,6 +13,7 @@ import {Tags} from "../../styled/Tags.tsx";
 import Message from "../../components/Message.tsx";
 import Counter from "../../components/Counter.tsx";
 import {OGP} from "../../components/OGP.tsx";
+import {ShareWithX} from "../../components/ShareWithX.tsx";
 
 export interface EntryProps {
     preLoadedEntry?: Entry;
@@ -66,12 +67,13 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch
         .reduce((prev, curr) => [prev, ' | ', curr]) : '';
     const metaDescription = entry.content.substring(0, 150).replace(/[\n\r]/g, '') + '...';
     const translationLink = tenantId ? <Link to={`/entries/${entryId}`}>🇯🇵 Japanese</Link> :
-        <Link to={`/entries/${entryId}/en`}>🇬🇧 English</Link>;
+        <Link to={`/entries/${entryId}/${tenantId}`}>🇬🇧 English</Link>;
+    const entryUrl = `https://ik.am/entries/${entry.entryId}${tenantId ? '/' + tenantId : ''}`
     return <>
-        <OGP title={`${entry.frontMatter.title} - IK.AM`} url={`https://ik.am/entries/${entry.entryId}`}
-             description={metaDescription}/>
+        <OGP title={`${entry.frontMatter.title} - IK.AM`} url={entryUrl} description={metaDescription}/>
         <p id="entry-categories"><Category categories={entry.frontMatter.categories}/></p>
-        <Title2 id="entry-title"><Link to={`/entries/${entry.entryId}`}>{entry.frontMatter.title}</Link></Title2>
+        <Title2 id="entry-title"><Link
+            to={`/entries/${entry.entryId}${tenantId ? '/' + tenantId : ''}`}>{entry.frontMatter.title}</Link></Title2>
         <Meta id="entry-meta">
             Created on <span
             title={entry.created.date}>{entry.created.date ? new Date(entry.created.date).toDateString() : 'N/A'}</span> •
@@ -87,6 +89,9 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch
                 href={`https://github.com/making/${repo}/blob/${branch}/content/${entry.entryId.toString().padStart(5, '0')}.md`}>the
                 entry</a>.
             </blockquote>
+            <p>
+                <ShareWithX url={entryUrl} text={entry.frontMatter.title}/>
+            </p>
         </Meta>
         <ScrollToTop smooth/>
     </>;
