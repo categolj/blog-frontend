@@ -9,7 +9,7 @@ export const LoadButton = styled.button`
   border-radius: 0.35rem;
   transition: background-color 0.3s;
   margin-top: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   width: 600px;
   max-width: 100%;
 

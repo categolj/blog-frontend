@@ -1,5 +1,11 @@
 import React from 'react'
-import {CursorPageEntryInstant, Entry, EntryService} from "../../clients/entry";
+import {
+    CursorPageEntryInstant,
+    Entry,
+    EntryService,
+    GetEntries1Data,
+    GetEntriesForTenant1Data
+} from "../../clients/entry";
 import {Link, useParams, useSearchParams} from "react-router-dom";
 import {Fetcher} from 'swr';
 import useSWRInfinite from "swr/infinite";
@@ -14,9 +20,11 @@ import {LastUpdated} from "../../styled/LastUpdated.tsx";
 
 export interface EntriesProps {
     preLoadedEntries?: CursorPageEntryInstant;
+    tenantId?: string;
 }
 
-const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries}) => {
+type FetchKey = GetEntries1Data | GetEntriesForTenant1Data;
+const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries, tenantId}) => {
     const {categories, tag} = useParams();
     const [searchParams] = useSearchParams();
     const query = searchParams.get('query');
@@ -35,14 +43,19 @@ const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries}) => {
     const getKey = (pageIndex: number, previousPageData: Entry[] | null) => {
         if (previousPageData && !previousPageData.length) return null;
         const cursor = (previousPageData && pageIndex !== 0) ? previousPageData[previousPageData.length - 1].updated.date : '';
-        return {cursor, ...request};
+        return {tenantId, cursor, ...request} as FetchKey;
     }
-    const fetcher: Fetcher<Entry[], object> = (data) => EntryService.getEntries1(data).then(entries => entries.content || []);
+    const fetcher: Fetcher<Entry[]> = (key: FetchKey) => ((key as GetEntriesForTenant1Data).tenantId ?
+        EntryService.getEntriesForTenant1(key as GetEntriesForTenant1Data) :
+        EntryService.getEntries1(key as GetEntries1Data))
+        .then(entries => entries.content || []);
     const {data, isLoading, size, setSize} = useSWRInfinite(getKey, fetcher, {revalidateFirstPage: false});
     const entries = data ? ([] as Entry[]).concat(...data) : isPreLoaded && preLoadedEntries.content;
     if (!isPreLoaded && (isLoading || !entries)) {
         return <Loading/>
     }
+    const translationLink = tenantId ? <Link to={`/entries`}>🇯🇵 Japanese</Link> :
+        <Link to={`/entries/en`}>🇬🇧 English</Link>;
     return (<>
         <Helmet prioritizeSeoTags>
             <meta property='og:title' content='IK.AM'/>
@@ -64,6 +77,8 @@ const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries}) => {
                 </li>)}
             </ul>
             <LoadMore data={data} limit={limit} size={size} setSize={setSize} isPreLoaded={isPreLoaded}/>
+            <br/>
+            {(!categories && !tag && !query) && translationLink}
         </div>
     </>)
 }
