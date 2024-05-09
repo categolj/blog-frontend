@@ -67,7 +67,7 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch
         .reduce((prev, curr) => [prev, ' | ', curr]) : '';
     const metaDescription = entry.content.substring(0, 150).replace(/[\n\r]/g, '') + '...';
     const translationLink = tenantId ? <Link to={`/entries/${entryId}`}>🇯🇵 Japanese</Link> :
-        <Link to={`/entries/${entryId}/${tenantId}`}>🇬🇧 English</Link>;
+        <Link to={`/entries/${entryId}/en`}>🇬🇧 English</Link>;
     const entryUrl = `https://ik.am/entries/${entry.entryId}${tenantId ? '/' + tenantId : ''}`
     return <>
         <OGP title={`${entry.frontMatter.title} - IK.AM`} url={entryUrl} description={metaDescription}/>
