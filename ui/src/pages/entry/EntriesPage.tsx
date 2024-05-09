@@ -72,7 +72,7 @@ const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries, tenantId}) => {
             </ul>
             <LoadMore data={data} limit={limit} size={size} setSize={setSize} isPreLoaded={isPreLoaded}/>
             <br/>
-            {(!categories && !tag && !query) && translationLink}
+            {(!isPreLoaded && !categories && !tag && !query) && translationLink}
         </div>
     </>)
 }

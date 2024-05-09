@@ -79,7 +79,7 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch
             title={entry.created.date}>{entry.created.date ? new Date(entry.created.date).toDateString() : 'N/A'}</span> •
             Last Updated on <span
             title={entry.updated.date}>{entry.updated.date ? new Date(entry.updated.date).toDateString() : 'N/A'}</span> • <Counter
-            entryId={entryId!}/> • {translationLink}
+            entryId={entryId!}/> {!isPreLoaded && <>• {translationLink}</>}
             <Tags id="entry-tags">🏷️ {tags}</Tags>
         </Meta>
         <article id="entry" dangerouslySetInnerHTML={{__html: contentHtml}}/>
