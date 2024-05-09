@@ -12,6 +12,7 @@ import {Meta} from "../../styled/Meta.tsx";
 import {Tags} from "../../styled/Tags.tsx";
 import {Helmet} from 'react-helmet-async';
 import Message from "../../components/Message.tsx";
+import Counter from "../../components/Counter.tsx";
 
 export interface EntryProps {
     preLoadedEntry?: Entry;
@@ -82,10 +83,11 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch
             Created on <span
             title={entry.created.date}>{entry.created.date ? new Date(entry.created.date).toDateString() : 'N/A'}</span> •
             Last Updated on <span
-            title={entry.updated.date}>{entry.updated.date ? new Date(entry.updated.date).toDateString() : 'N/A'}</span> • {translationLink}
+            title={entry.updated.date}>{entry.updated.date ? new Date(entry.updated.date).toDateString() : 'N/A'}</span> • <Counter
+            entryId={entryId!}/> • {translationLink}
             <Tags id="entry-tags">🏷️ {tags}</Tags>
         </Meta>
-        <div id="entry" dangerouslySetInnerHTML={{__html: contentHtml}}/>
+        <article id="entry" dangerouslySetInnerHTML={{__html: contentHtml}}/>
         <Meta>
             <blockquote>
                 Found a mistake? Update <a

@@ -38,7 +38,7 @@ const NotePage: React.FC = () => {
             Last Updated on <span
             title={data.updated.date}>{data.updated.date ? new Date(data.updated.date).toDateString() : 'N/A'}</span>
         </Meta>
-        <div id="entry" dangerouslySetInnerHTML={{__html: contentHtml}}/>
+        <article id="entry" dangerouslySetInnerHTML={{__html: contentHtml}}/>
         <ScrollToTop smooth/>
     </>;
 };
