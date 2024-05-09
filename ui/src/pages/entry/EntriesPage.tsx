@@ -71,7 +71,7 @@ const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries, tenantId}) => {
             <h2>Entries</h2>
             <ul>
                 {entries && entries.map(entry => <li key={entry.entryId}><Link
-                    to={`/entries/${entry.entryId}`}>{entry.frontMatter.title}</Link>&nbsp;
+                    to={`/entries/${entry.entryId}${tenantId ? `/${tenantId}` : ''}`}>{entry.frontMatter.title}</Link>&nbsp;
                     <LastUpdated>Last Updated {entry.updated.date ? <ReactTimeAgo date={new Date(entry.updated.date)}
                                                                                   locale="en-US"/> : 'N/A'}</LastUpdated>
                 </li>)}
