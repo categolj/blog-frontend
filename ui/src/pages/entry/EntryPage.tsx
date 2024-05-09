@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import {Link, useParams} from "react-router-dom";
 import useSWR, {Fetcher} from 'swr';
-import {Entry, EntryService} from "../../clients/entry";
+import {ApiError, Entry, EntryService} from "../../clients/entry";
 import Loading from "../../components/Loading.tsx";
 import ScrollToTop from "react-scroll-to-top";
 import {addCopyButton} from '../../utils/copy.ts';
@@ -11,19 +11,51 @@ import {Title2} from "../../styled/Title2.tsx";
 import {Meta} from "../../styled/Meta.tsx";
 import {Tags} from "../../styled/Tags.tsx";
 import {Helmet} from 'react-helmet-async';
+import Message from "../../components/Message.tsx";
 
 export interface EntryProps {
     preLoadedEntry?: Entry;
+    tenantId?: string;
+    repo: string,
+    branch: string,
 }
 
-const EntryPage: React.FC<EntryProps> = ({preLoadedEntry}) => {
+interface FetchKey {
+    entryId: string;
+    tenantId?: string;
+}
+
+const NotTranslated: React.FC<{ entryId?: string }> = ({entryId}) => <>
+    <Title2>Not Translated</Title2>
+    <Message status={'info'} text={
+        <>
+            🙇‍ Sorry, this entry is not yet translated.<br/><br/>
+            Please <a
+            href={`https://github.com/making/ik.am_en/issues/new?title=Translation%20Request%20to%20${entryId}&body=Please%20translate%20https://ik.am/entries/${entryId}%20into%20English`}>file
+            an issue</a> requesting the translation.
+        </>
+    }/>
+</>;
+
+const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch}) => {
     const {entryId} = useParams();
     const isPreLoaded = preLoadedEntry && preLoadedEntry.entryId == Number(entryId);
-    const fetcher: Fetcher<Entry, string> = (entryId) => EntryService.getEntry({entryId: Number(entryId)});
-    const {data, isLoading} = useSWR(isPreLoaded ? null : entryId, fetcher);
+    const fetcher: Fetcher<Entry, FetchKey> = ({entryId, tenantId}) => tenantId ?
+        EntryService.getEntryForTenant({entryId: Number(entryId), tenantId}) :
+        EntryService.getEntry({entryId: Number(entryId)});
+    const {data, isLoading, error} = useSWR<Entry, ApiError, FetchKey | null>(isPreLoaded ? null : {
+        entryId,
+        tenantId
+    } as FetchKey, fetcher);
     const entry = data || preLoadedEntry;
     useEffect(addCopyButton, [entry]);
-    if (isLoading || !entry) {
+    if (error) {
+        if (tenantId && error.status === 404) {
+            return <NotTranslated entryId={entryId}/>;
+        } else {
+            return <Message status={'error'} text={<>{error.body || error.statusText}</>}/>;
+        }
+    } else if (isLoading || !entry) {
         return <Loading/>
     }
     const contentHtml = marked.parse(entry.content, {async: false, gfm: true}) as string;
@@ -33,6 +65,8 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry}) => {
         .reduce((prev, curr) => [prev, ' | ', curr]) : '';
     const metaTitle = `${entry.frontMatter.title} - IK.AM`;
     const metaDescription = entry.content.substring(0, 150).replace(/[\n\r]/g, '') + '...';
+    const translationLink = tenantId ? <Link to={`/entries/${entryId}`}>🇯🇵 Japanese</Link> :
+        <Link to={`/entries/${entryId}/en`}>🇬🇧 English</Link>;
     return <>
         <Helmet prioritizeSeoTags>
             <title>{metaTitle}</title>
@@ -48,14 +82,14 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry}) => {
             Created on <span
             title={entry.created.date}>{entry.created.date ? new Date(entry.created.date).toDateString() : 'N/A'}</span> •
             Last Updated on <span
-            title={entry.updated.date}>{entry.updated.date ? new Date(entry.updated.date).toDateString() : 'N/A'}</span>
+            title={entry.updated.date}>{entry.updated.date ? new Date(entry.updated.date).toDateString() : 'N/A'}</span> • {translationLink}
             <Tags id="entry-tags">🏷️ {tags}</Tags>
         </Meta>
         <div id="entry" dangerouslySetInnerHTML={{__html: contentHtml}}/>
         <Meta>
             <blockquote>
                 Found a mistake? Update <a
-                href={`https://github.com/making/blog.ik.am/blob/master/content/${entry.entryId.toString().padStart(5, '0')}.md`}>the
+                href={`https://github.com/making/${repo}/blob/${branch}/content/${entry.entryId.toString().padStart(5, '0')}.md`}>the
                 entry</a>.
             </blockquote>
         </Meta>

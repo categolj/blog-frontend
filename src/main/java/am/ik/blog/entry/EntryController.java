@@ -41,9 +41,10 @@ public class EntryController {
 		this.categoryApi = categoryApi;
 	}
 
-	@GetMapping(path = "/api/entries")
-	public ResponseEntity<CursorPageEntryInstant> getEntries(EntryRequest request) {
-		ResponseEntity<CursorPageEntryInstant> response = this.entryClient.getEntries(request);
+	@GetMapping(path = { "/api/entries", "/api/tenants/{tenantId}/entries" })
+	public ResponseEntity<CursorPageEntryInstant> getEntries(EntryRequest request,
+			@PathVariable(required = false) String tenantId) {
+		ResponseEntity<CursorPageEntryInstant> response = this.entryClient.getEntries(request, tenantId);
 		return ResponseEntity.ok().headers(headers -> {
 			var page = response.getBody();
 			if (page != null && Objects.requireNonNull(page.getSize()) > 0) {
@@ -53,16 +54,17 @@ public class EntryController {
 		}).cacheControl(swrCacheControl).body(response.getBody());
 	}
 
-	@GetMapping(path = "/api/entries/{entryId}")
+	@GetMapping(path = { "/api/entries/{entryId}", "/api/tenants/{tenantId}/entries/{entryId}" })
 	public ResponseEntity<Entry> getEntry(@PathVariable Long entryId,
-			@RequestHeader(name = HttpHeaders.IF_MODIFIED_SINCE) Optional<Instant> lastModifiedDate) {
+			@RequestHeader(name = HttpHeaders.IF_MODIFIED_SINCE) Optional<Instant> lastModifiedDate,
+			@PathVariable(required = false) String tenantId) {
 		if (lastModifiedDate.isPresent()) {
-			ResponseEntity<Void> head = this.entryClient.headEntry(entryId, lastModifiedDate.get());
+			ResponseEntity<Void> head = this.entryClient.headEntry(entryId, lastModifiedDate.get(), tenantId);
 			if (head.getStatusCode().isSameCodeAs(HttpStatus.NOT_MODIFIED)) {
 				return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();
 			}
 		}
-		ResponseEntity<Entry> response = this.entryClient.getEntry(entryId);
+		ResponseEntity<Entry> response = this.entryClient.getEntry(entryId, tenantId);
 		return ResponseEntity.ok().headers(headers -> {
 			long lastModified = response.getHeaders().getLastModified();
 			if (lastModified != -1) {

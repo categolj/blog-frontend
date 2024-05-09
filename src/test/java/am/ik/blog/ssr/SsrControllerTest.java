@@ -92,7 +92,7 @@ class SsrControllerTest {
 
 	@Test
 	void getEntry() throws Exception {
-		given(this.entryClient.getEntry(100L)).willReturn(ResponseEntity.ok(entry100));
+		given(this.entryClient.getEntry(100L, null)).willReturn(ResponseEntity.ok(entry100));
 
 		String body = this.mvc.perform(get("/entries/100"))
 			.andExpect(status().isOk())
@@ -114,7 +114,7 @@ class SsrControllerTest {
 
 	@Test
 	void getEntries() throws Exception {
-		given(this.entryClient.getEntries(any())).willReturn(ResponseEntity
+		given(this.entryClient.getEntries(any(), any())).willReturn(ResponseEntity
 			.ok(new CursorPageEntryInstant().size(2).hasNext(true).hasPrevious(false).content(Json.parse("""
 					[
 					  {
@@ -280,7 +280,7 @@ class SsrControllerTest {
 
 	@Test
 	void concurrentAccess() throws Exception {
-		given(this.entryClient.getEntry(100L)).willReturn(ResponseEntity.ok(entry100));
+		given(this.entryClient.getEntry(100L, null)).willReturn(ResponseEntity.ok(entry100));
 		int n = 32;
 		CountDownLatch latch;
 		try (ExecutorService executorService = Executors.newFixedThreadPool(n)) {

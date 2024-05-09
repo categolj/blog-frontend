@@ -12,6 +12,7 @@ import am.ik.blog.entry.model.CursorPageEntryInstant;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -30,10 +31,11 @@ public class FeedController {
 		this.entryClient = entryClient;
 	}
 
-	@GetMapping(path = { "/feed", "/rss" }, produces = MediaType.APPLICATION_XML_VALUE)
-	public String feed(UriComponentsBuilder builder) {
+	@GetMapping(path = { "/feed", "/rss", "/feed/{tenantId:[a-z]+}", "/rss/{tenantId:[a-z]+}" },
+			produces = MediaType.APPLICATION_XML_VALUE)
+	public String feed(UriComponentsBuilder builder, @PathVariable(required = false) String tenantId) {
 		String baseUrl = builder.path("").build().toString();
-		ResponseEntity<CursorPageEntryInstant> response = this.entryClient.getEntries(entryRequest().build());
+		ResponseEntity<CursorPageEntryInstant> response = this.entryClient.getEntries(entryRequest().build(), tenantId);
 		CursorPageEntryInstant page = Objects.requireNonNull(response.getBody());
 		int size = Objects.requireNonNull(page.getSize());
 		String items = size > 0 ? Objects.requireNonNull(page.getContent())

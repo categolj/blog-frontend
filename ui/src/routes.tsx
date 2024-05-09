@@ -34,7 +34,27 @@ export default function routes(initData: object): RouteObject[] {
                     path: "/entries", element: <EntriesPage {...initData as EntriesProps} />
                 },
                 {
-                    path: "/entries/:entryId", element: <EntryPage {...initData as EntryProps} />
+                    path: "/entries/en",
+                    element: <EntriesPage {...{...initData, ...{tenantId: 'en'} as EntriesProps}} />
+                },
+                {
+                    path: "/entries/:entryId",
+                    element: <EntryPage {...{
+                        ...initData, ...{
+                            repo: 'blog.ik.am',
+                            branch: 'master'
+                        }
+                    } as EntryProps} />
+                },
+                {
+                    path: "/entries/:entryId/en",
+                    element: <EntryPage {...{
+                        ...initData, ...{
+                            tenantId: 'en',
+                            repo: 'ik.am_en',
+                            branch: 'main'
+                        }
+                    } as EntryProps} />
                 },
                 {
                     path: "/tags", element: <TagsPage {...initData as TagsProps} />

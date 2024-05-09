@@ -9,6 +9,7 @@ import am.ik.blog.entry.EntryRequest;
 import am.ik.blog.entry.EntryRequestBuilder;
 import am.ik.blog.entry.api.CategoryApi;
 import am.ik.blog.entry.api.TagApi;
+import jakarta.annotation.Nullable;
 
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,20 +36,20 @@ public class SsrController {
 
 	@GetMapping(path = "/")
 	public String index() {
-		return this.entries(EntryRequestBuilder.entryRequest().build());
+		return this.entries(EntryRequestBuilder.entryRequest().build(), null);
 	}
 
-	@GetMapping(path = "/entries")
-	public String entries(EntryRequest request) {
-		var entries = this.entryClient.getEntries(request).getBody();
+	@GetMapping(path = { "/entries", "/entries/{tenantId:[a-z]+}" })
+	public String entries(EntryRequest request, @Nullable @PathVariable(required = false) String tenantId) {
+		var entries = this.entryClient.getEntries(request, tenantId).getBody();
 		return this.reactRenderer.render(
 				"/entries" + ((StringUtils.hasText(request.query()) ? "?query=" + request.query() : "")),
 				Map.of("preLoadedEntries", Objects.requireNonNull(entries)));
 	}
 
-	@GetMapping(path = "/entries/{entryId}")
-	public String post(@PathVariable long entryId) {
-		var entry = this.entryClient.getEntry(entryId).getBody();
+	@GetMapping(path = { "/entries/{entryId:[0-9]+}", "/entries/{entryId:[0-9]+}/{tenantId:[a-z]+}" })
+	public String post(@PathVariable long entryId, @Nullable @PathVariable(required = false) String tenantId) {
+		var entry = this.entryClient.getEntry(entryId, tenantId).getBody();
 		return this.reactRenderer.render("/entries/%d".formatted(entryId),
 				Map.of("preLoadedEntry", Objects.requireNonNull(entry)));
 	}
