@@ -16,6 +16,7 @@ import SubscribePage from "./pages/note/SubscribePage.tsx";
 import SignupPage from "./pages/note/SignupPage.tsx";
 import ActivationPage from "./pages/note/ActivationPage.tsx";
 import PasswordResetPage from "./pages/note/PasswordResetPage.tsx";
+import 'highlight.js/styles/school-book.min.css';
 
 TimeAgo.addDefaultLocale(en);
 export default function routes(initData: object): RouteObject[] {

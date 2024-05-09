@@ -6,7 +6,6 @@ import Loading from "../../components/Loading.tsx";
 import ScrollToTop from "react-scroll-to-top";
 import {addCopyButton} from '../../utils/copy.ts';
 import marked from '../../utils/marked.ts'
-import 'highlight.js/styles/default.min.css';
 import {Title2} from "../../styled/Title2.tsx";
 import {Meta} from "../../styled/Meta.tsx";
 import {ApiError, NoteDetails, NoteService} from "../../clients/note";

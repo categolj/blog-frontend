@@ -11,7 +11,6 @@ import {Title2} from "../../styled/Title2.tsx";
 import {Meta} from "../../styled/Meta.tsx";
 import {Tags} from "../../styled/Tags.tsx";
 import {Helmet} from 'react-helmet-async';
-import 'highlight.js/styles/arta.min.css';
 
 export interface EntryProps {
     preLoadedEntry?: Entry;
