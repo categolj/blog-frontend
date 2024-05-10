@@ -3,6 +3,8 @@ package am.ik.blog.ssr;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import am.ik.blog.entry.EntryClient;
 import am.ik.blog.entry.EntryRequest;
@@ -27,6 +29,9 @@ public class SsrController {
 
 	private final CategoryApi categoryApi;
 
+	static final Pattern scriptPattern = Pattern.compile("<script[^>]*>.*?</script>",
+			Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
+
 	public SsrController(ReactRenderer reactRenderer, EntryClient entryClient, TagApi tagApi, CategoryApi categoryApi) {
 		this.reactRenderer = reactRenderer;
 		this.entryClient = entryClient;
@@ -50,8 +55,9 @@ public class SsrController {
 	@GetMapping(path = { "/entries/{entryId:[0-9]+}", "/entries/{entryId:[0-9]+}/{tenantId:[a-z]+}" })
 	public String entry(@PathVariable long entryId, @Nullable @PathVariable(required = false) String tenantId) {
 		var entry = this.entryClient.getEntry(entryId, tenantId).getBody();
+		Matcher matcher = scriptPattern.matcher(Objects.requireNonNull(entry).getContent());
 		return this.reactRenderer.render("/entries/%d".formatted(entryId),
-				Map.of("preLoadedEntry", Objects.requireNonNull(entry)));
+				Map.of("preLoadedEntry", Objects.requireNonNull(entry).content(matcher.replaceAll(""))));
 	}
 
 	@GetMapping(path = "/tags")
