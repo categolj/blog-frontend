@@ -12,5 +12,5 @@ export const ShareWithX: React.FC<ShareWithXProps> = ({
                                                           via = `making`
                                                       }) =>
     <>
-        &lt;<a href={`https://x.com/share?url=${url}&text=${text}&via=${via}`}>Share with X</a>&gt;
+        &lt;<a href={`https://x.com/share?url=${url}&text=${text}&via=${via}`} target={'_blank'}>Share with X</a>&gt;
     </>;
