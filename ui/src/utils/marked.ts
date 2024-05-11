@@ -1,4 +1,4 @@
-import {Marked} from 'marked'
+import {marked, Marked} from 'marked'
 import {getHeadingList, gfmHeadingId, HeadingData} from "marked-gfm-heading-id";
 import {markedHighlight} from "marked-highlight";
 import markedAlert from 'marked-alert'
@@ -28,6 +28,64 @@ function toc(headings: HeadingData[]) {
 }
 
 const TOC_MARKER = '<!-- toc -->';
+
+export class PlainTextRenderer extends marked.Renderer {
+    heading(text: string): string {
+        return text + '\n';
+    }
+
+    paragraph(text: string): string {
+        return text + '\n';
+    }
+
+    link(_href: string, _title: string, text: string): string {
+        return text;
+    }
+
+    image(_href: string, _title: string, text: string): string {
+        return text;
+    }
+
+    listitem(text: string): string {
+        return text + '\n';
+    }
+
+    list(body: string, _ordered: boolean, _start: number): string {
+        return body;
+    }
+
+    blockquote(text: string): string {
+        return text + '\n';
+    }
+
+    code(code: string, _infostring: string | undefined, _escaped: boolean): string {
+        return code + '\n';
+    }
+
+    codespan(text: string): string {
+        return text;
+    }
+
+    strong(text: string): string {
+        return text;
+    }
+
+    em(text: string): string {
+        return text;
+    }
+
+    del(text: string): string {
+        return text;
+    }
+
+    html(_html: string): string {
+        return '';  // HTMLタグを無視
+    }
+
+    text(text: string): string {
+        return text;
+    }
+}
 
 export default new Marked(
     markedHighlight({

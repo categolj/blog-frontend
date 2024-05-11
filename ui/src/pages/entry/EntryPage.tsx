@@ -5,7 +5,7 @@ import {ApiError, Entry, EntryService} from "../../clients/entry";
 import Loading from "../../components/Loading.tsx";
 import ScrollToTop from "react-scroll-to-top";
 import {addCopyButton} from '../../utils/copy.ts';
-import marked from '../../utils/marked.ts'
+import marked, {PlainTextRenderer} from '../../utils/marked.ts'
 import Category from "../../components/Category.tsx";
 import {Title2} from "../../styled/Title2.tsx";
 import {Meta} from "../../styled/Meta.tsx";
@@ -27,6 +27,8 @@ interface FetchKey {
     entryId: string;
     tenantId?: string;
 }
+
+const plainTextRenderer = new PlainTextRenderer();
 
 const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch}) => {
     const {entryId} = useParams();
@@ -50,11 +52,12 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch
         return <Loading/>
     }
     const contentHtml = marked.parse(entry.content, {async: false, gfm: true}) as string;
+    const contentText = marked.parse(entry.content, {async: false, gfm: true, renderer: plainTextRenderer}) as string;
     const tags = entry.frontMatter.tags.length > 0 ? entry.frontMatter.tags
         .map<React.ReactNode>(t => <Link key={t.name}
                                          to={`/tags/${t.name}/entries`}>{t.name}</Link>)
         .reduce((prev, curr) => [prev, ' | ', curr]) : '';
-    const metaDescription = entry.content.substring(0, 150).replace(/[\n\r]/g, '') + '...';
+    const metaDescription = contentText.substring(0, 150).replace(/[\n\r]/g, '') + '...';
     const translationLink = tenantId ? <Link to={`/entries/${entryId}`}>🇯🇵 Japanese</Link> :
         <Link to={`/entries/${entryId}/en`}>🇬🇧 English</Link>;
     const entryUrl = `https://ik.am/entries/${entry.entryId}${tenantId ? '/' + tenantId : ''}`
