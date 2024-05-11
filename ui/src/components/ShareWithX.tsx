@@ -1,4 +1,5 @@
 import React from "react";
+import {X} from "../styled/X.tsx";
 
 interface ShareWithXProps {
     url: string,
@@ -9,6 +10,4 @@ export const ShareWithX: React.FC<ShareWithXProps> = ({
                                                           url,
                                                           text,
                                                       }) =>
-    <>
-        &lt;<a href={`https://x.com/share?url=${url}&text=${text}`} target={'_blank'}>Share with X</a>&gt;
-    </>;
+    <X href={`https://x.com/intent/tweet?url=${url}&text=${text}`} target={'_blank'}></X>;
