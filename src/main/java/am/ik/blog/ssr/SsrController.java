@@ -13,10 +13,13 @@ import am.ik.blog.entry.api.CategoryApi;
 import am.ik.blog.entry.api.TagApi;
 import jakarta.annotation.Nullable;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestClientResponseException;
 
 @RestController
 public class SsrController {
@@ -54,11 +57,12 @@ public class SsrController {
 	}
 
 	@GetMapping(path = { "/entries/{entryId:[0-9]+}", "/entries/{entryId:[0-9]+}/{tenantId:[a-z]+}" })
-	public String entry(@PathVariable long entryId, @Nullable @PathVariable(required = false) String tenantId) {
+	public ResponseEntity<String> entry(@PathVariable long entryId,
+			@Nullable @PathVariable(required = false) String tenantId) {
 		var entry = this.entryClient.getEntry(entryId, tenantId).getBody();
 		Matcher matcher = scriptPattern.matcher(Objects.requireNonNull(entry).getContent());
-		return this.reactRenderer.render("/entries/%d".formatted(entryId),
-				Map.of("preLoadedEntry", Objects.requireNonNull(entry).content(matcher.replaceAll(""))));
+		return ResponseEntity.ok(this.reactRenderer.render("/entries/%d".formatted(entryId),
+				Map.of("preLoadedEntry", Objects.requireNonNull(entry).content(matcher.replaceAll("")))));
 	}
 
 	@GetMapping(path = "/tags")
@@ -97,6 +101,11 @@ public class SsrController {
 	@GetMapping(path = { "/tags/*/entries", "/categories/*/entries", "/notes/**", "/note/**", "/info" })
 	public String noSsr() {
 		return this.reactRenderer.render("/", Map.of());
+	}
+
+	@ExceptionHandler(RestClientResponseException.class)
+	public ResponseEntity<String> handleRestClientResponseException(RestClientResponseException e) {
+		return ResponseEntity.status(e.getStatusCode()).body(this.reactRenderer.render("/", Map.of()));
 	}
 
 }

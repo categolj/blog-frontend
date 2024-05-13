@@ -1,13 +1,12 @@
 import React from "react";
 import {Link} from "react-router-dom";
+import Message from "../../components/Message.tsx";
 
 const Error404Page: React.FC = () => {
-    return <div>
+    return <>
         <h2>Not Found</h2>
-        <p>
-            Go to <Link to={'/'}>Home</Link>.
-        </p>
-    </div>;
+        <Message status={'error'} text={<>Go to <Link to={'/'}>Home</Link>.</>}/>
+    </>;
 
 };
 

@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import {Link, useParams} from "react-router-dom";
 import useSWR, {Fetcher} from 'swr';
-import {ApiError, Entry, EntryService} from "../../clients/entry";
+import {ApiError, Entry, EntryService, ProblemDetail} from "../../clients/entry";
 import Loading from "../../components/Loading.tsx";
 import ScrollToTop from "react-scroll-to-top";
 import {addCopyButton} from '../../utils/copy.ts';
@@ -46,7 +46,14 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch
         if (tenantId && error.status === 404) {
             return <NotTranslated entryId={entryId}/>;
         } else {
-            return <Message status={'error'} text={<>{error.body || error.statusText}</>}/>;
+            const problem: ProblemDetail = error.body ? (error.body as ProblemDetail) : {
+                title: error.statusText,
+                detail: error.statusText
+            };
+            return <>
+                <Title2>{problem.title}</Title2>
+                <Message status={'error'} text={<>{problem.detail}</>}/>
+            </>;
         }
     } else if (isLoading || !entry) {
         return <Loading/>

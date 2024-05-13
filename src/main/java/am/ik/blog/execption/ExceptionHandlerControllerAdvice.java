@@ -5,15 +5,26 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import am.ik.blog.ssr.ReactRenderer;
+
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.RestClientResponseException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @ControllerAdvice
+@Order(-1)
 public class ExceptionHandlerControllerAdvice {
+
+	private final ReactRenderer reactRenderer;
+
+	public ExceptionHandlerControllerAdvice(ReactRenderer reactRenderer) {
+		this.reactRenderer = reactRenderer;
+	}
 
 	@ExceptionHandler(RestClientResponseException.class)
 	public ResponseEntity<?> handleRestClientResponseException(RestClientResponseException e) {
@@ -26,6 +37,11 @@ public class ExceptionHandlerControllerAdvice {
 			}
 		}
 		return ResponseEntity.status(e.getStatusCode()).body(e.getResponseBodyAs(String.class));
+	}
+
+	@ExceptionHandler(NoResourceFoundException.class)
+	public ResponseEntity<String> handleResourceNotFound() {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(this.reactRenderer.render("/", Map.of()));
 	}
 
 	private static final Pattern LOGFMT_PATTERN = Pattern.compile("(\\w+)=\"([^\"]*)\"|(\\w+)=([^\\s]*)");
