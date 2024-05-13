@@ -45,6 +45,7 @@ public class SsrController {
 	}
 
 	@GetMapping(path = { "/entries", "/entries/{tenantId:[a-z]+}" })
+	@SuppressWarnings("UnnecessaryParentheses")
 	public String entries(EntryRequest request, @Nullable @PathVariable(required = false) String tenantId) {
 		var entries = this.entryClient.getEntries(request, tenantId).getBody();
 		return this.reactRenderer.render(
