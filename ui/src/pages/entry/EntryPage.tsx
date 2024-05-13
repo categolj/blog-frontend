@@ -58,8 +58,8 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch
                                          to={`/tags/${t.name}/entries`}>{t.name}</Link>)
         .reduce((prev, curr) => [prev, ' | ', curr]) : '';
     const metaDescription = contentText
-        .replace('&lt;', '')
-        .replace('&gt;', '')
+        .replace('<', '')
+        .replace('>', '')
         .substring(0, 150)
         .replace(/[\n\r]/g, '') + '...';
     const translationLink = tenantId ? <Link to={`/entries/${entryId}`}>🇯🇵 Japanese</Link> :
