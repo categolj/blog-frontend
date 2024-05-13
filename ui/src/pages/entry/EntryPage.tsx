@@ -57,7 +57,11 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch
         .map<React.ReactNode>(t => <Link key={t.name}
                                          to={`/tags/${t.name}/entries`}>{t.name}</Link>)
         .reduce((prev, curr) => [prev, ' | ', curr]) : '';
-    const metaDescription = contentText.substring(0, 150).replace(/[\n\r]/g, '') + '...';
+    const metaDescription = contentText
+        .replace('&lt;', '')
+        .replace('&gt;', '')
+        .substring(0, 150)
+        .replace(/[\n\r]/g, '') + '...';
     const translationLink = tenantId ? <Link to={`/entries/${entryId}`}>🇯🇵 Japanese</Link> :
         <Link to={`/entries/${entryId}/en`}>🇬🇧 English</Link>;
     const entryUrl = `https://ik.am/entries/${entry.entryId}${tenantId ? '/' + tenantId : ''}`
