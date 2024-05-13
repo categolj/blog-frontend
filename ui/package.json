@@ -27,7 +27,7 @@
     "react-helmet-async": "^2.0.5",
     "react-router-dom": "^6.23.1",
     "react-scroll-to-top": "^3.0.0",
-    "react-time-ago": "^7.3.1",
+    "react-time-ago": "^7.3.3",
     "styled-components": "^6.1.11",
     "swr": "^2.2.5"
   },
