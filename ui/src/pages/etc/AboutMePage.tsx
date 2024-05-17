@@ -14,8 +14,8 @@ const AboutMePage: React.FC = () => {
         <p>Toshiaki Maki / 槙 俊明</p>
         <p>has a dog 🐩 (<a href="https://en.wikipedia.org/wiki/Bichon_Frise">Bichon
             Frise</a>). Lemon&nbsp;🍋 is her name-o :)</p>
-        <h3>Twitter</h3>
-        <p><a href="https://twitter.com/making">@making</a></p>
+        <h3>X</h3>
+        <p><a href="https://x.com/making">@making</a></p>
         <h3>Email</h3>
         <p>makingx [at] gmail.com</p>
         <h3>Work Experience</h3>
