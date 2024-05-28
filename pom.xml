@@ -65,6 +65,11 @@
 			<version>0.3.2</version>
 		</dependency>
 		<dependency>
+			<groupId>am.ik.spring.opentelemetry</groupId>
+			<artifactId>otel-logs-autoconfigure</artifactId>
+			<version>0.1.0</version>
+		</dependency>
+		<dependency>
 			<groupId>am.ik.blog</groupId>
 			<artifactId>blog-api-client</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
