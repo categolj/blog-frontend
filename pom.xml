@@ -42,6 +42,11 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>am.ik.spring.opentelemetry</groupId>
+			<artifactId>otel-logs-autoconfigure</artifactId>
+			<version>0.1.1</version>
+		</dependency>
+		<dependency>
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-tracing-bridge-otel</artifactId>
 		</dependency>
@@ -63,11 +68,6 @@
 			<groupId>am.ik.access-logger</groupId>
 			<artifactId>access-logger</artifactId>
 			<version>0.3.2</version>
-		</dependency>
-		<dependency>
-			<groupId>am.ik.spring.opentelemetry</groupId>
-			<artifactId>otel-logs-autoconfigure</artifactId>
-			<version>0.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>am.ik.blog</groupId>
