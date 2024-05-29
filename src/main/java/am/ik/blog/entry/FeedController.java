@@ -31,7 +31,7 @@ public class FeedController {
 		this.entryClient = entryClient;
 	}
 
-	@GetMapping(path = { "/feed", "/rss", "/feed/{tenantId:[a-z]+}", "/rss/{tenantId:[a-z]+}" },
+	@GetMapping(path = { "/feed", "/feed/", "/rss", "/rss/", "/feed/{tenantId:[a-z]+}", "/rss/{tenantId:[a-z]+}" },
 			produces = MediaType.APPLICATION_XML_VALUE)
 	public String feed(UriComponentsBuilder builder, @PathVariable(required = false) String tenantId) {
 		String baseUrl = builder.path("").build().toString();
