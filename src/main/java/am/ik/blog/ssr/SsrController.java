@@ -13,6 +13,7 @@ import am.ik.blog.entry.api.CategoryApi;
 import am.ik.blog.entry.api.TagApi;
 import jakarta.annotation.Nullable;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClientResponseException;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 public class SsrController {
@@ -63,6 +65,13 @@ public class SsrController {
 		Matcher matcher = scriptPattern.matcher(Objects.requireNonNull(entry).getContent());
 		return ResponseEntity.ok(this.reactRenderer.render("/entries/%d".formatted(entryId),
 				Map.of("preLoadedEntry", Objects.requireNonNull(entry).content(matcher.replaceAll("")))));
+	}
+
+	@GetMapping(path = "/entry/view/id/{entryId:[0-9]+}/**")
+	public ResponseEntity<Void> redirectLegacyUrl(@PathVariable long entryId, UriComponentsBuilder builder) {
+		return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY)
+			.location(builder.path("/entries/{entryId}").build(entryId))
+			.build();
 	}
 
 	@GetMapping(path = "/tags")
