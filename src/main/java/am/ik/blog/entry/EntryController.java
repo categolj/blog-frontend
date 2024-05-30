@@ -47,9 +47,12 @@ public class EntryController {
 		ResponseEntity<CursorPageEntryInstant> response = this.entryClient.getEntries(request, tenantId);
 		return ResponseEntity.ok().headers(headers -> {
 			var page = response.getBody();
-			if (page != null && Objects.requireNonNull(page.getSize()) > 0) {
-				OffsetDateTime updated = Objects.requireNonNull(page.getContent()).get(0).getUpdated().getDate();
-				headers.setLastModified(Objects.requireNonNull(updated).toInstant());
+			if (page != null) {
+				List<Entry> content = page.getContent();
+				if (content != null && !content.isEmpty()) {
+					OffsetDateTime updated = content.getFirst().getUpdated().getDate();
+					headers.setLastModified(Objects.requireNonNull(updated).toInstant());
+				}
 			}
 		}).cacheControl(swrCacheControl).body(response.getBody());
 	}
