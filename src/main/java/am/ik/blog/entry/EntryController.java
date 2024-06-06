@@ -28,6 +28,8 @@ public class EntryController {
 
 	private final EntryClient entryClient;
 
+	private final ImageProxyReplacer imageProxyReplacer;
+
 	private final TagApi tagApi;
 
 	private final CategoryApi categoryApi;
@@ -35,8 +37,10 @@ public class EntryController {
 	private static final CacheControl swrCacheControl = CacheControl.maxAge(Duration.ofHours(1))
 		.staleWhileRevalidate(Duration.ofMinutes(10));
 
-	public EntryController(EntryClient entryClient, TagApi tagApi, CategoryApi categoryApi) {
+	public EntryController(EntryClient entryClient, ImageProxyReplacer imageProxyReplacer, TagApi tagApi,
+			CategoryApi categoryApi) {
 		this.entryClient = entryClient;
+		this.imageProxyReplacer = imageProxyReplacer;
 		this.tagApi = tagApi;
 		this.categoryApi = categoryApi;
 	}
@@ -73,7 +77,7 @@ public class EntryController {
 			if (lastModified != -1) {
 				headers.setLastModified(lastModified);
 			}
-		}).cacheControl(swrCacheControl).body(response.getBody());
+		}).cacheControl(swrCacheControl).body(this.imageProxyReplacer.replaceImage(response.getBody()));
 	}
 
 	@GetMapping(path = "/api/tags")

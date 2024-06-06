@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import am.ik.blog.entry.EntryClient;
 import am.ik.blog.entry.EntryRequest;
 import am.ik.blog.entry.EntryRequestBuilder;
+import am.ik.blog.entry.ImageProxyReplacer;
 import am.ik.blog.entry.api.CategoryApi;
 import am.ik.blog.entry.api.TagApi;
 import jakarta.annotation.Nullable;
@@ -30,6 +31,8 @@ public class SsrController {
 
 	private final EntryClient entryClient;
 
+	private final ImageProxyReplacer imageProxyReplacer;
+
 	private final TagApi tagApi;
 
 	private final CategoryApi categoryApi;
@@ -37,9 +40,11 @@ public class SsrController {
 	static final Pattern scriptPattern = Pattern.compile("<script[^>]*>.*?</script>",
 			Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
 
-	public SsrController(ReactRenderer reactRenderer, EntryClient entryClient, TagApi tagApi, CategoryApi categoryApi) {
+	public SsrController(ReactRenderer reactRenderer, EntryClient entryClient, ImageProxyReplacer imageProxyReplacer,
+			TagApi tagApi, CategoryApi categoryApi) {
 		this.reactRenderer = reactRenderer;
 		this.entryClient = entryClient;
+		this.imageProxyReplacer = imageProxyReplacer;
 		this.tagApi = tagApi;
 		this.categoryApi = categoryApi;
 	}
@@ -61,10 +66,10 @@ public class SsrController {
 	@GetMapping(path = { "/entries/{entryId:[0-9]+}", "/entries/{entryId:[0-9]+}/{tenantId:[a-z]+}" })
 	public ResponseEntity<String> entry(@PathVariable long entryId,
 			@Nullable @PathVariable(required = false) String tenantId) {
-		var entry = this.entryClient.getEntry(entryId, tenantId).getBody();
-		Matcher matcher = scriptPattern.matcher(Objects.requireNonNull(entry).getContent());
+		var entry = this.imageProxyReplacer.replaceImage(this.entryClient.getEntry(entryId, tenantId).getBody());
+		Matcher matcher = scriptPattern.matcher(entry.getContent());
 		return ResponseEntity.ok(this.reactRenderer.render("/entries/%d".formatted(entryId),
-				Map.of("preLoadedEntry", Objects.requireNonNull(entry).content(matcher.replaceAll("")))));
+				Map.of("preLoadedEntry", entry.content(matcher.replaceAll("")))));
 	}
 
 	@GetMapping(path = "/entry/view/id/{entryId:[0-9]+}/**")
