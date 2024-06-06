@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 import am.ik.blog.Json;
 import am.ik.blog.entry.EntryClient;
+import am.ik.blog.entry.ImageProxyReplacer;
 import am.ik.blog.entry.api.CategoryApi;
 import am.ik.blog.entry.api.TagApi;
 import am.ik.blog.entry.model.CursorPageEntryInstant;
@@ -16,7 +17,9 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
@@ -28,7 +31,8 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = SsrController.class, properties = "logging.level.am.ik.blog=trace")
+@WebMvcTest(controllers = SsrController.class,
+		properties = { "logging.level.am.ik.blog=trace", "logging.logback.ecs-encoder.enabled=false" })
 @Import(ReactRenderer.class)
 class SsrControllerTest {
 
@@ -299,6 +303,21 @@ class SsrControllerTest {
 		}
 		boolean awaited = latch.await(30, TimeUnit.SECONDS);
 		assertThat(awaited).isTrue();
+	}
+
+	@TestConfiguration
+	static class Config {
+
+		@Bean
+		public ImageProxyReplacer imageProxyReplacer() {
+			return new ImageProxyReplacer(null) {
+				@Override
+				public Entry replaceImage(Entry entry) {
+					return entry;
+				}
+			};
+		}
+
 	}
 
 }
