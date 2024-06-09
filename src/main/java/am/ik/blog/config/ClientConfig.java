@@ -1,5 +1,7 @@
 package am.ik.blog.config;
 
+import java.util.List;
+
 import am.ik.blog.BlogApiProps;
 import am.ik.blog.NoteApiProps;
 import am.ik.blog.entry.api.CategoryApi;
@@ -12,6 +14,7 @@ import am.ik.note.api.ReaderApi;
 import am.ik.note.api.TokenApi;
 import am.ik.note.invoker.ApiClient;
 import am.ik.spring.http.client.RetryableClientHttpRequestInterceptor;
+import org.zalando.logbook.spring.LogbookClientHttpRequestInterceptor;
 
 import org.springframework.boot.web.client.RestClientCustomizer;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -29,13 +32,19 @@ public class ClientConfig {
 	}
 
 	@Bean
-	public RestTemplateCustomizer restTemplateCustomizer(RetryableClientHttpRequestInterceptor requestInterceptor) {
-		return restTemplate -> restTemplate.getInterceptors().add(requestInterceptor);
+	public RestTemplateCustomizer restTemplateCustomizer(
+			LogbookClientHttpRequestInterceptor logbookClientHttpRequestInterceptor,
+			RetryableClientHttpRequestInterceptor retryableClientHttpRequestInterceptor) {
+		return restTemplate -> restTemplate.getInterceptors()
+			.addAll(List.of(logbookClientHttpRequestInterceptor, retryableClientHttpRequestInterceptor));
 	}
 
 	@Bean
-	public RestClientCustomizer restClientCustomizer(RetryableClientHttpRequestInterceptor requestInterceptor) {
-		return restClientBuilder -> restClientBuilder.requestInterceptor(requestInterceptor);
+	public RestClientCustomizer restClientCustomizer(
+			LogbookClientHttpRequestInterceptor logbookClientHttpRequestInterceptor,
+			RetryableClientHttpRequestInterceptor retryableClientHttpRequestInterceptor) {
+		return restClientBuilder -> restClientBuilder.requestInterceptor(logbookClientHttpRequestInterceptor)
+			.requestInterceptor(retryableClientHttpRequestInterceptor);
 	}
 
 	@Bean
