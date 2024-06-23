@@ -41,7 +41,7 @@ public class InfoController {
 		Map<String, Object> entry = this.entryInfoApi.info();
 		Map<String, Object> note = this.noteInfoApi.info();
 		Map<String, Object> imageProxy = this.restClient.get()
-			.uri(this.imageProxyProps.url() + "/info")
+			.uri(this.imageProxyProps.url() + "/actuator/info")
 			.retrieve()
 			.body(new ParameterizedTypeReference<>() {
 			});
