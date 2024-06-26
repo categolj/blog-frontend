@@ -69,8 +69,8 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch
         .replace('>', '')
         .substring(0, 150)
         .replace(/[\n\r]/g, '') + '...';
-    const translationLink = tenantId ? <Link to={`/entries/${entryId}`}>🇯🇵 Japanese</Link> :
-        <Link to={`/entries/${entryId}/en`}>🇬🇧 English</Link>;
+    const translationLink = tenantId ? <a href={`/entries/${entryId}`}>🇯🇵 Japanese</a> :
+        <a href={`/entries/${entryId}/en`}>🇬🇧 English</a>;
     const entryUrl = `https://ik.am/entries/${entry.entryId}${tenantId ? '/' + tenantId : ''}`
     return <>
         <OGP title={`${entry.frontMatter.title} - IK.AM`} url={entryUrl} description={metaDescription}/>
@@ -82,7 +82,7 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch
             title={entry.created.date}>{entry.created.date ? new Date(entry.created.date).toDateString() : 'N/A'}</span> •
             Last Updated on <span
             title={entry.updated.date}>{entry.updated.date ? new Date(entry.updated.date).toDateString() : 'N/A'}</span> • <Counter
-            entryId={entryId!}/> {!isPreLoaded && <>• {translationLink}</>}
+            entryId={entryId!}/> • {translationLink}
             <Tags id="entry-tags">🏷️ {tags}</Tags>
         </Meta>
         <article id="entry" dangerouslySetInnerHTML={{__html: contentHtml}}/>

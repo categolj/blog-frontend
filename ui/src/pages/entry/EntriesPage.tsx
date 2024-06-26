@@ -54,8 +54,8 @@ const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries, tenantId}) => {
     if (!isPreLoaded && (isLoading || !entries)) {
         return <Loading/>
     }
-    const translationLink = tenantId ? <Link to={`/entries`}>🇯🇵 Japanese</Link> :
-        <Link to={`/entries/en`}>🇬🇧 English</Link>;
+    const translationLink = tenantId ? <a href={`/entries`}>🇯🇵 Japanese</a> :
+        <a href={`/entries/en`}>🇬🇧 English</a>;
     return (<>
         <OGP />
         <div id="entries">
@@ -72,7 +72,7 @@ const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries, tenantId}) => {
             </ul>
             <LoadMore data={data} limit={limit} size={size} setSize={setSize} isPreLoaded={isPreLoaded}/>
             <br/>
-            {(!isPreLoaded && !categories && !tag && !query) && translationLink}
+            {(!categories && !tag && !query) && translationLink}
         </div>
     </>)
 }
