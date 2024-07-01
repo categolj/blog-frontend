@@ -26,9 +26,7 @@ public record EntryRequest(@Nullable String query, @Nullable String tag, @Nullab
 		if (!CollectionUtils.isEmpty(categories)) {
 			params.addAll("categories", categories);
 		}
-		if (cursor != null) {
-			params.add("cursor", cursor.toString());
-		}
+		params.add("cursor", cursor == null ? "" : cursor.toString());
 		if (size != null && size > 0) {
 			params.add("size", String.valueOf(size));
 		}
