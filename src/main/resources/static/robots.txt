@@ -40,5 +40,20 @@ Disallow: /
 User-agent: DataForSeoBot
 Disallow: /
 
+User-agent: ImagesiftBot
+Disallow: /
+
+User-agent: LivelapBot
+Disallow: /
+
+User-agent: VelenPublicWebCrawler
+Disallow: /
+
+User-agent: BrightEdge
+Disallow: /
+
+User-agent: Barkrowler
+Disallow: /
+
 User-agent: *
 Disallow:
