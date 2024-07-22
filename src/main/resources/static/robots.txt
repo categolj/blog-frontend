@@ -55,5 +55,14 @@ Disallow: /
 User-agent: Barkrowler
 Disallow: /
 
+User-agent: SeekportBot
+Disallow: /
+
+User-agent: YandexFavicons
+Disallow: /
+
+User-agent: Pinterestbot
+Disallow: /
+
 User-agent: *
 Disallow:
