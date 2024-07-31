@@ -28,11 +28,6 @@ jobs:
       env:
         _JAVA_OPTIONS: -Djava.net.preferIPv4Stack=true
       run: ./mvnw -V --no-transfer-progress test
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: build-artifacts
-        path: target
     - name: Executable Jar
       run: |
         ./mvnw -V --no-transfer-progress package -DskipTests
@@ -40,6 +35,11 @@ jobs:
         curl --fail --show-error --silent http://localhost:8080
         curl --fail --show-error --silent http://localhost:8080/entries/412
         pkill -KILL java
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-artifacts
+        path: target
   build-jvm-image:
     runs-on: ubuntu-latest
     permissions:
