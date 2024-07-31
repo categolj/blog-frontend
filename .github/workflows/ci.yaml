@@ -121,7 +121,7 @@ jobs:
     - name: docker push
       run: |
         docker push ghcr.io/${{ github.repository }}:native_${GITHUB_SHA}
-        dockert tag ghcr.io/${{ github.repository }}:native_${GITHUB_SHA} ghcr.io/${{ github.repository }}:native
+        docker tag ghcr.io/${{ github.repository }}:native_${GITHUB_SHA} ghcr.io/${{ github.repository }}:native
         docker push ghcr.io/${{ github.repository }}:native
     - name: Generate digest
       run: |
