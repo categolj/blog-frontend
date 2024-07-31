@@ -127,8 +127,8 @@
 		<plugins>
 
 			<plugin>
-        			<groupId>org.cyclonedx</groupId>
-        			<artifactId>cyclonedx-maven-plugin</artifactId>
+				<groupId>org.cyclonedx</groupId>
+				<artifactId>cyclonedx-maven-plugin</artifactId>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -199,6 +199,12 @@
 						<spring.security.version>${spring-security.version}
 						</spring.security.version>
 					</additionalProperties>
+					<image>
+						<buildpacks>
+							<buildpack>gcr.io/paketo-buildpacks/graalvm</buildpack>
+							<buildpack>urn:cnb:builder:paketo-buildpacks/java</buildpack>
+						</buildpacks>
+					</image>
 				</configuration>
 			</plugin>
 			<plugin>
