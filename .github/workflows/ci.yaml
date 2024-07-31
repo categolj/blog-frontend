@@ -71,7 +71,7 @@ jobs:
       if: github.ref == 'refs/heads/main'
       run: |
         docker push ghcr.io/${{ github.repository }}:jvm_${GITHUB_SHA}
-        dockert tag ghcr.io/${{ github.repository }}:jvm_${GITHUB_SHA} ghcr.io/${{ github.repository }}:jvm
+        docker tag ghcr.io/${{ github.repository }}:jvm_${GITHUB_SHA} ghcr.io/${{ github.repository }}:jvm
         docker push ghcr.io/${{ github.repository }}:jvm
     - name: Generate digest
       if: github.ref == 'refs/heads/main'
@@ -111,7 +111,7 @@ jobs:
         name: build-artifacts
         path: target
     - name: build image
-      run: ./mvnw -V --no-transfer-progress -Pnative clean spring-boot:build-image -DskipTests -Dspring-boot.build-image.imageName=ghcr.io/${{ github.repository }}:native_${GITHUB_SHA}
+      run: ./mvnw -V --no-transfer-progress -Pnative spring-boot:build-image -DskipTests -Dspring-boot.build-image.imageName=ghcr.io/${{ github.repository }}:native_${GITHUB_SHA}
     - name: Login to GitHub Container Registry
       uses: docker/login-action@v3
       with:
