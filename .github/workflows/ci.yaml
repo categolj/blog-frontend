@@ -18,152 +18,31 @@ on:
     - .github/workflows/*
 jobs:
   test:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: graalvm/setup-graalvm@v1
-      with:
-        java-version: '21'
-        distribution: 'graalvm'
-        cache: 'maven'
-    - name: mvn test
-      env:
-        _JAVA_OPTIONS: -Djava.net.preferIPv4Stack=true
-      run: ./mvnw -V --no-transfer-progress test
-    - name: Executable Jar
-      run: |
-        ./mvnw -V --no-transfer-progress package -DskipTests
-        java -jar target/*.jar & .github/workflows/wait.sh
-        curl --fail --show-error --silent http://localhost:8080
-        curl --fail --show-error --silent http://localhost:8080/entries/412
-        pkill -KILL java
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: build-artifacts
-        path: target
+    uses: making/workflows/.github/workflows/maven-unit-test.yaml@main
+    with:
+      e2e_test: true
+      test_url_1: http://localhost:8080
+      test_url_2: http://localhost:8080/entries/412
   build-jvm-image:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
     needs: test
-    steps:
-    - uses: actions/checkout@v2
-    - uses: graalvm/setup-graalvm@v1
-      with:
-        java-version: '21'
-        distribution: 'graalvm'
-        cache: 'maven'
-    - name: Download build artifacts
-      uses: actions/download-artifact@v2
-      with:
-        name: build-artifacts
-        path: target
-    - name: build image
-      run: ./mvnw -V --no-transfer-progress spring-boot:build-image -DskipTests -Dspring-boot.build-image.imageName=ghcr.io/${{ github.repository }}:jvm_${GITHUB_SHA}
-    - name: Login to GitHub Container Registry
-      if: github.ref == 'refs/heads/main'
-      uses: docker/login-action@v3
-      with:
-        registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
-    - name: docker push
-      if: github.ref == 'refs/heads/main'
-      run: |
-        docker push ghcr.io/${{ github.repository }}:jvm_${GITHUB_SHA}
-        docker tag ghcr.io/${{ github.repository }}:jvm_${GITHUB_SHA} ghcr.io/${{ github.repository }}:jvm
-        docker push ghcr.io/${{ github.repository }}:jvm
-    - name: Generate digest
-      if: github.ref == 'refs/heads/main'
-      run: |
-        cat <<EOF > image.yaml
-        image: $(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/${{ github.repository }}:jvm_${GITHUB_SHA})
-        git_revision: ${GITHUB_SHA}
-        EOF
-    - name: Upload artifact
-      if: github.ref == 'refs/heads/main'
-      uses: actions/upload-artifact@v2
-      with:
-        name: image
-        path: image.yaml
+    uses: making/workflows/.github/workflows/build-docker-image-maven-jvm.yaml@main
+    with:
+      image_file: image.yaml
   build-native-image:
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
     needs: test
-    steps:
-    - uses: actions/checkout@v2
-    - uses: graalvm/setup-graalvm@v1
-      with:
-        java-version: '21'
-        distribution: 'graalvm'
-        cache: 'maven'
-    - name: Download build artifacts
-      uses: actions/download-artifact@v2
-      with:
-        name: build-artifacts
-        path: target
-    - name: native image
-      run: ./mvnw -V --no-transfer-progress -Pnative native:compile -DskipTests
-    - name: test native image
-      run: |
-        ./target/${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/} --management.otlp.tracing.endpoint=https://httpbin.org/post --management.otlp.logs.endpoint=https://httpbin.org/post & .github/workflows/wait.sh
-        curl --fail --show-error --silent http://localhost:8080
-        curl --fail --show-error --silent http://localhost:8080/entries/412
-        pkill -KILL ${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/} || true
-    - name: Install Pack
-      uses: buildpacks/github-actions/setup-pack@v5.7.3
-    - name: Pack Build
-      if: github.ref == 'refs/heads/main'
-      run: |
-        mkdir -p pack
-        mv ./target/${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/} ./pack
-        cat <<EOF > pack/Procfile
-        web: ./${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/}
-        EOF
-        pack build ghcr.io/${{ github.repository }}:native_${GITHUB_SHA} \
-          --env BP_OCI_SOURCE=https://github.com/${GITHUB_REPOSITORY} \
-          --env BP_OCI_REVISION=${GITHUB_SHA} \
-          --gid 1002 \
-          --builder paketobuildpacks/builder-jammy-tiny \
-          --buildpack gcr.io/paketo-buildpacks/image-labels \
-          --buildpack gcr.io/paketo-buildpacks/procfile \
-          --path pack
-    - name: Login to GitHub Container Registry
-      uses: docker/login-action@v3
-      with:
-        registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
-    - name: docker push
-      run: |
-        docker push ghcr.io/${{ github.repository }}:native_${GITHUB_SHA}
-        docker tag ghcr.io/${{ github.repository }}:native_${GITHUB_SHA} ghcr.io/${{ github.repository }}:native
-        docker push ghcr.io/${{ github.repository }}:native
-    - name: Generate digest
-      run: |
-        cat <<EOF > image_native.yaml
-        image: $(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/${{ github.repository }}:native_${GITHUB_SHA})
-        git_revision: ${GITHUB_SHA}
-        EOF
-    - name: Upload artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: image
-        path: image_native.yaml
+    uses: making/workflows/.github/workflows/build-docker-image-maven-native.yaml@main
+    with:
+      image_file: image_native.yaml
+      e2e_test: true
+      test_url_1: http://localhost:8080
+      test_url_2: http://localhost:8080/entries/412
   save-image-jvm:
-    if: github.ref == 'refs/heads/main'
     needs: build-jvm-image
-    uses: ./.github/workflows/save-images.yaml
+    uses: making/workflows/.github/workflows/save-images.yaml@main
     with:
-      target: image.yaml
+      image_file: image.yaml
   save-image-native:
-    if: github.ref == 'refs/heads/main'
     needs: build-native-image
-    uses: ./.github/workflows/save-images.yaml
+    uses: making/workflows/.github/workflows/save-images.yaml@main
     with:
-      target: image_native.yaml
+      image_file: image_native.yaml
