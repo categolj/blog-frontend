@@ -5,7 +5,6 @@ on:
     - main
     paths:
     - src/**
-    - ui/**
     - pom.xml
     - .github/workflows/*
   pull_request:
@@ -13,84 +12,152 @@ on:
     - main
     paths:
     - src/**
-    - ui/**
     - pom.xml
     - .github/workflows/*
-  workflow_dispatch:
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
     steps:
-    - uses: actions/checkout@v4
-    - name: Git Log
-      run: git log | head -n 10
-    - name: Install GraalVM
-      uses: graalvm/setup-graalvm@v1
+    - uses: actions/checkout@v2
+    - uses: graalvm/setup-graalvm@v1
       with:
         java-version: '21'
         distribution: 'graalvm'
         cache: 'maven'
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-    - name: Unit Tests
-      run: ./mvnw -V --no-transfer-progress clean test
+    - name: mvn test
+      env:
+        _JAVA_OPTIONS: -Djava.net.preferIPv4Stack=true
+      run: ./mvnw -V --no-transfer-progress test
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-artifacts
+        path: target
     - name: Executable Jar
       run: |
-        set -e
         ./mvnw -V --no-transfer-progress package -DskipTests
-        java -jar target/blog-frontend-0.0.1-SNAPSHOT.jar &
-        .github/workflows/wait.sh
+        java -jar target/*.jar & .github/workflows/wait.sh
         curl --fail --show-error --silent http://localhost:8080
         curl --fail --show-error --silent http://localhost:8080/entries/412
         pkill -KILL java
-#    - name: Native Image
-#      if: github.ref == 'refs/heads/main'
-#      run: |
-#        set -e
-#        ./mvnw -V --no-transfer-progress -Pnative native:compile -DskipTests
-#        ./target/blog-frontend --management.otlp.tracing.endpoint=https://httpbin.org/post &
-#        .github/workflows/wait.sh
-#        curl --fail --show-error --silent http://localhost:8080
-#        curl --fail --show-error --silent http://localhost:8080/entries/412
-#        pkill -KILL blog-frontend || true
-#    - name: Import Secrets
-#      if: github.ref == 'refs/heads/main'
-#      id: secrets
-#      uses: hashicorp/vault-action@v3.0.0
-#      with:
-#        exportToken: true
-#        exportEnv: true
-#        method: jwt
-#        url: ${{ secrets.VAULT_ADDR }}
-#        role: cicd
-#        secrets: |
-#          kv/data/cicd/github api_token | GITHUB_API_TOKEN ;
-#    - name: Docker Login
-#      if: github.ref == 'refs/heads/main'
-#      run: docker login ghcr.io -u ${GITHUB_REPOSITORY_OWNER} -p ${GITHUB_API_TOKEN}
-#    - name: Install Pack
-#      if: github.ref == 'refs/heads/main'
-#      uses: buildpacks/github-actions/setup-pack@v5.6.0
-#    - name: Pack Build
-#      if: github.ref == 'refs/heads/main'
-#      run: |
-#        mkdir -p pack
-#        mv ./target/blog-frontend ./pack
-#        cat <<EOF > pack/Procfile
-#        web: ./blog-frontend
-#        EOF
-#        pack build ghcr.io/${GITHUB_REPOSITORY_OWNER}/blog-frontend \
-#          --env BP_OCI_SOURCE=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA} \
-#          --env BP_OCI_REVISION=${GITHUB_REF_NAME}@sha1:${GITHUB_SHA} \
-#          --gid 1000 \
-#          --publish \
-#          --builder paketobuildpacks/builder-jammy-tiny \
-#          --buildpack gcr.io/paketo-buildpacks/image-labels \
-#          --buildpack gcr.io/paketo-buildpacks/procfile \
-#          --path pack
-#    - name: Revoke token
-#      if: always()
-#      run: |
-#        curl -X POST -s -H "X-Vault-Token: ${VAULT_TOKEN}" ${{ secrets.VAULT_ADDR }}/v1/auth/token/revoke-self || true
+  build-jvm-image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    needs: test
+    steps:
+    - uses: actions/checkout@v2
+    - uses: graalvm/setup-graalvm@v1
+      with:
+        java-version: '21'
+        distribution: 'graalvm'
+        cache: 'maven'
+    - name: Download build artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: build-artifacts
+        path: target
+    - name: build image
+      run: ./mvnw -V --no-transfer-progress spring-boot:build-image -DskipTests -Dspring-boot.build-image.imageName=ghcr.io/${{ github.repository }}:jvm
+    - name: Login to GitHub Container Registry
+      if: github.ref == 'refs/heads/main'
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    - name: docker push
+      if: github.ref == 'refs/heads/main'
+      run: docker push ghcr.io/${{ github.repository }}:jvm
+    - name: Generate digest
+      if: github.ref == 'refs/heads/main'
+      run: |
+        cat <<EOF > image.yaml
+        image: $(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/${{ github.repository }}:jvm)
+        git_revision: ${GITHUB_SHA}
+        EOF
+    - name: Upload artifact
+      if: github.ref == 'refs/heads/main'
+      uses: actions/upload-artifact@v2
+      with:
+        name: image
+        path: image.yaml
+  build-native-image:
+    if: github.ref == 'refs/heads/skip'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    needs: test
+    steps:
+    - uses: actions/checkout@v2
+    - uses: graalvm/setup-graalvm@v1
+      with:
+        java-version: '21'
+        distribution: 'graalvm'
+        cache: 'maven'
+    - name: Download build artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: build-artifacts
+        path: target
+    - name: build image
+      run: ./mvnw -V --no-transfer-progress -Pnative clean spring-boot:build-image -DskipTests -Dspring-boot.build-image.imageName=ghcr.io/${{ github.repository }}:native
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    - name: docker push
+      run: |
+        docker push ghcr.io/${{ github.repository }}:native
+        docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/${{ github.repository }}:native
+    - name: Generate digest
+      if: github.ref == 'refs/heads/main'
+      run: |
+        cat <<EOF > image_native.yaml
+        image: $(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/${{ github.repository }}:native)
+        git_revision: ${GITHUB_SHA}
+        EOF
+    - name: Upload artifact
+      if: github.ref == 'refs/heads/main'
+      uses: actions/upload-artifact@v2
+      with:
+        name: image
+        path: image_native.yaml
+  save-image:
+    if: github.ref == 'refs/heads/main'
+    needs: [ build-jvm-image ]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: git config
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git remote set-url origin https://github-actions:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+    - name: Ensure images branch exists
+      run: |
+        if ! git ls-remote --exit-code --heads origin images; then
+          git checkout --orphan images
+          git reset --hard
+          git commit --allow-empty -m ":robot: Initial commit on images branch"
+          git push origin images
+        fi
+    - name: Checkout images branch
+      run: git checkout images
+    - name: Download artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: image
+        path: .
+    - name: Commit and push changes
+      run: |
+        git add -A
+        git commit -m ":robot: Add Docker image digest for ${GITHUB_SHA}"
+        git push origin images
