@@ -107,8 +107,32 @@ jobs:
       with:
         name: build-artifacts
         path: target
-    - name: build image
-      run: ./mvnw -V --no-transfer-progress -Pnative spring-boot:build-image -DskipTests -Dspring-boot.build-image.imageName=ghcr.io/${{ github.repository }}:native_${GITHUB_SHA}
+    - name: native image
+      run: ./mvnw -V --no-transfer-progress -Pnative native:compile -DskipTests
+    - name: test native image
+      run: |
+        ./target/${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/}--management.otlp.tracing.endpoint=https://httpbin.org/post --management.otlp.logs.endpoint=https://httpbin.org/post & .github/workflows/wait.sh
+        curl --fail --show-error --silent http://localhost:8080
+        curl --fail --show-error --silent http://localhost:8080/entries/412
+        pkill -KILL ${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/} || true
+    - name: Install Pack
+      uses: buildpacks/github-actions/setup-pack@v5.7.3
+    - name: Pack Build
+      if: github.ref == 'refs/heads/main'
+      run: |
+        mkdir -p pack
+        mv ./target/${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/} ./pack
+        cat <<EOF > pack/Procfile
+        web: ./${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/}
+        EOF
+        pack build ghcr.io/${{ github.repository }}:native_${GITHUB_SHA} \
+          --env BP_OCI_SOURCE=https://github.com/${GITHUB_REPOSITORY} \
+          --env BP_OCI_REVISION=${GITHUB_SHA} \
+          --gid 1002 \
+          --builder paketobuildpacks/builder-jammy-tiny \
+          --buildpack gcr.io/paketo-buildpacks/image-labels \
+          --buildpack gcr.io/paketo-buildpacks/procfile \
+          --path pack
     - name: Login to GitHub Container Registry
       uses: docker/login-action@v3
       with:
