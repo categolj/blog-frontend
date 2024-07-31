@@ -89,7 +89,7 @@ jobs:
         name: image
         path: image.yaml
   build-native-image:
-    if: github.ref == 'refs/heads/skip'
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -133,7 +133,7 @@ jobs:
         path: image_native.yaml
   save-image:
     if: github.ref == 'refs/heads/main'
-    needs: [ build-jvm-image ]
+    needs: [ build-jvm-image, build-native-image ]
     runs-on: ubuntu-latest
     permissions:
       contents: write
