@@ -64,5 +64,8 @@ Disallow: /
 User-agent: Pinterestbot
 Disallow: /
 
+User-agent: MJ12bot
+Disallow: /
+
 User-agent: *
 Disallow:
