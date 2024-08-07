@@ -67,5 +67,8 @@ Disallow: /
 User-agent: MJ12bot
 Disallow: /
 
+User-agent: BotPoke
+Disallow: /
+
 User-agent: *
 Disallow:
