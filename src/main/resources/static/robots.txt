@@ -70,5 +70,8 @@ Disallow: /
 User-agent: BotPoke
 Disallow: /
 
+User-agent: ICC-Crawler
+Disallow: /
+
 User-agent: *
 Disallow:
