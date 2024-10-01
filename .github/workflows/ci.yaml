@@ -20,6 +20,7 @@ jobs:
   test:
     uses: making/workflows/.github/workflows/maven-unit-test.yaml@main
     with:
+      version: '23'
       e2e_test: true
       test_url_1: http://localhost:8080
       test_url_2: http://localhost:8080/entries/412
@@ -27,12 +28,14 @@ jobs:
     needs: test
     uses: making/workflows/.github/workflows/build-docker-image-maven-jvm.yaml@main
     with:
+      version: '23'
       image_name: image_jvm
       image_file: image.yaml
   build-native-image:
     needs: test
     uses: making/workflows/.github/workflows/build-docker-image-maven-native.yaml@main
     with:
+      version: '23'
       image_name: image_native
       image_file: image_native.yaml
       e2e_test: true
