@@ -15,7 +15,7 @@
 	<description>blog-frontend</description>
 	<properties>
 		<java.version>21</java.version>
-		<graalvm.version>24.0.2</graalvm.version>
+		<graalvm.version>24.1.1</graalvm.version>
 	</properties>
 	<dependencies>
 		<dependency>
