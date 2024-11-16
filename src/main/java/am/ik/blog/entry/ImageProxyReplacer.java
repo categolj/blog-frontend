@@ -15,7 +15,7 @@ public class ImageProxyReplacer {
 	private final ImageProxyProps proxyProps;
 
 	static final Pattern assetsPattern = Pattern.compile(
-			"https://github.com/([a-z-A-Z-0-9.\\-_]+/[a-z-A-Z-0-9.\\-_]+/assets/[a-z-A-Z-0-9.\\-_]+/[a-z-A-Z-0-9.\\-_]+)",
+			"https://github.com/([a-z-A-Z-0-9.\\-_]+/?[a-z-A-Z-0-9.\\-_]+/assets/[a-z-A-Z-0-9.\\-_]+/?[a-z-A-Z-0-9.\\-_]+)",
 			Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
 
 	public ImageProxyReplacer(ImageProxyProps proxyProps) {
