@@ -14,6 +14,8 @@ import Message from "../../components/Message.tsx";
 import Counter from "../../components/Counter.tsx";
 import {OGP} from "../../components/OGP.tsx";
 import {ShareWithX} from "../../components/ShareWithX.tsx";
+import {ShareWithBlueSky} from "../../components/ShareWithBlueSky.tsx";
+import {ShareWithHatebu} from "../../components/ShareWithHatebu.tsx";
 import {NotTranslated} from "./NotTranslated.tsx";
 
 export interface EntryProps {
@@ -92,8 +94,12 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch
                 href={`https://github.com/making/${repo}/blob/${branch}/content/${entry.entryId.toString().padStart(5, '0')}.md`}>the
                 entry</a>.
             </blockquote>
-            <p>
+            <p style={{display: 'flex'}}>
                 <ShareWithX url={entryUrl} text={entry.frontMatter.title}/>
+                &nbsp;
+                <ShareWithBlueSky url={entryUrl} text={entry.frontMatter.title}/>
+                &nbsp;
+                <ShareWithHatebu url={entryUrl}/>
             </p>
         </Meta>
         <ScrollToTop smooth/>
