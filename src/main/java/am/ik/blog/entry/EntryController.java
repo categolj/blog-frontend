@@ -14,6 +14,7 @@ import am.ik.blog.entry.model.CursorPageEntryInstant;
 import am.ik.blog.entry.model.Entry;
 import am.ik.blog.entry.model.TagAndCount;
 
+import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -46,6 +47,7 @@ public class EntryController {
 	}
 
 	@GetMapping(path = { "/api/entries", "/api/tenants/{tenantId}/entries" })
+	@RegisterReflectionForBinding(EntryRequest.class)
 	public ResponseEntity<CursorPageEntryInstant> getEntries(EntryRequest request,
 			@PathVariable(required = false) String tenantId) {
 		ResponseEntity<CursorPageEntryInstant> response = this.entryClient.getEntries(request, tenantId);
