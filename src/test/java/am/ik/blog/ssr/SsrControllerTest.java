@@ -18,10 +18,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static io.github.ulfs.assertj.jsoup.Assertions.assertThatDocument;
@@ -32,20 +32,20 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = SsrController.class,
-		properties = { "logging.level.am.ik.blog=trace", "logging.logback.ecs-encoder.enabled=false" })
+		properties = { "logging.level.am.ik.blog=trace", "logging.structured.format.console=" })
 @Import(ReactRenderer.class)
 class SsrControllerTest {
 
 	@Autowired
 	MockMvc mvc;
 
-	@MockBean
+	@MockitoBean
 	EntryClient entryClient;
 
-	@MockBean
+	@MockitoBean
 	TagApi tagApi;
 
-	@MockBean
+	@MockitoBean
 	CategoryApi categoryApi;
 
 	Entry entry100 = Json.parse("""
