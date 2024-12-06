@@ -13,10 +13,6 @@ interface CommentsProps {
 export const Comments: React.FC<CommentsProps> = ({entryId}) => {
     const [user, setUser] = useState<GoogleUser | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
-
-    if (!entryId) {
-        return;
-    }
     useEffect(() => {
         const fetchUser = async () => {
             try {
@@ -34,6 +30,9 @@ export const Comments: React.FC<CommentsProps> = ({entryId}) => {
         };
         fetchUser();
     }, []);
+    if (!entryId) {
+        return;
+    }
     return <div>
         {user ? (
             <>
