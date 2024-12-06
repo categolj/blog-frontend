@@ -6,6 +6,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import am.ik.blog.Json;
+import am.ik.blog.config.SecurityConfig;
 import am.ik.blog.entry.EntryClient;
 import am.ik.blog.entry.ImageProxyReplacer;
 import am.ik.blog.entry.api.CategoryApi;
@@ -33,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(controllers = SsrController.class,
 		properties = { "logging.level.am.ik.blog=trace", "logging.structured.format.console=" })
-@Import(ReactRenderer.class)
+@Import({ ReactRenderer.class, SecurityConfig.class })
 class SsrControllerTest {
 
 	@Autowired

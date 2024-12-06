@@ -18,9 +18,12 @@ const InfoPage: React.FC = () => {
     }
     return <>
         <h2>Info</h2>
+        <ul>
+            {data.map(d => <li key={`${d.name}-li`}><a href={`#${d.name}`}>{d.name}</a></li>)}
+        </ul>
         {data.map(d => <>
-            <h3>{d.name}</h3>
-            <JSONToHTMLTable data={d.info}/>
+            <h3 key={`${d.name}-h3`} id={d.name}>{d.name}</h3>
+            <JSONToHTMLTable key={`${d.name}-table`} data={d.info}/>
         </>)}
     </>;
 };

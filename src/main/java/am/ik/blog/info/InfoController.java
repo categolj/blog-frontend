@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import am.ik.blog.CommentApiProps;
 import am.ik.blog.ImageProxyProps;
 import am.ik.blog.entry.api.InfoApi;
 
@@ -24,14 +25,18 @@ public class InfoController {
 
 	private final RestClient restClient;
 
+	private final CommentApiProps commentApiProps;
+
 	private final ImageProxyProps imageProxyProps;
 
 	public InfoController(InfoEndpoint infoEndpoint, InfoApi entryInfoApi, am.ik.note.api.InfoApi noteInfoApi,
-			RestClient.Builder restClientBuilder, ImageProxyProps imageProxyProps) {
+			RestClient.Builder restClientBuilder, CommentApiProps commentApiProps, ImageProxyProps imageProxyProps) {
 		this.infoEndpoint = infoEndpoint;
 		this.entryInfoApi = entryInfoApi;
 		this.noteInfoApi = noteInfoApi;
-		this.restClient = restClientBuilder.build();
+		this.restClient = restClientBuilder.defaultStatusHandler(__ -> true, (req, res) -> {
+		}).build();
+		this.commentApiProps = commentApiProps;
 		this.imageProxyProps = imageProxyProps;
 	}
 
@@ -39,6 +44,11 @@ public class InfoController {
 	public List<Map<String, Object>> info() {
 		Map<String, Object> self = this.infoEndpoint.info();
 		Map<String, Object> entry = this.entryInfoApi.info();
+		Map<String, Object> comment = this.restClient.get()
+			.uri(this.commentApiProps.url() + "/actuator/info")
+			.retrieve()
+			.body(new ParameterizedTypeReference<>() {
+			});
 		Map<String, Object> note = this.noteInfoApi.info();
 		Map<String, Object> imageProxy = this.restClient.get()
 			.uri(this.imageProxyProps.url() + "/actuator/info")
@@ -46,6 +56,7 @@ public class InfoController {
 			.body(new ParameterizedTypeReference<>() {
 			});
 		return List.of(Map.of("name", "Self", "info", self), Map.of("name", "Entry API", "info", entry),
+				Map.of("name", "Comment API", "info", Objects.requireNonNull(comment)),
 				Map.of("name", "Note API", "info", note),
 				Map.of("name", "Image Proxy", "info", Objects.requireNonNull(imageProxy)));
 	}

@@ -17,6 +17,7 @@ import {ShareWithX} from "../../components/ShareWithX.tsx";
 import {ShareWithBlueSky} from "../../components/ShareWithBlueSky.tsx";
 import {ShareWithHatebu} from "../../components/ShareWithHatebu.tsx";
 import {NotTranslated} from "./NotTranslated.tsx";
+import {Comments} from "../comment/Comments.tsx";
 
 export interface EntryProps {
     preLoadedEntry?: Entry;
@@ -102,6 +103,8 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch
                 <ShareWithHatebu url={entryUrl}/>
             </p>
         </Meta>
+        <h3>Comments</h3>
+        <Comments entryId={entryId}/>
         <ScrollToTop smooth/>
     </>;
 };
