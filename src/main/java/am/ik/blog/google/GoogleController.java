@@ -1,5 +1,6 @@
 package am.ik.blog.google;
 
+import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,9 +55,11 @@ public class GoogleController {
 
 	}
 
+	@RegisterReflectionForBinding
 	record AnonymousUser() implements LoginUser {
 	}
 
+	@RegisterReflectionForBinding
 	record GoogleUser(String id, String name, String email, String picture, String csrfToken) implements LoginUser {
 	}
 
