@@ -17,36 +17,71 @@ on:
     - pom.xml
     - .github/workflows/*
 jobs:
-  test:
-    uses: making/workflows/.github/workflows/maven-unit-test.yaml@main
+  unit-test:
+    uses: categolj/workflows/.github/workflows/unit-test.yaml@main
+  build-oci-image-jvm-amd64:
+    needs: unit-test
+    uses: categolj/workflows/.github/workflows/build-oci-image-jvm.yaml@main
     with:
-      e2e_test: true
-      test_url_1: http://localhost:8080
-      test_url_2: http://localhost:8080/entries/412
-  build-jvm-image:
-    needs: test
-    uses: making/workflows/.github/workflows/build-docker-image-maven-jvm.yaml@main
+      image_name: jvm_amd64
+      image_file: jvm_amd64.yaml
+      runs_on: ubuntu-latest
+  build-oci-image-jvm-aarch64:
+    needs: unit-test
+    uses: categolj/workflows/.github/workflows/build-oci-image-jvm.yaml@main
     with:
-      image_name: image_jvm
-      image_file: image.yaml
-  build-native-image:
-    needs: test
-    uses: making/workflows/.github/workflows/build-docker-image-maven-native.yaml@main
+      image_name: jvm_aarch64
+      image_file: jvm_aarch64.yaml
+      runs_on: ARM64
+  push-multi-arch-image-jvm:
+    needs:
+    - build-oci-image-jvm-amd64
+    - build-oci-image-jvm-aarch64
+    uses: categolj/workflows/.github/workflows/push-multi-arch-image.yaml@main
     with:
-      image_name: image_native
-      image_file: image_native.yaml
-      e2e_test: true
-      test_url_1: http://localhost:8080
-      test_url_2: http://localhost:8080/entries/412
-  save-image-jvm:
-    needs: build-jvm-image
-    uses: making/workflows/.github/workflows/save-images.yaml@main
+      prefix: jvm
+  save-image-jvm-amd64:
+    needs: build-oci-image-jvm-amd64
+    uses: categolj/workflows/.github/workflows/save-images.yaml@main
     with:
-      image_name: image_jvm
-      image_file: image.yaml
-  save-image-native:
-    needs: build-native-image
-    uses: making/workflows/.github/workflows/save-images.yaml@main
+      image_name: jvm_amd64
+      image_file: jvm_amd64.yaml
+  save-image-jvm-aarch64:
+    needs: build-oci-image-jvm-aarch64
+    uses: categolj/workflows/.github/workflows/save-images.yaml@main
     with:
-      image_name: image_native
-      image_file: image_native.yaml
+      image_name: jvm_aarch64
+      image_file: jvm_aarch64.yaml
+  build-oci-image-native-amd64:
+    needs: unit-test
+    uses: categolj/workflows/.github/workflows/build-oci-image-native.yaml@main
+    with:
+      image_name: native_amd64
+      image_file: native_amd64.yaml
+      runs_on: ubuntu-latest
+  build-oci-image-native-aarch64:
+    needs: unit-test
+    uses: categolj/workflows/.github/workflows/build-oci-image-native.yaml@main
+    with:
+      image_name: native_aarch64
+      image_file: native_aarch64.yaml
+      runs_on: ARM64
+  push-multi-arch-image-native:
+    needs:
+    - build-oci-image-native-amd64
+    - build-oci-image-native-aarch64
+    uses: categolj/workflows/.github/workflows/push-multi-arch-image.yaml@main
+    with:
+      prefix: native
+  save-image-native-amd64:
+    needs: build-oci-image-native-amd64
+    uses: categolj/workflows/.github/workflows/save-images.yaml@main
+    with:
+      image_name: native_amd64
+      image_file: native_amd64.yaml
+  save-image-native-aarch64:
+    needs: build-oci-image-native-aarch64
+    uses: categolj/workflows/.github/workflows/save-images.yaml@main
+    with:
+      image_name: native_aarch64
+      image_file: native_aarch64.yaml
