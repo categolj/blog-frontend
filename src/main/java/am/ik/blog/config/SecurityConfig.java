@@ -19,7 +19,11 @@ public class SecurityConfig {
 				.requestMatchers(HttpMethod.DELETE,"/api/comments/{commentId}").authenticated()
 				.anyRequest().permitAll()
 		// @formatter:on
-		).oauth2Login(Customizer.withDefaults()).csrf(csrf -> csrf.ignoringRequestMatchers("/api/counter")).build();
+		)
+			.oauth2Login(Customizer.withDefaults())
+			.csrf(csrf -> csrf.ignoringRequestMatchers("/api/counter", "/api/token", "/api/notes", "/api/readers",
+					"/api/password_reset"))
+			.build();
 	}
 
 }
