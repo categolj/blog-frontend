@@ -6,6 +6,7 @@ import java.util.Objects;
 
 import am.ik.blog.CommentApiProps;
 import am.ik.blog.ImageProxyProps;
+import am.ik.blog.TranslationApiProps;
 import am.ik.blog.entry.api.InfoApi;
 
 import org.springframework.boot.actuate.info.InfoEndpoint;
@@ -27,16 +28,20 @@ public class InfoController {
 
 	private final CommentApiProps commentApiProps;
 
+	private final TranslationApiProps translationApiProps;
+
 	private final ImageProxyProps imageProxyProps;
 
 	public InfoController(InfoEndpoint infoEndpoint, InfoApi entryInfoApi, am.ik.note.api.InfoApi noteInfoApi,
-			RestClient.Builder restClientBuilder, CommentApiProps commentApiProps, ImageProxyProps imageProxyProps) {
+			RestClient.Builder restClientBuilder, CommentApiProps commentApiProps,
+			TranslationApiProps translationApiProps, ImageProxyProps imageProxyProps) {
 		this.infoEndpoint = infoEndpoint;
 		this.entryInfoApi = entryInfoApi;
 		this.noteInfoApi = noteInfoApi;
 		this.restClient = restClientBuilder.defaultStatusHandler(__ -> true, (req, res) -> {
 		}).build();
 		this.commentApiProps = commentApiProps;
+		this.translationApiProps = translationApiProps;
 		this.imageProxyProps = imageProxyProps;
 	}
 
@@ -49,6 +54,11 @@ public class InfoController {
 			.retrieve()
 			.body(new ParameterizedTypeReference<>() {
 			});
+		Map<String, Object> translation = this.restClient.get()
+			.uri(this.translationApiProps.url() + "/actuator/info")
+			.retrieve()
+			.body(new ParameterizedTypeReference<>() {
+			});
 		Map<String, Object> note = this.noteInfoApi.info();
 		Map<String, Object> imageProxy = this.restClient.get()
 			.uri(this.imageProxyProps.url() + "/actuator/info")
@@ -57,6 +67,7 @@ public class InfoController {
 			});
 		return List.of(Map.of("name", "Self", "info", self), Map.of("name", "Entry API", "info", entry),
 				Map.of("name", "Comment API", "info", Objects.requireNonNull(comment)),
+				Map.of("name", "Translation API", "info", Objects.requireNonNull(translation)),
 				Map.of("name", "Note API", "info", note),
 				Map.of("name", "Image Proxy", "info", Objects.requireNonNull(imageProxy)));
 	}
