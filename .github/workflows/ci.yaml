@@ -65,7 +65,7 @@ jobs:
     with:
       image_name: native_aarch64
       image_file: native_aarch64.yaml
-      runs_on: ARM64
+      runs_on: ubuntu-24.04-arm
   push-multi-arch-image-native:
     needs:
     - build-oci-image-native-amd64
