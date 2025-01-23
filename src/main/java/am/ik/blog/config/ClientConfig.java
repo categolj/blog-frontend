@@ -1,7 +1,5 @@
 package am.ik.blog.config;
 
-import java.util.List;
-
 import am.ik.blog.BlogApiProps;
 import am.ik.blog.NoteApiProps;
 import am.ik.blog.entry.api.CategoryApi;
@@ -14,21 +12,28 @@ import am.ik.note.api.ReaderApi;
 import am.ik.note.api.TokenApi;
 import am.ik.note.invoker.ApiClient;
 import am.ik.spring.http.client.RetryableClientHttpRequestInterceptor;
-import org.zalando.logbook.spring.LogbookClientHttpRequestInterceptor;
-
+import java.time.Duration;
+import java.util.List;
 import org.springframework.boot.web.client.RestClientCustomizer;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.client.RestTemplateCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.util.backoff.FixedBackOff;
+import org.springframework.util.backoff.ExponentialBackOff;
+import org.zalando.logbook.spring.LogbookClientHttpRequestInterceptor;
+
+import static am.ik.spring.http.client.RetryableIOExceptionPredicate.ANY;
+import static am.ik.spring.http.client.RetryableIOExceptionPredicate.defaults;
 
 @Configuration(proxyBeanMethods = false)
 public class ClientConfig {
 
 	@Bean
 	public RetryableClientHttpRequestInterceptor requestInterceptor() {
-		return new RetryableClientHttpRequestInterceptor(new FixedBackOff(1_000, 2));
+		ExponentialBackOff backOff = new ExponentialBackOff(1_000, 2);
+		backOff.setMaxElapsedTime(Duration.ofSeconds(12).toMillis());
+		return new RetryableClientHttpRequestInterceptor(backOff,
+				opts -> opts.removeRetryableIOExceptions(defaults()).addRetryableIOException(ANY));
 	}
 
 	@Bean
