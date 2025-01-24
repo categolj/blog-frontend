@@ -12,14 +12,13 @@ import am.ik.note.api.ReaderApi;
 import am.ik.note.api.TokenApi;
 import am.ik.note.invoker.ApiClient;
 import am.ik.spring.http.client.RetryableClientHttpRequestInterceptor;
-import java.time.Duration;
 import java.util.List;
 import org.springframework.boot.web.client.RestClientCustomizer;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.client.RestTemplateCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.util.backoff.ExponentialBackOff;
+import org.springframework.util.backoff.FixedBackOff;
 import org.zalando.logbook.spring.LogbookClientHttpRequestInterceptor;
 
 import static am.ik.spring.http.client.RetryableIOExceptionPredicate.ANY;
@@ -30,9 +29,7 @@ public class ClientConfig {
 
 	@Bean
 	public RetryableClientHttpRequestInterceptor requestInterceptor() {
-		ExponentialBackOff backOff = new ExponentialBackOff(1_000, 2);
-		backOff.setMaxElapsedTime(Duration.ofSeconds(12).toMillis());
-		return new RetryableClientHttpRequestInterceptor(backOff,
+		return new RetryableClientHttpRequestInterceptor(new FixedBackOff(2, 5),
 				opts -> opts.removeRetryableIOExceptions(defaults()).addRetryableIOException(ANY));
 	}
 
