@@ -29,7 +29,7 @@ public class ClientConfig {
 
 	@Bean
 	public RetryableClientHttpRequestInterceptor requestInterceptor() {
-		return new RetryableClientHttpRequestInterceptor(new FixedBackOff(2, 5),
+		return new RetryableClientHttpRequestInterceptor(new FixedBackOff(2_000, 5),
 				opts -> opts.removeRetryableIOExceptions(defaults()).addRetryableIOException(ANY));
 	}
 
