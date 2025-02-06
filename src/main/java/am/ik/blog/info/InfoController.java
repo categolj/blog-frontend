@@ -1,5 +1,6 @@
 package am.ik.blog.info;
 
+import am.ik.blog.CounterApiProps;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -30,11 +31,13 @@ public class InfoController {
 
 	private final TranslationApiProps translationApiProps;
 
+	private final CounterApiProps counterApiProps;
+
 	private final ImageProxyProps imageProxyProps;
 
 	public InfoController(InfoEndpoint infoEndpoint, InfoApi entryInfoApi, am.ik.note.api.InfoApi noteInfoApi,
 			RestClient.Builder restClientBuilder, CommentApiProps commentApiProps,
-			TranslationApiProps translationApiProps, ImageProxyProps imageProxyProps) {
+			TranslationApiProps translationApiProps, CounterApiProps counterApiProps, ImageProxyProps imageProxyProps) {
 		this.infoEndpoint = infoEndpoint;
 		this.entryInfoApi = entryInfoApi;
 		this.noteInfoApi = noteInfoApi;
@@ -42,6 +45,7 @@ public class InfoController {
 		}).build();
 		this.commentApiProps = commentApiProps;
 		this.translationApiProps = translationApiProps;
+		this.counterApiProps = counterApiProps;
 		this.imageProxyProps = imageProxyProps;
 	}
 
@@ -60,6 +64,11 @@ public class InfoController {
 			.body(new ParameterizedTypeReference<>() {
 			});
 		Map<String, Object> note = this.noteInfoApi.info();
+		Map<String, Object> counter = this.restClient.get()
+			.uri(this.counterApiProps.url() + "/actuator/info")
+			.retrieve()
+			.body(new ParameterizedTypeReference<>() {
+			});
 		Map<String, Object> imageProxy = this.restClient.get()
 			.uri(this.imageProxyProps.url() + "/actuator/info")
 			.retrieve()
@@ -68,7 +77,7 @@ public class InfoController {
 		return List.of(Map.of("name", "Self", "info", self), Map.of("name", "Entry API", "info", entry),
 				Map.of("name", "Comment API", "info", Objects.requireNonNull(comment)),
 				Map.of("name", "Translation API", "info", Objects.requireNonNull(translation)),
-				Map.of("name", "Note API", "info", note),
+				Map.of("name", "Note API", "info", note), Map.of("name", "Counter API", "info", counter),
 				Map.of("name", "Image Proxy", "info", Objects.requireNonNull(imageProxy)));
 	}
 
