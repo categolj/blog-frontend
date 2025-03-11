@@ -22,7 +22,7 @@ public class SecurityConfig {
 		)
 			.oauth2Login(Customizer.withDefaults())
 			.csrf(csrf -> csrf.ignoringRequestMatchers("/api/counter", "/api/token", "/api/notes/**", "/api/readers",
-					"/api/password_reset", "/api/password_reset/**"))
+					"/api/readers/**", "/api/password_reset", "/api/password_reset/**"))
 			.build();
 	}
 
