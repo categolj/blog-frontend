@@ -17,7 +17,6 @@ import {ShareWithX} from "../../components/ShareWithX.tsx";
 import {ShareWithBlueSky} from "../../components/ShareWithBlueSky.tsx";
 import {ShareWithHatebu} from "../../components/ShareWithHatebu.tsx";
 import {NotTranslated} from "./NotTranslated.tsx";
-import {Comments} from "../comment/Comments.tsx";
 
 export interface EntryProps {
     preLoadedEntry?: Entry;
@@ -62,7 +61,8 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch
         return <Loading/>
     }
     const contentHtml = marked.parse(entry.content, {async: false, gfm: true}) as string;
-    const contentText = marked.parse(entry.content, {async: false, gfm: true, renderer: plainTextRenderer}) as string;
+    const contentText = marked.parse(entry.content,
+        {async: false, gfm: true, renderer: plainTextRenderer}) as string;
     const tags = entry.frontMatter.tags.length > 0 ? entry.frontMatter.tags
         .map<React.ReactNode>(t => <Link key={t.name}
                                          to={`/tags/${t.name}/entries`}>{t.name}</Link>)
@@ -76,15 +76,19 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch
         <a href={`/entries/${entryId}/en`}>🇬🇧 English</a>;
     const entryUrl = `https://ik.am/entries/${entry.entryId}${tenantId ? '/' + tenantId : ''}`
     return <>
-        <OGP title={`${entry.frontMatter.title} - IK.AM`} url={entryUrl} description={metaDescription}/>
+        <OGP title={`${entry.frontMatter.title} - IK.AM`} url={entryUrl}
+             description={metaDescription}/>
         <p id="entry-categories"><Category categories={entry.frontMatter.categories}/></p>
         <Title2 id="entry-title"><Link
-            to={`/entries/${entry.entryId}${tenantId ? '/' + tenantId : ''}`}>{entry.frontMatter.title}</Link></Title2>
+            to={`/entries/${entry.entryId}${tenantId ? '/' + tenantId
+                : ''}`}>{entry.frontMatter.title}</Link></Title2>
         <Meta id="entry-meta">
             Created on <span
-            title={entry.created.date}>{entry.created.date ? new Date(entry.created.date).toDateString() : 'N/A'}</span> •
+            title={entry.created.date}>{entry.created.date ? new Date(
+            entry.created.date).toDateString() : 'N/A'}</span> •
             Last Updated on <span
-            title={entry.updated.date}>{entry.updated.date ? new Date(entry.updated.date).toDateString() : 'N/A'}</span> • <Counter
+            title={entry.updated.date}>{entry.updated.date ? new Date(
+            entry.updated.date).toDateString() : 'N/A'}</span> • <Counter
             entryId={entryId!}/> • {translationLink}
             <Tags id="entry-tags">🏷️ {tags}</Tags>
         </Meta>
@@ -92,7 +96,8 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch
         <Meta>
             <blockquote>
                 Found a mistake? Update <a
-                href={`https://github.com/making/${repo}/blob/${branch}/content/${entry.entryId.toString().padStart(5, '0')}.md`}>the
+                href={`https://github.com/making/${repo}/blob/${branch}/content/${entry.entryId.toString().padStart(
+                    5, '0')}.md`}>the
                 entry</a>.
             </blockquote>
             <p style={{display: 'flex'}}>
@@ -103,8 +108,6 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch
                 <ShareWithHatebu url={entryUrl}/>
             </p>
         </Meta>
-        <h3>Comments</h3>
-        <Comments entryId={entryId}/>
         <ScrollToTop smooth/>
     </>;
 };
