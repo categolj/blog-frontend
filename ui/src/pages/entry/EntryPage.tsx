@@ -3,7 +3,7 @@ import {Link, useParams} from "react-router-dom";
 import useSWR, {Fetcher} from 'swr';
 import {ApiError, Entry, EntryService, ProblemDetail} from "../../clients/entry";
 import Loading from "../../components/Loading.tsx";
-import ScrollToTop from "react-scroll-to-top";
+import BackToTop from "../../components/BackToTop";
 import {addCopyButton} from '../../utils/copy.ts';
 import marked, {PlainTextRenderer} from '../../utils/marked.ts'
 import Category from "../../components/Category.tsx";
@@ -109,7 +109,7 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch
                 <ShareWithHatebu url={entryUrl}/>
             </p>
         </div>
-        <ScrollToTop smooth/>
+        <BackToTop />
     </>;
 };
 

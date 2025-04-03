@@ -3,7 +3,7 @@ import {Link, useNavigate, useParams} from "react-router-dom";
 import {Fetcher} from 'swr';
 import useSWRImmutable from 'swr/immutable';
 import Loading from "../../components/Loading.tsx";
-import ScrollToTop from "react-scroll-to-top";
+import BackToTop from "../../components/BackToTop";
 import {addCopyButton} from '../../utils/copy.ts';
 import marked from '../../utils/marked.ts'
 import {ApiError, NoteDetails, NoteService} from "../../clients/note";
@@ -19,14 +19,14 @@ const NotePage: React.FC = () => {
     if (error) {
         if (error.status === 401) {
             navigate('/note/login');
-            return <></>;
+            return <></>; 
         } else if (error.status === 403) {
-            return <Message status={'error'} text={<>未購読です。</>}/>
+            return <Message status={'error'} text={<>未購読です。</>}/>;
         } else {
-            return <Message status={'error'} text={<>{error.body || error.statusText}</>}/>
+            return <Message status={'error'} text={<>{error.body || error.statusText}</>}/>;
         }
     } else if (isLoading || !data) {
-        return <Loading/>
+        return <Loading/>;
     }
     const contentHtml = marked.parse(data.content, {async: false, gfm: true}) as string;
     return <>
@@ -41,7 +41,7 @@ const NotePage: React.FC = () => {
             title={data.updated.date}>{data.updated.date ? new Date(data.updated.date).toDateString() : 'N/A'}</span>
         </div>
         <article id="entry" dangerouslySetInnerHTML={{__html: contentHtml}}/>
-        <ScrollToTop smooth/>
+        <BackToTop />
     </>;
 };
 
