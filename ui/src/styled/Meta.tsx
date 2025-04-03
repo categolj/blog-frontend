@@ -1,12 +1,7 @@
-import {styled} from "styled-components";
+import React from 'react';
 
-export const Meta = styled.div`
-  margin: 0;
-  color: var(--meta);
-  display: inline-block;
-  width: 100%;
+interface MetaProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-  a {
-    color: var(--meta);
-  }
-`
+export const Meta: React.FC<MetaProps> = ({ className = '', ...props }) => {
+  return <div className={`m-0 text-meta inline-block w-full ${className}`} {...props} />;
+};

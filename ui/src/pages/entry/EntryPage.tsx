@@ -78,7 +78,7 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch
     return <>
         <OGP title={`${entry.frontMatter.title} - IK.AM`} url={entryUrl}
              description={metaDescription}/>
-        <p id="entry-categories"><Category categories={entry.frontMatter.categories}/></p>
+        <p id="entry-categories" className="mb-6"><Category categories={entry.frontMatter.categories}/></p>
         <Title2 id="entry-title"><Link
             to={`/entries/${entry.entryId}${tenantId ? '/' + tenantId
                 : ''}`}>{entry.frontMatter.title}</Link></Title2>

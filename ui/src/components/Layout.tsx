@@ -2,27 +2,19 @@ import Header from './Header.tsx';
 import {Outlet} from 'react-router-dom';
 import Footer from "./Footer.tsx";
 import Navi from "./Navi.tsx";
-import {styled} from "styled-components";
-
-const Container = styled.div`
-  padding: 20px;
-
-  @media (max-width: 800px) {
-    padding-left: 0;
-    padding-right: 0;
-  }
-`;
 
 const Layout = () => {
-    return <Container>
-        <Header/>
-        <Navi/>
-        <hr/>
-        <main>
-            <Outlet/>
-        </main>
-        <Footer/>
-    </Container>;
+    return (
+        <div className="p-6 md:p-8 sm:px-2">
+            <Header/>
+            <Navi/>
+            <hr className="my-4"/>
+            <main className="my-6">
+                <Outlet/>
+            </main>
+            <Footer/>
+        </div>
+    );
 };
 
 export default Layout;

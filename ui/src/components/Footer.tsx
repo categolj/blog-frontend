@@ -8,9 +8,9 @@ const Footer: React.FC = () => {
     return <>
         <hr/>
         <Foot>
-            <Link to={`/`}>IK.AM</Link> — &copy; 2010-{new Date().getFullYear()}
-            &nbsp;Toshiaki Maki (<Link to={`/aboutme`}>About</Link>) / <Link to={'/info'}>Info</Link> / <a
-            onClick={() => setTheme('light')}>Light Mode</a> / <a onClick={() => setTheme('dark')}>Dark Mode</a>
+            <Link to={`/`} className="text-fg2">IK.AM</Link> — &copy; 2010-{new Date().getFullYear()}
+            &nbsp;Toshiaki Maki (<Link to={`/aboutme`} className="text-fg2">About</Link>) / <Link to={'/info'} className="text-fg2">Info</Link> / <a
+            onClick={() => setTheme('light')} className="text-fg2 cursor-pointer">Light Mode</a> / <a onClick={() => setTheme('dark')} className="text-fg2 cursor-pointer">Dark Mode</a>
         </Foot>
     </>;
 };

@@ -1,6 +1,7 @@
-import {styled} from "styled-components";
+import React from 'react';
 
-export const LastUpdated = styled.span`
-  color: var(--meta);
-  font-size: smaller;
-`
+interface LastUpdatedProps extends React.HTMLAttributes<HTMLSpanElement> {}
+
+export const LastUpdated: React.FC<LastUpdatedProps> = ({ className = '', ...props }) => {
+  return <span className={`text-meta text-smaller ${className}`} {...props} />;
+};

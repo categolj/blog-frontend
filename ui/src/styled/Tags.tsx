@@ -1,12 +1,12 @@
-import {styled} from "styled-components";
+import React from 'react';
 
-export const Tags = styled.p`
-  color: var(--meta);
-  float: right;
-  font-size: smaller;
-  margin: 0 1em 0 0;
+interface TagsProps extends React.HTMLAttributes<HTMLParagraphElement> {}
 
-  a {
-    color: var(--meta);
-  }
-`
+export const Tags: React.FC<TagsProps> = ({ className = '', ...props }) => {
+  return (
+    <p 
+      className={`text-meta float-right text-smaller m-0 mr-4 ${className}`} 
+      {...props} 
+    />
+  );
+};

@@ -1,6 +1,7 @@
-import styled from "styled-components";
+import React from 'react';
 
-export const Input = styled.input`
-  margin-bottom: 16px;
-  padding: 8px;
-`;
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {}
+
+export const Input: React.FC<InputProps> = ({ className = '', ...props }) => {
+  return <input className={`mb-5 p-3 w-full border border-fg2 rounded-md focus:ring-2 focus:ring-fg2 focus:border-fg2 ${className}`} {...props} />;
+};

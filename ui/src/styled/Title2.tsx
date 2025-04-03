@@ -1,10 +1,13 @@
-import {styled} from "styled-components";
+import React from 'react';
 
-export const Title2 = styled.h2`
-  font-size: 1.5rem;
-  margin: 0 0 0.5rem;
+interface Title2Props extends React.HTMLAttributes<HTMLHeadingElement> {
+  children: React.ReactNode;
+}
 
-  a {
-    color: var(--fg2);
-  }
-`;
+export const Title2: React.FC<Title2Props> = ({ className = '', children, ...props }) => {
+  return (
+    <h2 className={`text-2xl m-0 mb-4 ${className}`} {...props}>
+      {children}
+    </h2>
+  );
+};

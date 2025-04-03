@@ -1,30 +1,57 @@
-# React + TypeScript + Vite
+# Blog Frontend UI
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the frontend UI for the blog application, built with React, TypeScript, and Vite.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- React 18
+- TypeScript
+- Vite
+- React Router
+- Tailwind CSS
+- styled-components (being phased out in favor of Tailwind CSS)
 
-## Expanding the ESLint configuration
+## Development
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+```bash
+# Install dependencies
+npm install
 
-- Configure the top-level `parserOptions` property like this:
+# Start the development server
+npm run dev
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+# Build for production
+npm run build
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Styling
+
+The project is transitioning from styled-components to Tailwind CSS. See the [TAILWIND_MIGRATION_PLAN.md](./TAILWIND_MIGRATION_PLAN.md) for details on the migration process.
+
+### Tailwind CSS
+
+Tailwind utility classes should be used for new components and when updating existing ones. The project uses a custom Tailwind configuration that includes:
+
+- Custom color variables that match the existing design system
+- Custom font settings
+- Responsive breakpoints
+
+### styled-components
+
+While the project is migrating to Tailwind CSS, some components still use styled-components. The goal is to gradually phase out this library in favor of Tailwind.
+
+## Server-side Rendering
+
+The application uses GraalJS for server-side rendering. The build process creates both client and server builds:
+
+```bash
+# Build client-side bundle
+npm run build:client
+
+# Build server-side bundle
+npm run build:server
+```
+
+## Integration with Backend
+
+The UI integrates with a Spring Boot backend. During development, API requests are proxied to the backend server running on port 8080.

@@ -1,182 +1,159 @@
-html,
-body {
-    font-size: 13px;
-    font-family: Menlo, Monaco, 'Courier New', monospace;
-    font-weight: 400;
-    font-style: normal;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --fg: #000;
+    --fg2: #333;
+    --bg: #fff;
+    --code-fg: #333;
+    --code-bg: #f6f5f5;
+    --meta: #031b4e99;
+  }
+
+  [data-theme="dark"] {
+    --fg: #fff;
+    --fg2: #ddd;
+    --bg: #000;
+    --code-fg: #061433;
+    --code-bg: #dbdde7;
+    --meta: #ccd2ecff;
+  }
+
+  html,
+  body {
+    @apply text-sm font-mono font-normal;
     text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
+  }
+
+  * {
+    @apply box-border;
+  }
+
+  img {
+    @apply max-w-full rounded-[10px] p-[5px];
+  }
+
+  img[alt=image], img[alt=alt_text] {
+    @apply w-full max-w-[1024px];
+  }
+
+  blockquote, div.markdown-alert {
+    @apply my-[5px] mx-0 p-[10px] rounded-[5px] border border-dotted border-fg text-xs;
+  }
+
+  blockquote > p, div.markdown-alert > p {
+    @apply m-0 mb-0.5;
+  }
+
+  table, td, th {
+    @apply border-collapse border border-fg2 p-[5px] overflow-x-auto;
+  }
+
+  .octicon {
+    @apply m-0 mr-1;
+  }
+
+  pre {
+    @apply border border-solid border-fg rounded-[5px] leading-[1.25em] text-xs flex relative p-[10px] text-[color:var(--code-fg)] bg-[color:var(--code-bg)] overflow-x-auto;
+  }
+
+  p code {
+    @apply p-[2px];
+  }
+
+  code {
+    @apply font-[ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation_Mono,Courier_New,monospace];
+  }
+
+  ul {
+    @apply m-0 ml-6 p-0 list-disc;
+  }
+
+  li {
+    @apply p-[0.1rem];
+  }
+
+  p {
+    @apply my-6;
+  }
+
+  a {
+    @apply text-fg2 underline decoration-dotted decoration-1 underline-offset-2;
+  }
+
+  h2 {
+    @apply text-2xl mt-10 mb-6;
+  }
+
+  h3 {
+    @apply text-xl mt-8 mb-4;
+  }
+
+  h4 {
+    @apply text-lg mt-6 mb-3;
+  }
+
+  h5 {
+    @apply text-base font-bold mt-5 mb-2;
+  }
+
+  h2:before {
+    content: "## ";
+  }
+
+  h3:before {
+    content: "### ";
+  }
+
+  h4:before {
+    content: "#### ";
+  }
+
+  h5:before {
+    content: "##### ";
+  }
+
+  h6:before {
+    content: "###### ";
+  }
 }
 
-* {
-    box-sizing: border-box;
-}
+@layer components {
+  /* https://github.com/markedjs/marked/blob/master/docs/css/style.css */
+  .div-copy {
+    @apply absolute top-0 right-0;
+  }
 
-img {
-    max-width: 100%;
-    border-radius: 10px;
-    padding: 5px;
-}
+  .div-copy .icon-copy {
+    @apply opacity-100 transition-opacity duration-300 h-7 w-7 cursor-pointer p-1;
+  }
 
-img[alt=image], img[alt=alt_text] {
-    width: 100%;
-    max-width: 1024px;
-}
+  .div-copy.active .icon-copy {
+    @apply opacity-100;
+  }
 
-blockquote, div.markdown-alert {
-    margin: 5px 0;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px var(--fg) dotted;
-    font-size: 12px;
-}
+  .div-copy .tooltip-copy {
+    @apply relative;
+  }
 
-blockquote > p, div.markdown-alert > p {
-    margin: 0 0 0.25rem;
-}
-
-table, td, th {
-    border-collapse: collapse;
-    border: 1px solid var(--fg2);
-    padding: 5px;
-    overflow-x: auto;
-}
-
-.octicon {
-    margin: 0 0.25rem 0 0;
-}
-
-pre {
-    border: 1px var(--fg) solid;
-    border-radius: 5px;
-    line-height: 1.25em;
-    font-size: 12px;
-    display: flex;
-    position: relative;
-    padding: 10px;
-    color: var(--code-fg);
-    background: var(--code-bg);
-    overflow-x: auto;
-}
-
-p code {
-    padding: 2px;
-}
-
-code {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
-}
-
-ul {
-    margin: 0 0 0 1.5rem;
-    padding: 0;
-}
-
-li {
-    padding: 0.1rem;
-}
-
-a {
-    color: var(--fg2);
-    text-decoration: underline;
-    text-decoration-style: dotted;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 2px;
-}
-
-h2:before {
-    content: "## "
-}
-
-h3:before {
-    content: "### "
-}
-
-h4:before {
-    content: "#### "
-}
-
-h5:before {
-    content: "##### "
-}
-
-h6:before {
-    content: "###### "
-}
-
-/* https://github.com/markedjs/marked/blob/master/docs/css/style.css */
-
-.div-copy {
-    position: absolute;
-    top: 0;
-    right: 0;
-}
-
-.div-copy .icon-copy {
-    opacity: 1;
-    transition: opacity .3s;
-    height: 28px;
-    width: 28px;
-    cursor: pointer;
-    padding: 4px;
-}
-
-.div-copy.active .icon-copy {
-    opacity: 1;
-}
-
-.div-copy .tooltip-copy {
-    position: relative;
-}
-
-.div-copy .tooltip-copy::before {
+  .div-copy .tooltip-copy::before {
     content: "Copied";
-    position: absolute;
+    @apply absolute top-1/2 -translate-y-1/2 right-full mr-[5px] py-[2px] px-[7px] rounded-[5px] bg-fg2 text-bg text-center opacity-0 transition-opacity duration-300;
+  }
 
-    /* vertically center */
-    top: 50%;
-    transform: translateY(-50%);
+  .div-copy.click .tooltip-copy::before {
+    @apply opacity-100;
+  }
 
-    /* move to right */
-    right: 100%;
-    margin-right: 5px; /* and add a small left margin */
-
-    /* basic styles */
-    padding: 2px 7px;
-    border-radius: 5px;
-    background: var(--fg2);
-    color: var(--bg);
-    text-align: center;
-
-    opacity: 0; /* hide by default */
-    transition: opacity .3s;
-}
-
-.div-copy.click .tooltip-copy::before {
-    opacity: 1;
-}
-
-.div-copy .tooltip-copy::after {
+  .div-copy .tooltip-copy::after {
     content: "";
-    position: absolute;
+    @apply absolute right-full mr-[-5px] top-1/2 -translate-y-1/2 border-solid border-[2px_2px_5px_8px] border-transparent border-l-fg2 opacity-0 transition-opacity duration-300;
+  }
 
-    /* position tooltip correctly */
-    right: 100%;
-    margin-right: -5px;
-
-    /* vertically center */
-    top: 50%;
-    transform: translateY(-50%);
-
-    /* the arrow */
-    border-style: solid;
-    border-width: 2px 2px 5px 8px;
-    border-color: transparent transparent transparent var(--fg2);
-
-    opacity: 0;
-    transition: opacity .3s;
-}
-
-.div-copy.click .tooltip-copy::after {
-    opacity: 1;
+  .div-copy.click .tooltip-copy::after {
+    @apply opacity-100;
+  }
 }

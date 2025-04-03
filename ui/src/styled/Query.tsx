@@ -1,6 +1,7 @@
-import {styled} from "styled-components";
+import React from 'react';
 
-export const Query = styled.p`
-  color: var(--meta);
-  font-size: small;
-`
+interface QueryProps extends React.HTMLAttributes<HTMLParagraphElement> {}
+
+export const Query: React.FC<QueryProps> = ({ className = '', ...props }) => {
+  return <p className={`text-meta text-sm ${className}`} {...props} />;
+};

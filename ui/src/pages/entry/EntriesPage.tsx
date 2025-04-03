@@ -59,9 +59,9 @@ const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries, tenantId}) => {
     return (<>
         <OGP />
         <div id="entries">
-            {categories && <p><Category categories={categories.split(',').map(c => ({name: c}))}/></p>}
-            {tag && <Tag>🏷️ {tag}</Tag>}
-            {query && <Query>Query: {query}</Query>}
+            {categories && <p className="mb-6"><Category categories={categories.split(',').map(c => ({name: c}))}/></p>}
+            {tag && <Tag className="mb-6">🏷️ {tag}</Tag>}
+            {query && <Query className="mb-6">Query: {query}</Query>}
             <h2>Entries</h2>
             <ul>
                 {entries && entries.map(entry => <li key={entry.entryId}><Link

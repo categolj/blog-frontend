@@ -7,7 +7,6 @@ import {Route, RouteObject, Routes} from "react-router-dom";
 import {RouteProps} from "react-router/dist/lib/components";
 import Layout from "./components/Layout.tsx";
 import {HelmetProvider} from "react-helmet-async";
-import {GlobalStyle} from "./styled/GlobalStyle.tsx";
 import {ThemeProvider} from "next-themes";
 
 const helmetContext = {};
@@ -17,7 +16,6 @@ export function render(url: string, input: string) {
     const router = routes(initData)[0].children as RouteObject[];
     const html = ReactDOMServer.renderToString(
         <React.StrictMode>
-            <GlobalStyle/>
             <ThemeProvider disableTransitionOnChange={true}>
                 <HelmetProvider context={helmetContext}>
                     <StaticRouter location={url}>

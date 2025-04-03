@@ -1,9 +1,13 @@
-import {styled} from "styled-components";
+import React from 'react';
 
-export const Foot = styled.footer`
-  font-size: 1em;
+interface FootProps extends React.HTMLAttributes<HTMLElement> {
+  children: React.ReactNode;
+}
 
-  a {
-    color: var(--fg2);
-  }
-`;
+export const Foot: React.FC<FootProps> = ({ className = '', children, ...props }) => {
+  return (
+    <footer className={`text-base ${className}`} {...props}>
+      {children}
+    </footer>
+  );
+};
