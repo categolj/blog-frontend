@@ -57,7 +57,18 @@
   }
 
   pre {
-    @apply border border-solid border-fg rounded-[5px] leading-[1.25em] text-xs flex relative p-[10px] text-[color:var(--code-fg)] bg-[color:var(--code-bg)] overflow-x-auto;
+    @apply border border-solid border-fg rounded-[5px] leading-[1.25em] text-xs flex relative p-[10px] text-[color:var(--code-fg)] bg-[color:var(--code-bg)] overflow-x-auto my-4;
+  }
+  
+  /* Add spacing when pre, table, or blockquote are followed by each other */
+  pre + pre,
+  pre + table,
+  pre + blockquote,
+  table + pre,
+  table + blockquote,
+  blockquote + pre,
+  blockquote + table {
+    @apply mt-6;
   }
 
   p code {
