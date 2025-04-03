@@ -35,7 +35,7 @@ const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries, tenantId}) => {
                       pl-4 py-2 mb-4 hover:border-l-[6px] transition-all duration-200`;
     
     // Filter badge styles
-    const filterBadgeStyle = `inline-flex items-center px-3 py-1 rounded-full text-xs 
+    const filterBadgeStyle = `inline-flex items-center px-3 py-1 rounded-full text-sm 
                            ${isDark ? 'bg-fg/15 text-fg' : 'bg-fg2/10 text-fg2'}`;
     
     let request: object = {size: limit};
@@ -89,12 +89,12 @@ const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries, tenantId}) => {
         <OGP />
         <div id="entries">
             <div className="mb-8">
-                <h2 className="text-2xl font-bold mb-6">Entries</h2>
+                <h2 className="text-2xl font-bold mb-2">Entries</h2>
                 
                 {/* Filter section */}
                 {(categories || tag || query) && (
-                    <div className={`mb-6 p-4 rounded-lg ${isDark ? 'bg-fg/5' : 'bg-fg2/5'}`}>
-                        <h3 className="text-sm mb-3 font-bold opacity-70">Active filters</h3>
+                    <div className={`mt-0 mb-4 py-1 px-2 rounded-lg ${isDark ? 'bg-fg/5' : 'bg-fg2/5'}`}>
+                        <h3 className="text-sm mb-1 font-bold opacity-70">Active filters</h3>
                         <div className="flex flex-wrap gap-2">
                             {categories && (
                                 <div className={filterBadgeStyle}>
@@ -119,7 +119,7 @@ const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries, tenantId}) => {
                             
                             <Link 
                                 to="/entries" 
-                                className={`${filterBadgeStyle} bg-fg text-bg hover:bg-fg2 transition-colors`}
+                                className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-fg text-bg hover:bg-fg2 transition-colors"
                             >
                                 Clear all
                             </Link>
@@ -181,13 +181,13 @@ const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries, tenantId}) => {
             </div>
             
             {/* Load more section */}
-            <div className="flex justify-center">
+            <div>
                 <LoadMore data={data} limit={limit} size={size} setSize={setSize} isPreLoaded={isPreLoaded}/>
             </div>
             
             {/* Translation link */}
             {(!categories && !tag && !query) && (
-                <div className="mt-8 mb-4 text-center">
+                <div className="mt-8 mb-4">
                     {translationLink}
                 </div>
             )}

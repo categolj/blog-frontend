@@ -13,7 +13,7 @@ const Category: React.FC<CategoryProps> = ({categories}) => {
         categoriesList.push(c.name);
         const segment = categoriesList.join(',');
         links.push(link(segment, categoriesList));
-        links.push(<span key={segment + '-slash'}>{` > `}</span>);
+        links.push(<span key={segment + '-slash'} className="mx-1.5">{` > `}</span>);
     });
     links.pop();
     return links;
@@ -21,7 +21,7 @@ const Category: React.FC<CategoryProps> = ({categories}) => {
 
 function link(segment: string, categories: string[]): React.ReactNode {
     const name = categories[categories.length - 1];
-    return <Link key={segment} to={`/categories/${segment}/entries`}>{`${name}`}</Link>;
+    return <Link key={segment} to={`/categories/${segment}/entries`} className="text-sm font-medium hover:underline">{`${name}`}</Link>;
 }
 
 export default Category;
