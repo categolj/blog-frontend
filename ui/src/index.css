@@ -20,6 +20,11 @@
     --code-bg: #dbdde7;
     --meta: #ccd2ecff;
   }
+  
+  /* Custom cursor for binary effect */
+  .cursor-binary {
+    cursor: pointer;
+  }
 
   html,
   body {
