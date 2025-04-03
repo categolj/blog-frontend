@@ -12,7 +12,7 @@
     --meta: #031b4e99;
   }
 
-  [data-theme="dark"] {
+  .dark {
     --fg: #fff;
     --fg2: #ddd;
     --bg: #000;
@@ -23,7 +23,7 @@
 
   html,
   body {
-    @apply text-sm font-mono font-normal;
+    @apply text-sm font-mono font-normal bg-bg text-fg;
     text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
   }
