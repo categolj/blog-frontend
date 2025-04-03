@@ -1,8 +1,6 @@
 import React from 'react';
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
-
-export const Button: React.FC<ButtonProps> = ({ className = '', ...props }) => {
+export const Button: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>> = ({ className = '', ...props }) => {
   return <button 
     className={`
       p-3 bg-fg text-bg border border-fg rounded-md 

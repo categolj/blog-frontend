@@ -1,7 +1,5 @@
 import React from 'react';
 
-interface MetaProps extends React.HTMLAttributes<HTMLDivElement> {}
-
-export const Meta: React.FC<MetaProps> = ({ className = '', ...props }) => {
+export const Meta: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ className = '', ...props }) => {
   return <div className={`m-0 text-meta inline-block w-full ${className}`} {...props} />;
 };

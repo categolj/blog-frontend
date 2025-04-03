@@ -1,8 +1,6 @@
 import React from 'react';
 
-interface LoadButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
-
-export const LoadButton: React.FC<LoadButtonProps> = ({ className = '', ...props }) => {
+export const LoadButton: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>> = ({ className = '', ...props }) => {
   return (
     <button 
       className={`
