@@ -1,8 +1,4 @@
 import React, {ChangeEvent, FormEvent, useState} from 'react';
-import {Button} from "../../styled/Button.tsx";
-import {Input} from "../../styled/Input.tsx";
-import {Label} from "../../styled/Label.tsx";
-import {Form} from "../../styled/Form.tsx";
 import {ApiError, PasswordResetService} from "../../clients/note";
 import Message, {MessageProps} from "../../components/Message.tsx";
 import {Link, useParams} from "react-router-dom";
@@ -67,13 +63,17 @@ const PasswordResetPage: React.FC = () => {
         <OGP title={`はじめるSpring Boot 3`} url={`https://ik.am/notes`}/>
         <h2>Password Reset</h2>
         <Message {...message} />
-        <Form onSubmit={async event => {
-            setFreeze(true);
-            await handleSubmit(event);
-            setFreeze(false);
-        }}>
-            <Label htmlFor='password'>Password</Label>
-            <Input
+        <form 
+            className="flex flex-col w-[600px] max-w-full ml-0 gap-4"
+            onSubmit={async event => {
+                setFreeze(true);
+                await handleSubmit(event);
+                setFreeze(false);
+            }}
+        >
+            <label className="mb-3 block font-medium" htmlFor='password'>Password</label>
+            <input
+                className="mb-5 p-3 w-full border border-fg2 rounded-md focus:ring-2 focus:ring-fg2 focus:border-fg2"
                 type='password'
                 name='password'
                 id='password'
@@ -83,8 +83,9 @@ const PasswordResetPage: React.FC = () => {
                 disabled={freeze}
                 required={true}
             />
-            <Label htmlFor='confirmPassword'>Password (confirm)</Label>
-            <Input
+            <label className="mb-3 block font-medium" htmlFor='confirmPassword'>Password (confirm)</label>
+            <input
+                className="mb-5 p-3 w-full border border-fg2 rounded-md focus:ring-2 focus:ring-fg2 focus:border-fg2"
                 type='password'
                 name='confirmPassword'
                 id='confirmPassword'
@@ -94,9 +95,14 @@ const PasswordResetPage: React.FC = () => {
                 disabled={freeze}
                 required={true}
             />
-            <Button type='submit'
-                    disabled={freeze}>Password Reset</Button>
-        </Form>
+            <button 
+                className="p-3 bg-fg text-bg border border-fg rounded-md hover:bg-fg2 transition-colors duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                type='submit'
+                disabled={freeze}
+            >
+                Password Reset
+            </button>
+        </form>
     </>;
 };
 

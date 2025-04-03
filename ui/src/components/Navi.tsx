@@ -1,44 +1,26 @@
 import {NavLink} from 'react-router-dom';
-import {styled} from "styled-components";
 import SearchBox from "./SearchBox.tsx";
 
-const NaviContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 600px;
-`;
-
-const NaviList = styled.ul`
-  margin: 0;
-
-  li {
-    list-style: none;
-    display: inline;
-    padding-right: 1em;
-    font-weight: bold;
-  }
-  
-  li a {
-    text-decoration: none;
-  }
-
-  li a.active {
-    border-bottom: dashed;
-    border-width: 1px;
-  }
-`;
-
 const Navi = () => {
-    return <NaviContainer>
-        <NaviList id='navi'>
-            <li><NavLink to={'/'}>Home</NavLink></li>
-            <li><NavLink to={'/tags'}>Tags</NavLink></li>
-            <li><NavLink to={'/categories'}>Categories</NavLink></li>
-            <li><NavLink to={'/notes'}>Notes</NavLink></li>
-        </NaviList>
-        <SearchBox/>
-    </NaviContainer>;
+    return (
+        <div className="flex justify-between items-center max-w-[600px]">
+            <ul className="m-0" id='navi'>
+                <li className="list-none inline pr-4 font-bold">
+                    <NavLink to={'/'} className={({isActive}) => isActive ? "no-underline border-b border-dashed border-1" : "no-underline"}>Home</NavLink>
+                </li>
+                <li className="list-none inline pr-4 font-bold">
+                    <NavLink to={'/tags'} className={({isActive}) => isActive ? "no-underline border-b border-dashed border-1" : "no-underline"}>Tags</NavLink>
+                </li>
+                <li className="list-none inline pr-4 font-bold">
+                    <NavLink to={'/categories'} className={({isActive}) => isActive ? "no-underline border-b border-dashed border-1" : "no-underline"}>Categories</NavLink>
+                </li>
+                <li className="list-none inline pr-4 font-bold">
+                    <NavLink to={'/notes'} className={({isActive}) => isActive ? "no-underline border-b border-dashed border-1" : "no-underline"}>Notes</NavLink>
+                </li>
+            </ul>
+            <SearchBox/>
+        </div>
+    );
 };
 
 export default Navi;

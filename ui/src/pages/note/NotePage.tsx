@@ -6,8 +6,6 @@ import Loading from "../../components/Loading.tsx";
 import ScrollToTop from "react-scroll-to-top";
 import {addCopyButton} from '../../utils/copy.ts';
 import marked from '../../utils/marked.ts'
-import {Title2} from "../../styled/Title2.tsx";
-import {Meta} from "../../styled/Meta.tsx";
 import {ApiError, NoteDetails, NoteService} from "../../clients/note";
 import Message from "../../components/Message.tsx";
 import {OGP} from "../../components/OGP.tsx";
@@ -33,13 +31,15 @@ const NotePage: React.FC = () => {
     const contentHtml = marked.parse(data.content, {async: false, gfm: true}) as string;
     return <>
         <OGP title={data.frontMatter.title} url={`https://ik.am/notes/${data.entryId}`} />
-        <Title2 id="entry-title"><Link to={`/notes/${data.entryId}`}>{data.frontMatter.title}</Link></Title2>
-        <Meta id="entry-meta">
+        <h2 id="entry-title" className="text-2xl m-0 mb-4">
+            <Link to={`/notes/${data.entryId}`}>{data.frontMatter.title}</Link>
+        </h2>
+        <div id="entry-meta" className="m-0 text-meta inline-block w-full">
             Created on <span
             title={data.created && data.created.date}>{data.created && data.created.date ? new Date(data.created.date).toDateString() : 'N/A'}</span> •
             Last Updated on <span
             title={data.updated.date}>{data.updated.date ? new Date(data.updated.date).toDateString() : 'N/A'}</span>
-        </Meta>
+        </div>
         <article id="entry" dangerouslySetInnerHTML={{__html: contentHtml}}/>
         <ScrollToTop smooth/>
     </>;

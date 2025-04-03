@@ -1,10 +1,11 @@
 import React from "react";
 import {Link} from "react-router-dom";
-import {Title1} from "../styled/Title1.tsx";
 
 const Header: React.FC = () => {
     return <>
-        <Title1><Link to={`/`}>IK.AM</Link></Title1>
+        <h1 className="text-[1.75rem] mt-0 mb-6">
+            <Link to={`/`}>IK.AM</Link>
+        </h1>
     </>;
 };
 

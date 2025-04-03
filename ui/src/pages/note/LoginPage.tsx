@@ -2,10 +2,6 @@ import React, {ChangeEvent, FormEvent, useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import {PasswordResetService} from '../../clients/note';
 import {ApiResult} from '../../clients/note/core/ApiResult.ts';
-import {Button} from "../../styled/Button.tsx";
-import {Input} from "../../styled/Input.tsx";
-import {Label} from "../../styled/Label.tsx";
-import {Form} from "../../styled/Form.tsx";
 import Message, {MessageProps} from "../../components/Message.tsx";
 import {OGP} from "../../components/OGP.tsx";
 
@@ -74,13 +70,17 @@ const LoginPage: React.FC = () => {
             href={'https://note.com/makingx/m/m2dc6f318899c'}>note.com</a>でノートまたはマガジン購入した上で、note.comとは別に当システムにアカウントを作成する必要があります。<br/>
             未登録の場合は<Link to={`/note/signup`}>こちら</Link>から登録してください。
         </p>
-        <Form onSubmit={async event => {
-            setFreeze(true);
-            await handleSubmitLogin(event);
-            setFreeze(false);
-        }}>
-            <Label htmlFor='username'>Email</Label>
-            <Input
+        <form 
+            className="flex flex-col w-[600px] max-w-full ml-0 gap-4"
+            onSubmit={async event => {
+                setFreeze(true);
+                await handleSubmitLogin(event);
+                setFreeze(false);
+            }}
+        >
+            <label className="mb-3 block font-medium" htmlFor='username'>Email</label>
+            <input
+                className="mb-5 p-3 w-full border border-fg2 rounded-md focus:ring-2 focus:ring-fg2 focus:border-fg2"
                 type='email'
                 name='username'
                 id='username'
@@ -90,8 +90,9 @@ const LoginPage: React.FC = () => {
                 disabled={freeze}
                 required={true}
             />
-            <Label htmlFor='password'>Password</Label>
-            <Input
+            <label className="mb-3 block font-medium" htmlFor='password'>Password</label>
+            <input
+                className="mb-5 p-3 w-full border border-fg2 rounded-md focus:ring-2 focus:ring-fg2 focus:border-fg2"
                 type='password'
                 name='password'
                 id='password'
@@ -101,19 +102,28 @@ const LoginPage: React.FC = () => {
                 disabled={freeze}
                 required={true}
             />
-            <Button type='submit'
-                    disabled={freeze}>Login</Button>
-        </Form>
+            <button 
+                className="p-3 bg-fg text-bg border border-fg rounded-md hover:bg-fg2 transition-colors duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                type='submit'
+                disabled={freeze}
+            >
+                Login
+            </button>
+        </form>
         <p>
             パスワードが未設定の場合、またはパスワードをリセットしたい場合は、以下より登録済みのメールアドレスを入力してください。パスワードリセット用のリンクを送信します。
         </p>
-        <Form onSubmit={async event => {
-            setFreeze(true);
-            await handleSubmitReset(event);
-            setFreeze(false);
-        }}>
-            <Label htmlFor='email'>Email</Label>
-            <Input
+        <form
+            className="flex flex-col w-[600px] max-w-full ml-0 gap-4"
+            onSubmit={async event => {
+                setFreeze(true);
+                await handleSubmitReset(event);
+                setFreeze(false);
+            }}
+        >
+            <label className="mb-3 block font-medium" htmlFor='email'>Email</label>
+            <input
+                className="mb-5 p-3 w-full border border-fg2 rounded-md focus:ring-2 focus:ring-fg2 focus:border-fg2"
                 type='email'
                 name='email'
                 id='email'
@@ -123,9 +133,14 @@ const LoginPage: React.FC = () => {
                 disabled={freeze}
                 required={true}
             />
-            <Button type='submit'
-                    disabled={freeze}>Reset</Button>
-        </Form>
+            <button 
+                className="p-3 bg-fg text-bg border border-fg rounded-md hover:bg-fg2 transition-colors duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                type='submit'
+                disabled={freeze}
+            >
+                Reset
+            </button>
+        </form>
     </>;
 };
 

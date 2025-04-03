@@ -13,9 +13,6 @@ import Loading from "../../components/Loading.tsx";
 import Category from "../../components/Category.tsx";
 import LoadMore from "../../components/LoadMore.tsx";
 import ReactTimeAgo from "react-time-ago";
-import {Tag} from "../../styled/Tag.tsx";
-import {Query} from "../../styled/Query.tsx";
-import {LastUpdated} from "../../styled/LastUpdated.tsx";
 import {OGP} from "../../components/OGP.tsx";
 
 export interface EntriesProps {
@@ -60,14 +57,14 @@ const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries, tenantId}) => {
         <OGP />
         <div id="entries">
             {categories && <p className="mb-6"><Category categories={categories.split(',').map(c => ({name: c}))}/></p>}
-            {tag && <Tag className="mb-6">🏷️ {tag}</Tag>}
-            {query && <Query className="mb-6">Query: {query}</Query>}
+            {tag && <p className="text-meta mb-6">🏷️ {tag}</p>}
+            {query && <p className="text-meta text-sm mb-6">Query: {query}</p>}
             <h2>Entries</h2>
             <ul>
                 {entries && entries.map(entry => <li key={entry.entryId}><Link
                     to={`/entries/${entry.entryId}${tenantId ? `/${tenantId}` : ''}`}>{entry.frontMatter.title}</Link>&nbsp;
-                    <LastUpdated>Last Updated {entry.updated.date ? <ReactTimeAgo date={new Date(entry.updated.date)}
-                                                                                  locale="en-US"/> : 'N/A'}</LastUpdated>
+                    <span className="text-meta text-smaller">Last Updated {entry.updated.date ? <ReactTimeAgo date={new Date(entry.updated.date)}
+                                                                                  locale="en-US"/> : 'N/A'}</span>
                 </li>)}
             </ul>
             <LoadMore data={data} limit={limit} size={size} setSize={setSize} isPreLoaded={isPreLoaded}/>

@@ -1,9 +1,8 @@
 import React from "react";
-import {Title2} from "../../styled/Title2.tsx";
 import Message from "../../components/Message.tsx";
 
 export const NotTranslated: React.FC<{ entryId?: string }> = ({entryId}) => <>
-    <Title2>Not Translated</Title2>
+    <h2 className="text-2xl m-0 mb-4">Not Translated</h2>
     <Message status={'info'} text={
         <>
             🙇‍ Sorry, this entry is not yet translated.<br/><br/>

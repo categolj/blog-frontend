@@ -4,13 +4,8 @@ import useSWRImmutable from "swr/immutable";
 import {NoteService, NoteSummary} from "../../clients/note";
 import Loading from "../../components/Loading.tsx";
 import {Link, useNavigate} from "react-router-dom";
-import styled from "styled-components";
 import ReactTimeAgo from "react-time-ago";
 import {OGP} from "../../components/OGP.tsx";
-
-const Button = styled.button`
-  padding: 8px;
-`;
 
 interface JWT {
     preferred_username: string;
@@ -40,7 +35,8 @@ const NotesPage: React.FC = () => {
         <OGP title={`はじめるSpring Boot 3`} url={`https://ik.am/notes`}/>
         <h2>Notes</h2>
         <p>
-            ようこそ {me && me.preferred_username} さん <Button onClick={handleLogout}>Logout</Button>
+            ようこそ {me && me.preferred_username} さん 
+            <button onClick={handleLogout} className="p-2">Logout</button>
         </p>
         <h3>はじめるSpring Boot 3</h3>
         <table>

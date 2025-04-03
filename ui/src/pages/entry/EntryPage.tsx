@@ -7,9 +7,6 @@ import ScrollToTop from "react-scroll-to-top";
 import {addCopyButton} from '../../utils/copy.ts';
 import marked, {PlainTextRenderer} from '../../utils/marked.ts'
 import Category from "../../components/Category.tsx";
-import {Title2} from "../../styled/Title2.tsx";
-import {Meta} from "../../styled/Meta.tsx";
-import {Tags} from "../../styled/Tags.tsx";
 import Message from "../../components/Message.tsx";
 import Counter from "../../components/Counter.tsx";
 import {OGP} from "../../components/OGP.tsx";
@@ -53,7 +50,7 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch
                 detail: error.statusText
             };
             return <>
-                <Title2>{problem.title}</Title2>
+                <h2 className="text-2xl m-0 mb-4">{problem.title}</h2>
                 <Message status={'error'} text={<>{problem.detail}</>}/>
             </>;
         }
@@ -79,10 +76,12 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch
         <OGP title={`${entry.frontMatter.title} - IK.AM`} url={entryUrl}
              description={metaDescription}/>
         <p id="entry-categories" className="mb-6"><Category categories={entry.frontMatter.categories}/></p>
-        <Title2 id="entry-title"><Link
-            to={`/entries/${entry.entryId}${tenantId ? '/' + tenantId
-                : ''}`}>{entry.frontMatter.title}</Link></Title2>
-        <Meta id="entry-meta">
+        <h2 id="entry-title" className="text-2xl m-0 mb-4">
+            <Link to={`/entries/${entry.entryId}${tenantId ? '/' + tenantId : ''}`}>
+                {entry.frontMatter.title}
+            </Link>
+        </h2>
+        <div id="entry-meta" className="m-0 text-meta inline-block w-full">
             Created on <span
             title={entry.created.date}>{entry.created.date ? new Date(
             entry.created.date).toDateString() : 'N/A'}</span> •
@@ -90,10 +89,12 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch
             title={entry.updated.date}>{entry.updated.date ? new Date(
             entry.updated.date).toDateString() : 'N/A'}</span> • <Counter
             entryId={entryId!}/> • {translationLink}
-            <Tags id="entry-tags">🏷️ {tags}</Tags>
-        </Meta>
+            <p id="entry-tags" className="text-meta float-right text-smaller m-0 mr-4">
+                🏷️ {tags}
+            </p>
+        </div>
         <article id="entry" dangerouslySetInnerHTML={{__html: contentHtml}}/>
-        <Meta>
+        <div className="m-0 text-meta inline-block w-full">
             <blockquote>
                 Found a mistake? Update <a
                 href={`https://github.com/making/${repo}/blob/${branch}/content/${entry.entryId.toString().padStart(
@@ -107,7 +108,7 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch
                 &nbsp;
                 <ShareWithHatebu url={entryUrl}/>
             </p>
-        </Meta>
+        </div>
         <ScrollToTop smooth/>
     </>;
 };
