@@ -1,4 +1,5 @@
 import React from "react";
+import { BlueSkyIcon } from "./icons";
 
 interface ShareWithBlueSkyProps {
     url: string,
@@ -11,7 +12,10 @@ export const ShareWithBlueSky: React.FC<ShareWithBlueSkyProps> = ({
 }) => (
     <a 
         href={`https://bsky.app/intent/compose?text=${text}%20${url}`} 
-        target={'_blank'} 
-        className="block w-8 h-8 bg-[#0A7AFF] bg-[url(/bluesky.svg)] bg-no-repeat bg-contain rounded transition-colors duration-200"
-    ></a>
+        target={'_blank'}
+        title="Share on BlueSky"
+        className="flex items-center justify-center w-8 h-8 bg-black dark:bg-white rounded transition-colors duration-200"
+    >
+        <BlueSkyIcon className="w-5 h-5 text-white dark:text-black" />
+    </a>
 );
