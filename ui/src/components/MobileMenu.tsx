@@ -105,6 +105,9 @@ const MobileMenu: React.FC = () => {
                 <ThemeToggleIcon />
               </div>
               <div>
+                <LanguageToggle />
+              </div>
+              <div>
                 <a 
                   href="/rss" 
                   aria-label="RSS Feed"
@@ -112,9 +115,6 @@ const MobileMenu: React.FC = () => {
                 >
                   <RssIcon />
                 </a>
-              </div>
-              <div>
-                <LanguageToggle />
               </div>
             </div>
           </div>

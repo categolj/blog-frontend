@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
+import { JaIcon, EnIcon } from './icons';
 
 // This component provides a language toggle between English and Japanese
 const LanguageToggle: React.FC = () => {
@@ -45,12 +46,11 @@ const LanguageToggle: React.FC = () => {
   return (
     <a 
       href={getLanguageUrl()}
-      className="inline-flex items-center space-x-1"
+      className="inline-flex items-center"
       title={isEnglish ? "Switch to Japanese" : "Switch to English"}
     >
-      <span className="text-lg">
-        {isEnglish ? "🇯🇵" : "🇬🇧"}
-      </span>
+      {/* Display language icon based on current language */}
+      {isEnglish ? <JaIcon className="h-6 w-6" /> : <EnIcon className="h-6 w-6" />}
     </a>
   );
 };

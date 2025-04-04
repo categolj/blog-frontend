@@ -29,3 +29,19 @@ export const RssIcon: React.FC<{ className?: string }> = ({ className = "h-5 w-5
     <circle cx="5" cy="19" r="1"></circle>
   </svg>
 );
+
+// Japanese language icon component (JA in a square box)
+export const JaIcon: React.FC<{ className?: string }> = ({ className = "h-6 w-6" }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor">
+    <rect x="2" y="2" width="20" height="20" rx="2" strokeWidth="1.5" />
+    <text x="50%" y="50%" dominantBaseline="middle" textAnchor="middle" fill="currentColor" fontSize="10" fontWeight="bold" fontFamily="sans-serif">JA</text>
+  </svg>
+);
+
+// English language icon component (EN in a square box)
+export const EnIcon: React.FC<{ className?: string }> = ({ className = "h-6 w-6" }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor">
+    <rect x="2" y="2" width="20" height="20" rx="2" strokeWidth="1.5" />
+    <text x="50%" y="50%" dominantBaseline="middle" textAnchor="middle" fill="currentColor" fontSize="10" fontWeight="bold" fontFamily="sans-serif">EN</text>
+  </svg>
+);

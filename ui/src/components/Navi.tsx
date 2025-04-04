@@ -38,6 +38,9 @@ const Navi = () => {
                     <ThemeToggleIcon />
                 </div>
                 <div className="ml-3">
+                    <LanguageToggle />
+                </div>
+                <div className="ml-3">
                     <a 
                         href="/rss" 
                         aria-label="RSS Feed"
@@ -45,9 +48,6 @@ const Navi = () => {
                     >
                         <RssIcon />
                     </a>
-                </div>
-                <div className="ml-3">
-                    <LanguageToggle />
                 </div>
             </div>
             
