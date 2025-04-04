@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { Link } from "react-router-dom";
-import { TagAndCount, TagService } from "../../clients/entry";
-import useSWR, { Fetcher } from 'swr';
+import useSWR from 'swr';
 import Loading from "../../components/Loading.tsx";
 import { OGP } from "../../components/OGP.tsx";
 import { useTheme } from "../../hooks/useTheme";
 import { SearchIcon, EmptyHashtagsIcon } from "../../components/icons";
+import { TagAndCount, getTags } from "../../api/entryApi";
 
 export interface TagsProps {
     preLoadedTags?: TagAndCount[];
@@ -36,8 +36,7 @@ const TagsPage: React.FC<TagsProps> = ({preLoadedTags}) => {
     const [sortBy, setSortBy] = useState<'name' | 'count'>('name');
     
     const isPreLoaded = !!preLoadedTags;
-    const fetcher: Fetcher<TagAndCount[], string> = () => TagService.tags();
-    const {data, isLoading} = useSWR(isPreLoaded ? null : '/api/tags', fetcher);
+    const {data, isLoading} = useSWR(isPreLoaded ? null : 'tags', getTags);
     const tags = data || preLoadedTags;
     
     // Calculate max count for tag size scaling

@@ -1,5 +1,5 @@
 import {Link} from "react-router-dom";
-import {Category as CategoryModel} from "../clients/entry";
+import { Category as CategoryModel } from "../api/entryApi";
 import React from "react";
 
 interface CategoryProps {

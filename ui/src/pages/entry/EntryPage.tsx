@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import useSWR, { Fetcher } from 'swr';
-import { ApiError, Entry, EntryService, ProblemDetail } from "../../clients/entry";
+import useSWR from 'swr';
 import Loading from "../../components/Loading.tsx";
 import BackToTop from "../../components/BackToTop";
 import { addCopyButton } from '../../utils/copy.ts';
@@ -16,17 +15,14 @@ import { ShareWithHatebu } from "../../components/ShareWithHatebu.tsx";
 import { NotTranslated } from "./NotTranslated.tsx";
 import { useTheme } from "../../hooks/useTheme";
 import { ListIcon, CalendarIcon, EditIcon, EyeIcon, InfoIcon } from "../../components/icons";
+import { getEntry, Entry } from "../../api/entryApi";
+import { ApiError, ProblemDetail } from "../../utils/fetch";
 
 export interface EntryProps {
     preLoadedEntry?: Entry;
     tenantId?: string;
     repo: string,
     branch: string,
-}
-
-interface FetchKey {
-    entryId: string;
-    tenantId?: string;
 }
 
 const plainTextRenderer = new PlainTextRenderer();
@@ -43,16 +39,11 @@ const EntryPage: React.FC<EntryProps> = ({ preLoadedEntry, tenantId, repo, branc
     // Determine if the entry is preloaded or needs to be fetched
     const isPreLoaded = preLoadedEntry && preLoadedEntry.entryId == Number(entryId);
     
-    // Fetcher function for SWR to get entry data
-    const fetcher: Fetcher<Entry, FetchKey> = ({ entryId, tenantId }) => tenantId ?
-        EntryService.getEntryForTenant({ entryId: Number(entryId), tenantId }) :
-        EntryService.getEntry({ entryId: Number(entryId) });
-    
     // Fetch data using SWR if not preloaded
-    const { data, isLoading, error } = useSWR<Entry, ApiError, FetchKey | null>(isPreLoaded ? null : {
-        entryId,
-        tenantId
-    } as FetchKey, fetcher);
+    const { data, isLoading, error } = useSWR<Entry, ApiError>(
+        isPreLoaded || !entryId ? null : [entryId, tenantId], 
+        ([id, tId]) => getEntry(Number(id), typeof tId === 'string' ? tId : undefined)
+    );
     
     const entry = data || preLoadedEntry;
     

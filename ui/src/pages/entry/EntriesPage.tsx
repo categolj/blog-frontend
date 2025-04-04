@@ -1,13 +1,5 @@
 import React from 'react'
-import {
-    CursorPageEntryInstant,
-    Entry,
-    EntryService,
-    GetEntries1Data,
-    GetEntriesForTenant1Data
-} from "../../clients/entry";
 import {Link, useParams, useSearchParams} from "react-router-dom";
-import {Fetcher} from 'swr';
 import useSWRInfinite from "swr/infinite";
 import Loading from "../../components/Loading.tsx";
 import Category from "../../components/Category.tsx";
@@ -17,13 +9,14 @@ import ReactTimeAgo from "react-time-ago";
 import {OGP} from "../../components/OGP.tsx";
 import {useTheme} from "../../hooks/useTheme";
 import { ClockIcon, EmptyDocumentIcon } from "../../components/icons";
+import { getEntries, EntriesParams, Entry, CursorPageEntryInstant } from "../../api/entryApi";
 
 export interface EntriesProps {
     preLoadedEntries?: CursorPageEntryInstant;
     tenantId?: string;
 }
 
-type FetchKey = GetEntries1Data | GetEntriesForTenant1Data;
+// Use EntriesParams for fetch key type
 const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries, tenantId}) => {
     const {categories, tag} = useParams();
     const [searchParams] = useSearchParams();
@@ -41,29 +34,44 @@ const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries, tenantId}) => {
                            ${isDark ? 'bg-[#F4E878] hover:bg-[#f5ec92]'
         : 'bg-yellow-100 hover:bg-yellow-200'}`;
 
-    let request: object = {size: limit};
+    // Create params object for entries API
+    const params: EntriesParams = {
+        size: limit,
+        tenantId
+    };
+    
     if (categories) {
-        request = {categories, ...request}
+        params.categories = categories.split(',');
     }
+    
     if (tag) {
-        request = {tag, ...request}
+        params.tag = tag;
     }
+    
     if (query) {
-        request = {query, ...request};
+        params.query = query;
     }
 
-    const getKey = (pageIndex: number, previousPageData: Entry[] | null) => {
+    // Get key function for SWR Infinite
+    const getKey = (pageIndex: number, previousPageData: Entry[] | null): EntriesParams | null => {
+        // Return null to stop fetching when we've reached the end
         if (previousPageData && !previousPageData.length) return null;
+        
+        // Use the last item's date as cursor for pagination
         const cursor = (previousPageData && pageIndex !== 0)
             ? previousPageData[previousPageData.length - 1].updated.date : '';
-        return {tenantId, cursor, ...request} as FetchKey;
-    }
+        
+        return {
+            ...params,
+            cursor
+        };
+    };
 
-    const fetcher: Fetcher<Entry[]> = (key: FetchKey) => ((key as GetEntriesForTenant1Data).tenantId
-        ?
-        EntryService.getEntriesForTenant1(key as GetEntriesForTenant1Data) :
-        EntryService.getEntries1(key as GetEntries1Data))
-        .then(entries => entries.content || []);
+    // Fetcher function for SWR Infinite
+    const fetcher = async (params: EntriesParams): Promise<Entry[]> => {
+        const result = await getEntries(params);
+        return result.content || [];
+    };
 
     const {data, isLoading, size, setSize} = useSWRInfinite(getKey, fetcher,
         {revalidateFirstPage: false});

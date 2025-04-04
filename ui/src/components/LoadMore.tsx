@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Entry } from "../clients/entry";
+import { Entry } from "../api/entryApi";
 import Spinner from "./Spinner";
 
 interface LoadMoreProps {
