@@ -38,8 +38,8 @@ const LoadMore: React.FC<LoadMoreProps> = ({data, limit, size, setSize, isPreLoa
         <button 
             onClick={handleLoadMore}
             disabled={isLoading}
-            className="bg-fg text-bg border-none px-16 py-3 cursor-pointer rounded-[0.35rem] 
-                     transition-colors duration-300 mt-6 mb-4 min-w-[200px]
+            className="bg-fg text-bg border-none px-16 py-4 cursor-pointer rounded-[0.35rem]
+                     transition-colors duration-300 mt-2 mb-4 min-w-[600px]
                      hover:bg-fg2 focus:outline-none disabled:opacity-75"
         >
             {isLoading ? (
