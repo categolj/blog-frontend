@@ -15,6 +15,7 @@ import { ShareWithBlueSky } from "../../components/ShareWithBlueSky.tsx";
 import { ShareWithHatebu } from "../../components/ShareWithHatebu.tsx";
 import { NotTranslated } from "./NotTranslated.tsx";
 import { useTheme } from "../../hooks/useTheme";
+import { ListIcon, CalendarIcon, EditIcon, EyeIcon, InfoIcon } from "../../components/icons";
 
 export interface EntryProps {
     preLoadedEntry?: Entry;
@@ -147,20 +148,7 @@ const EntryPage: React.FC<EntryProps> = ({ preLoadedEntry, tenantId, repo, branc
                 className="mb-6 flex items-center text-sm font-medium"
             >
                 <div className="flex items-center text-meta">
-                    <svg 
-                        xmlns="http://www.w3.org/2000/svg" 
-                        className="h-4 w-4 mr-1" 
-                        fill="none" 
-                        viewBox="0 0 24 24" 
-                        stroke="currentColor"
-                    >
-                        <path 
-                            strokeLinecap="round" 
-                            strokeLinejoin="round" 
-                            strokeWidth={2} 
-                            d="M4 6h16M4 12h16M4 18h7" 
-                        />
-                    </svg>
+                    <ListIcon className="h-4 w-4 mr-1" />
                     <Category categories={entry.frontMatter.categories} />
                 </div>
             </div>
@@ -185,66 +173,21 @@ const EntryPage: React.FC<EntryProps> = ({ preLoadedEntry, tenantId, repo, branc
                 <div className="flex flex-wrap items-center justify-between">
                     <div className="flex flex-wrap items-center text-sm mb-2 sm:mb-0">
                         <div className="flex items-center mr-4">
-                            <svg 
-                                xmlns="http://www.w3.org/2000/svg" 
-                                className="h-4 w-4 mr-1" 
-                                fill="none" 
-                                viewBox="0 0 24 24" 
-                                stroke="currentColor"
-                            >
-                                <path 
-                                    strokeLinecap="round" 
-                                    strokeLinejoin="round" 
-                                    strokeWidth={2} 
-                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" 
-                                />
-                            </svg>
+                            <CalendarIcon className="h-4 w-4 mr-1" />
                             <span title={entry.created.date}>
                                 {formatDate(entry.created.date)}
                             </span>
                         </div>
                         
                         <div className="flex items-center mr-4">
-                            <svg 
-                                xmlns="http://www.w3.org/2000/svg" 
-                                className="h-4 w-4 mr-1" 
-                                fill="none" 
-                                viewBox="0 0 24 24" 
-                                stroke="currentColor"
-                            >
-                                <path 
-                                    strokeLinecap="round" 
-                                    strokeLinejoin="round" 
-                                    strokeWidth={2} 
-                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" 
-                                />
-                            </svg>
+                            <EditIcon className="h-4 w-4 mr-1" />
                             <span title={entry.updated.date}>
                                 {formatDate(entry.updated.date)}
                             </span>
                         </div>
                         
                         <div className="flex items-center">
-                            <svg 
-                                xmlns="http://www.w3.org/2000/svg" 
-                                className="h-4 w-4 mr-1" 
-                                fill="none" 
-                                viewBox="0 0 24 24" 
-                                stroke="currentColor"
-                            >
-                                <path 
-                                    strokeLinecap="round" 
-                                    strokeLinejoin="round" 
-                                    strokeWidth={2} 
-                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" 
-                                />
-                                <path 
-                                    strokeLinecap="round" 
-                                    strokeLinejoin="round" 
-                                    strokeWidth={2} 
-                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" 
-                                />
-                            </svg>
+                            <EyeIcon className="h-4 w-4 mr-1" />
                             <Counter entryId={entryId!} />
                         </div>
                     </div>
@@ -269,20 +212,7 @@ const EntryPage: React.FC<EntryProps> = ({ preLoadedEntry, tenantId, repo, branc
             <div className="mt-10 pt-6 border-t border-fg border-opacity-10 text-meta">
                 <div className={`p-4 rounded-lg ${isDark ? 'bg-gray-800' : 'bg-gray-100'} mb-6`}>
                     <div className="flex items-start">
-                        <svg 
-                            xmlns="http://www.w3.org/2000/svg" 
-                            className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" 
-                            fill="none" 
-                            viewBox="0 0 24 24" 
-                            stroke="currentColor"
-                        >
-                            <path 
-                                strokeLinecap="round" 
-                                strokeLinejoin="round" 
-                                strokeWidth={2} 
-                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" 
-                            />
-                        </svg>
+                        <InfoIcon className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" />
                         <span>
                             Found a mistake? <a
                                 href={`https://github.com/making/${repo}/blob/${branch}/content/${entry.entryId.toString().padStart(5, '0')}.md`}

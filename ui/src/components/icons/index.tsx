@@ -70,3 +70,225 @@ export const HatebuIcon: React.FC<{ className?: string }> = ({ className = "h-5 
     </g>
   </svg>
 );
+
+// Arrow Up icon for BackToTop component
+export const ArrowUpIcon: React.FC<{ className?: string }> = ({ className = "h-10 w-10" }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    className={className}
+    fill="none" 
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path 
+      strokeLinecap="round" 
+      strokeLinejoin="round" 
+      strokeWidth={2} 
+      d="M5 10l7-7m0 0l7 7m-7-7v18" 
+    />
+  </svg>
+);
+
+// Sun icon for light mode (shown in dark mode)
+export const SunIcon: React.FC<{ className?: string }> = ({ className = "w-6 h-6" }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    fill="none" 
+    viewBox="0 0 24 24" 
+    strokeWidth={1.5} 
+    stroke="currentColor"
+    className={className}
+  >
+    <path 
+      strokeLinecap="round" 
+      strokeLinejoin="round" 
+      d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" 
+    />
+  </svg>
+);
+
+// Moon icon for dark mode (shown in light mode)
+export const MoonIcon: React.FC<{ className?: string }> = ({ className = "w-6 h-6" }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    fill="none" 
+    viewBox="0 0 24 24" 
+    strokeWidth={1.5} 
+    stroke="currentColor"
+    className={className}
+  >
+    <path 
+      strokeLinecap="round" 
+      strokeLinejoin="round" 
+      d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" 
+    />
+  </svg>
+);
+
+// Search icon
+export const SearchIcon: React.FC<{ className?: string }> = ({ className = "h-4 w-4" }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    className={className} 
+    fill="none" 
+    viewBox="0 0 24 24" 
+    stroke="currentColor"
+  >
+    <path 
+      strokeLinecap="round" 
+      strokeLinejoin="round" 
+      strokeWidth={2} 
+      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" 
+    />
+  </svg>
+);
+
+// Clock icon
+export const ClockIcon: React.FC<{ className?: string }> = ({ className = "h-3 w-3" }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg"
+    className={className} 
+    fill="none" 
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path 
+      strokeLinecap="round" 
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+    />
+  </svg>
+);
+
+// List icon
+export const ListIcon: React.FC<{ className?: string }> = ({ className = "h-4 w-4" }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    className={className} 
+    fill="none" 
+    viewBox="0 0 24 24" 
+    stroke="currentColor"
+  >
+    <path 
+      strokeLinecap="round" 
+      strokeLinejoin="round" 
+      strokeWidth={2} 
+      d="M4 6h16M4 12h16M4 18h7" 
+    />
+  </svg>
+);
+
+// Calendar icon
+export const CalendarIcon: React.FC<{ className?: string }> = ({ className = "h-4 w-4" }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    className={className} 
+    fill="none" 
+    viewBox="0 0 24 24" 
+    stroke="currentColor"
+  >
+    <path 
+      strokeLinecap="round" 
+      strokeLinejoin="round" 
+      strokeWidth={2} 
+      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" 
+    />
+  </svg>
+);
+
+// Edit/Pencil icon
+export const EditIcon: React.FC<{ className?: string }> = ({ className = "h-4 w-4" }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    className={className} 
+    fill="none" 
+    viewBox="0 0 24 24" 
+    stroke="currentColor"
+  >
+    <path 
+      strokeLinecap="round" 
+      strokeLinejoin="round" 
+      strokeWidth={2} 
+      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" 
+    />
+  </svg>
+);
+
+// Eye icon
+export const EyeIcon: React.FC<{ className?: string }> = ({ className = "h-4 w-4" }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    className={className} 
+    fill="none" 
+    viewBox="0 0 24 24" 
+    stroke="currentColor"
+  >
+    <path 
+      strokeLinecap="round" 
+      strokeLinejoin="round" 
+      strokeWidth={2} 
+      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" 
+    />
+    <path 
+      strokeLinecap="round" 
+      strokeLinejoin="round" 
+      strokeWidth={2} 
+      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" 
+    />
+  </svg>
+);
+
+// Info/Note icon
+export const InfoIcon: React.FC<{ className?: string }> = ({ className = "h-5 w-5" }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    className={className} 
+    fill="none" 
+    viewBox="0 0 24 24" 
+    stroke="currentColor"
+  >
+    <path 
+      strokeLinecap="round" 
+      strokeLinejoin="round" 
+      strokeWidth={2} 
+      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" 
+    />
+  </svg>
+);
+
+// Empty document icon
+export const EmptyDocumentIcon: React.FC<{ className?: string }> = ({ className = "h-12 w-12" }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg"
+    className={className} 
+    fill="none" 
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path 
+      strokeLinecap="round" 
+      strokeLinejoin="round" 
+      strokeWidth={1}
+      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+    />
+  </svg>
+);
+
+// Empty hashtags icon for TagsPage
+export const EmptyHashtagsIcon: React.FC<{ className?: string }> = ({ className = "h-12 w-12" }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    className={className} 
+    fill="none" 
+    viewBox="0 0 24 24" 
+    stroke="currentColor"
+  >
+    <path 
+      strokeLinecap="round" 
+      strokeLinejoin="round" 
+      strokeWidth={1} 
+      d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" 
+    />
+  </svg>
+);

@@ -16,6 +16,7 @@ import BackToTop from "../../components/BackToTop";
 import ReactTimeAgo from "react-time-ago";
 import {OGP} from "../../components/OGP.tsx";
 import {useTheme} from "../../hooks/useTheme";
+import { ClockIcon, EmptyDocumentIcon } from "../../components/icons";
 
 export interface EntriesProps {
     preLoadedEntries?: CursorPageEntryInstant;
@@ -141,13 +142,7 @@ const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries, tenantId}) => {
 
                             <div className="flex items-center text-xs text-fg2/70">
                                 <span className="inline-block mr-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                         className="h-3 w-3 inline" fill="none" viewBox="0 0 24 24"
-                                         stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round"
-                                              strokeWidth={2}
-                                              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                    </svg>
+                                    <ClockIcon className="h-3 w-3 inline" />
                                 </span>
                                 <span>
                                     Last Updated {entry.updated.date ?
@@ -179,12 +174,7 @@ const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries, tenantId}) => {
 
                     {entries && entries.length === 0 && (
                         <div className="text-center p-12 opacity-60">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 className="h-12 w-12 mx-auto mb-4" fill="none" viewBox="0 0 24 24"
-                                 stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1}
-                                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                            </svg>
+                            <EmptyDocumentIcon className="h-12 w-12 mx-auto mb-4" />
                             <p className="text-sm">No entries found</p>
                         </div>
                     )}

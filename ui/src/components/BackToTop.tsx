@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { twMerge } from 'tailwind-merge';
+import { ArrowUpIcon } from './icons';
 
 // Custom Back to Top component with dark/light mode support
 const BackToTop: React.FC = () => {
@@ -65,21 +66,7 @@ const BackToTop: React.FC = () => {
           : 'bg-gray-500 text-white hover:bg-gray-600 focus:ring-gray-700'
       )}
     >
-      {/* SVG Arrow pointing up */}
-      <svg 
-        xmlns="http://www.w3.org/2000/svg" 
-        className="h-10 w-10"
-        fill="none" 
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path 
-          strokeLinecap="round" 
-          strokeLinejoin="round" 
-          strokeWidth={2} 
-          d="M5 10l7-7m0 0l7 7m-7-7v18" 
-        />
-      </svg>
+      <ArrowUpIcon />
     </button>
   );
 };

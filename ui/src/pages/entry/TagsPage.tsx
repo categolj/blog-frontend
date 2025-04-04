@@ -5,6 +5,7 @@ import useSWR, { Fetcher } from 'swr';
 import Loading from "../../components/Loading.tsx";
 import { OGP } from "../../components/OGP.tsx";
 import { useTheme } from "../../hooks/useTheme";
+import { SearchIcon, EmptyHashtagsIcon } from "../../components/icons";
 
 export interface TagsProps {
     preLoadedTags?: TagAndCount[];
@@ -90,15 +91,7 @@ const TagsPage: React.FC<TagsProps> = ({preLoadedTags}) => {
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className={`w-full p-2 pl-8 rounded-md border ${isDark ? 'border-fg/30 bg-bg' : 'border-fg2/20 bg-bg'} text-fg focus:outline-none focus:ring-2 focus:ring-yellow-300`}
                     />
-                    <svg 
-                        xmlns="http://www.w3.org/2000/svg" 
-                        className="h-4 w-4 absolute left-2.5 top-3 text-fg2/60" 
-                        fill="none" 
-                        viewBox="0 0 24 24" 
-                        stroke="currentColor"
-                    >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
+                    <SearchIcon className="h-4 w-4 absolute left-2.5 top-3 text-fg2/60" />
                 </div>
                 
                 <div className="flex items-center gap-2">
@@ -172,15 +165,7 @@ const TagsPage: React.FC<TagsProps> = ({preLoadedTags}) => {
             {/* Empty state */}
             {filteredTags.length === 0 && (
                 <div className="text-center p-12 text-fg2/70">
-                    <svg 
-                        xmlns="http://www.w3.org/2000/svg" 
-                        className="h-12 w-12 mx-auto mb-4 opacity-50" 
-                        fill="none" 
-                        viewBox="0 0 24 24" 
-                        stroke="currentColor"
-                    >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
-                    </svg>
+                    <EmptyHashtagsIcon className="h-12 w-12 mx-auto mb-4 opacity-50" />
                     <p>No tags found matching "{searchTerm}"</p>
                 </div>
             )}
