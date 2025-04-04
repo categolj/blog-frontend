@@ -12,6 +12,7 @@ import useSWRInfinite from "swr/infinite";
 import Loading from "../../components/Loading.tsx";
 import Category from "../../components/Category.tsx";
 import LoadMore from "../../components/LoadMore.tsx";
+import BackToTop from "../../components/BackToTop";
 import ReactTimeAgo from "react-time-ago";
 import {OGP} from "../../components/OGP.tsx";
 import {useTheme} from "../../hooks/useTheme";
@@ -195,6 +196,8 @@ const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries, tenantId}) => {
                 <LoadMore data={data} limit={limit} size={size} setSize={setSize}
                           isPreLoaded={isPreLoaded}/>
             </div>
+            
+            <BackToTop />
         </div>
     </>)
 }
