@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 import SearchBox from './SearchBox';
 import ThemeToggleIcon from './ThemeToggleIcon';
+import LanguageToggle from './LanguageToggle';
 
 const MobileMenu: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -101,6 +102,9 @@ const MobileMenu: React.FC = () => {
               </div>
               <div className="ml-3">
                 <ThemeToggleIcon />
+              </div>
+              <div className="ml-3">
+                <LanguageToggle />
               </div>
             </div>
           </div>

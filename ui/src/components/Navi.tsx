@@ -2,6 +2,7 @@ import {NavLink} from 'react-router-dom';
 import SearchBox from "./SearchBox.tsx";
 import MobileMenu from "./MobileMenu.tsx";
 import ThemeToggleIcon from "./ThemeToggleIcon.tsx";
+import LanguageToggle from "./LanguageToggle.tsx";
 
 const Navi = () => {
     return (
@@ -34,6 +35,9 @@ const Navi = () => {
                 </div>
                 <div className="ml-2">
                     <ThemeToggleIcon />
+                </div>
+                <div className="ml-3">
+                    <LanguageToggle />
                 </div>
             </div>
             

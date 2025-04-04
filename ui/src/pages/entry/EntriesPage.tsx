@@ -67,24 +67,6 @@ const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries, tenantId}) => {
         return <Loading/>
     }
     
-    const translationLink = tenantId ? 
-        <a 
-            href={`/entries`} 
-            className="inline-flex items-center space-x-1.5 px-4 py-2 rounded-md 
-                     bg-fg text-bg hover:bg-fg2 transition-colors duration-200"
-        >
-            <span>🇯🇵</span>
-            <span>Japanese</span>
-        </a> :
-        <a 
-            href={`/entries/en`}
-            className="inline-flex items-center space-x-1.5 px-4 py-2 rounded-md 
-                     bg-fg text-bg hover:bg-fg2 transition-colors duration-200"
-        >
-            <span>🇬🇧</span>
-            <span>English</span>
-        </a>;
-    
     return (<>
         <OGP />
         <div id="entries">
@@ -184,13 +166,6 @@ const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries, tenantId}) => {
             <div className="flex justify-start pl-4">
                 <LoadMore data={data} limit={limit} size={size} setSize={setSize} isPreLoaded={isPreLoaded}/>
             </div>
-            
-            {/* Translation link */}
-            {(!categories && !tag && !query) && (
-                <div className="mt-8 mb-4 pl-4">
-                    {translationLink}
-                </div>
-            )}
         </div>
     </>)
 }
