@@ -1,5 +1,6 @@
 import React, {ChangeEvent, FormEvent, useState} from 'react';
-import {ApiError, PasswordResetService} from "../../clients/note";
+import {resetPassword} from "../../api/noteApi";
+import {ApiError} from "../../utils/fetch";
 import Message, {MessageProps} from "../../components/Message.tsx";
 import {Link, useParams} from "react-router-dom";
 import {OGP} from "../../components/OGP.tsx";
@@ -31,7 +32,7 @@ const PasswordResetPage: React.FC = () => {
             return;
         }
         try {
-            await PasswordResetService.reset({requestBody: {newPassword, resetId}});
+            await resetPassword({newPassword, resetId});
             setMessage({
                 status: 'success',
                 text: <>パスワードがリセットされました。<br/>

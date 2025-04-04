@@ -1,7 +1,7 @@
 import React from 'react';
 import useSWR, {Fetcher} from "swr";
 import useSWRImmutable from "swr/immutable";
-import {NoteService, NoteSummary} from "../../clients/note";
+import {NoteSummary, getNotes} from "../../api/noteApi";
 import Loading from "../../components/Loading.tsx";
 import {Link, useNavigate} from "react-router-dom";
 import ReactTimeAgo from "react-time-ago";
@@ -13,17 +13,20 @@ interface JWT {
 
 const NotesPage: React.FC = () => {
     const navigate = useNavigate();
-    const notesFetcher: Fetcher<NoteSummary[], string> = () => NoteService.getNotes();
+    const notesFetcher: Fetcher<NoteSummary[], string> = () => getNotes();
     const meFetcher: Fetcher<JWT, string> = (url) => fetch(url).then(res => res.json());
     const {data, isLoading, error} = useSWRImmutable<NoteSummary[]>('/notes', notesFetcher);
     const {data: me} = useSWR<JWT>('/api/me', meFetcher);
+    
     if (!isLoading && error) {
         navigate('/note/login');
         return <></>;
     }
+    
     if (isLoading || !data) {
         return <Loading/>
     }
+    
     const handleLogout = async () => {
         await fetch(`/api/token`, {
             method: 'DELETE',
@@ -31,6 +34,7 @@ const NotesPage: React.FC = () => {
         navigate('/note/login');
         return <></>;
     }
+    
     return <>
         <OGP title={`はじめるSpring Boot 3`} url={`https://ik.am/notes`}/>
         <h2>Notes</h2>

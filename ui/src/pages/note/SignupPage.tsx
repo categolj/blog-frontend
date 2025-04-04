@@ -1,6 +1,7 @@
 import React, {ChangeEvent, FormEvent, useState} from 'react';
 import {Link} from 'react-router-dom';
-import {ApiError, ReaderService} from "../../clients/note";
+import {createReader} from "../../api/noteApi";
+import {ApiError} from "../../utils/fetch";
 import Message, {MessageProps} from "../../components/Message.tsx";
 import {OGP} from "../../components/OGP.tsx";
 import {EmailIcon, LockIcon, UserIcon} from "../../components/icons";
@@ -33,11 +34,9 @@ const SignupPage: React.FC = () => {
             return;
         }
         try {
-            const response = await ReaderService.createReader({
-                requestBody: {
-                    email: email,
-                    rawPassword: password
-                }
+            const response = await createReader({
+                email: email,
+                rawPassword: password
             });
             setMessage({
                 status: 'success',

@@ -4,17 +4,30 @@ import {Fetcher} from 'swr';
 import useSWRImmutable from 'swr/immutable';
 import Loading from "../../components/Loading.tsx";
 import 'highlight.js/styles/default.min.css';
-import {ApiError, NoteId, NoteService, SubscribeOutput} from "../../clients/note";
+import {SubscribeOutput, subscribe} from "../../api/noteApi";
+import {ApiError} from "../../utils/fetch";
 import Message, {MessageProps} from "../../components/Message.tsx";
 
 const SubscribePage: React.FC = () => {
     const {noteId} = useParams();
-    const fetcher: Fetcher<SubscribeOutput, string> = (noteId) => NoteService.subscribe({noteId: noteId as NoteId});
-    const {data, isLoading, error} = useSWRImmutable<SubscribeOutput, ApiError>(noteId, fetcher);
+    
+    const fetcher: Fetcher<SubscribeOutput, string> = async (noteId) => {
+        if (!noteId) {
+            throw new Error("Note ID is required");
+        }
+        return subscribe(noteId);
+    };
+    
+    const {data, isLoading, error} = useSWRImmutable<SubscribeOutput, ApiError>(
+        noteId ? noteId : null, 
+        fetcher
+    );
+    
     let message = {
         status: 'info',
         text: <></>
     };
+    
     if (error) {
         if (error.status === 401) {
             message = {
@@ -50,6 +63,7 @@ const SubscribePage: React.FC = () => {
             text: <>記事が購読状態になりました。<Link to={`/notes/${data.entryId}`}>記事</Link>にアクセスしてください。</>
         };
     }
+    
     return <>
         <h2>Subscribe</h2>
         <Message {...message as MessageProps} />

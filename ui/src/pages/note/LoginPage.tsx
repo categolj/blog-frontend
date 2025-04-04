@@ -1,7 +1,7 @@
 import React, {ChangeEvent, FormEvent, useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
-import {PasswordResetService} from '../../clients/note';
-import {ApiResult} from '../../clients/note/core/ApiResult.ts';
+import {sendPasswordResetLink} from '../../api/noteApi';
+import {ApiError} from '../../utils/fetch';
 import Message, {MessageProps} from "../../components/Message.tsx";
 import {OGP} from "../../components/OGP.tsx";
 import {EmailIcon, LockIcon, UserIcon} from "../../components/icons";
@@ -43,24 +43,32 @@ const LoginPage: React.FC = () => {
                 text: <pre><code>{JSON.stringify(error, null, 2)}</code></pre>
             });
         } catch (e) {
-            setMessage((e as ApiResult).body || (e as ApiResult).statusText);
+            const error = e as ApiError;
+            setMessage({
+                status: 'error',
+                text: <>{error.body || error.statusText}</>
+            });
         }
     }
+    
     const handleSubmitReset = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         try {
-            const response = await PasswordResetService.sendLink({
-                requestBody: {email}
-            });
+            const response = await sendPasswordResetLink({email});
             setMessage({
                 status: 'info',
                 text: <>{response.message}</>
             });
             setEmail('');
         } catch (e) {
-            setMessage((e as ApiResult).body || (e as ApiResult).statusText);
+            const error = e as ApiError;
+            setMessage({
+                status: 'error',
+                text: <>{error.body || error.statusText}</>
+            });
         }
     }
+    
     return <>
         <OGP title={`はじめるSpring Boot 3`} url={`https://ik.am/notes`}/>
         <h2>Login</h2>
