@@ -43,11 +43,13 @@ const Layout = () => {
             {/* Header container with relative positioning for binary rain effect */}
             <div className="relative">
                 <BinaryRain active={showBinaryRain} />
-                <div className="relative z-10">
-                    <Header 
-                        onMouseEnter={handleMouseEnter} 
-                        onMouseLeave={handleMouseLeave}
-                    />
+                <div className="relative z-10 flex flex-wrap">
+                    <div className="flex-grow">
+                        <Header 
+                            onMouseEnter={handleMouseEnter} 
+                            onMouseLeave={handleMouseLeave}
+                        />
+                    </div>
                     <Navi/>
                 </div>
             </div>

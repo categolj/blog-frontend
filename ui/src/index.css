@@ -172,4 +172,23 @@
   .div-copy.click .tooltip-copy::after {
     @apply opacity-100;
   }
+  
+  /* Mobile menu styles */
+  @media (max-width: 768px) {
+    /* Styles for mobile menu burger icon */
+    .hamburger-line {
+      @apply transition-all duration-300 ease-in-out;
+    }
+    
+    /* Add shadow to the mobile menu */
+    .mobile-menu-shadow {
+      @apply shadow-lg;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+    
+    /* Smooth fade-in for mobile menu */
+    .mobile-menu-container {
+      @apply transition-all duration-300 ease-in-out;
+    }
+  }
 }

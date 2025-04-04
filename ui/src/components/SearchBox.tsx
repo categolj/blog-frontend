@@ -24,7 +24,7 @@ const SearchBox = () => {
                 type='search' 
                 placeholder='Search...' 
                 onChange={changeQuery}
-                className="text-base border border-solid rounded-md py-1 px-2 max-w-full md:w-auto w-[100px]"
+                className="text-base border border-solid rounded-md py-1 px-2 w-full"
             />
         </label>
     </form>;
