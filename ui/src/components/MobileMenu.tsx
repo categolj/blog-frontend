@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import SearchBox from './SearchBox';
 import ThemeToggleIcon from './ThemeToggleIcon';
 import LanguageToggle from './LanguageToggle';
+import { RssIcon } from './icons';
 
 const MobileMenu: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -96,14 +97,23 @@ const MobileMenu: React.FC = () => {
             </li>
           </ul>
           <div className="pt-2 border-t border-fg2">
-            <div className="flex items-center">
-              <div className="flex-grow">
-                <SearchBox />
-              </div>
-              <div className="ml-3">
+            <div className="flex-grow mb-3">
+              <SearchBox />
+            </div>
+            <div className="flex items-center space-x-4">
+              <div>
                 <ThemeToggleIcon />
               </div>
-              <div className="ml-3">
+              <div>
+                <a 
+                  href="/rss" 
+                  aria-label="RSS Feed"
+                  className="w-6 h-6 flex items-center justify-center text-fg2 hover:text-fg transition-colors"
+                >
+                  <RssIcon />
+                </a>
+              </div>
+              <div>
                 <LanguageToggle />
               </div>
             </div>

@@ -3,6 +3,7 @@ import SearchBox from "./SearchBox.tsx";
 import MobileMenu from "./MobileMenu.tsx";
 import ThemeToggleIcon from "./ThemeToggleIcon.tsx";
 import LanguageToggle from "./LanguageToggle.tsx";
+import { RssIcon } from "./icons";
 
 const Navi = () => {
     return (
@@ -35,6 +36,15 @@ const Navi = () => {
                 </div>
                 <div className="ml-2">
                     <ThemeToggleIcon />
+                </div>
+                <div className="ml-3">
+                    <a 
+                        href="/rss" 
+                        aria-label="RSS Feed"
+                        className="w-6 h-6 flex items-center justify-center text-fg2 hover:text-fg transition-colors"
+                    >
+                        <RssIcon />
+                    </a>
                 </div>
                 <div className="ml-3">
                     <LanguageToggle />
