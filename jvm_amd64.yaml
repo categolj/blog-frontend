@@ -1,2 +1,2 @@
-image: ghcr.io/categolj/blog-frontend@sha256:ad74133ab1d0114bcd15a022cfa45ff2d93288a0711da350ae78cd452b64bc88
-git_revision: eb5d250342c817800d7dd225b0218c03fa740509
+image: ghcr.io/categolj/blog-frontend@sha256:c0231b382eb42eabcf66be312232a8fd61ea74f3d379464f743d83d57a7310e5
+git_revision: 74cd5791010432908bb2a79303583d397ae3e14d
