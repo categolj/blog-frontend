@@ -80,7 +80,7 @@ const SignupPage: React.FC = () => {
             </div>
             
             {/* Signup card */}
-            <div className="w-full max-w-xl ml-0 bg-bg border border-fg2 rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg">
+            <div className="w-full max-w-6xl ml-0 bg-bg border border-fg2 rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg">
                 <div className="p-4 border-b border-fg2">
                     <div className="text-lg font-medium flex items-center gap-2 mb-0 text-fg">
                         <UserIcon /> アカウント作成
