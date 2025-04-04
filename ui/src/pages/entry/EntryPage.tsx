@@ -69,13 +69,12 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch
         .replace('>', '')
         .substring(0, 150)
         .replace(/[\n\r]/g, '') + '...';
-    const translationLink = tenantId ? <a href={`/entries/${entryId}`}>🇯🇵 Japanese</a> :
-        <a href={`/entries/${entryId}/en`}>🇬🇧 English</a>;
     const entryUrl = `https://ik.am/entries/${entry.entryId}${tenantId ? '/' + tenantId : ''}`
     return <>
         <OGP title={`${entry.frontMatter.title} - IK.AM`} url={entryUrl}
              description={metaDescription}/>
-        <p id="entry-categories" className="mb-6"><Category categories={entry.frontMatter.categories}/></p>
+        <p id="entry-categories" className="mb-6"><Category
+            categories={entry.frontMatter.categories}/></p>
         <h2 id="entry-title" className="text-2xl m-0 mb-4">
             <Link to={`/entries/${entry.entryId}${tenantId ? '/' + tenantId : ''}`}>
                 {entry.frontMatter.title}
@@ -88,7 +87,7 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch
             Last Updated on <span
             title={entry.updated.date}>{entry.updated.date ? new Date(
             entry.updated.date).toDateString() : 'N/A'}</span> • <Counter
-            entryId={entryId!}/> • {translationLink}
+            entryId={entryId!}/>
             <p id="entry-tags" className="text-meta float-right text-smaller m-0 mr-4">
                 🏷️ {tags}
             </p>
@@ -109,7 +108,7 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch
                 <ShareWithHatebu url={entryUrl}/>
             </p>
         </div>
-        <BackToTop />
+        <BackToTop/>
     </>;
 };
 
