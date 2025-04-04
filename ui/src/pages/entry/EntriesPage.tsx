@@ -192,7 +192,7 @@ const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries, tenantId}) => {
             </div>
 
             {/* Load more section */}
-            <div className="flex justify-start pl-4">
+            <div className="flex justify-start pl-4 pr-4 w-full">
                 <LoadMore data={data} limit={limit} size={size} setSize={setSize}
                           isPreLoaded={isPreLoaded}/>
             </div>
