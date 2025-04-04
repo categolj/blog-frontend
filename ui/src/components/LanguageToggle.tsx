@@ -24,7 +24,7 @@ const LanguageToggle: React.FC = () => {
     
     // For individual entry pages - Japanese to English
     // Format: /entries/{id} -> /entries/{id}/en
-    const entryMatch = /^\/entries\/([^\/]+)\/?$/.exec(currentPath);
+    const entryMatch = /^\/entries\/([^/]+)\/?$/.exec(currentPath);
     if (entryMatch) {
       const entryId = entryMatch[1];
       return `/entries/${entryId}/en`;
@@ -32,7 +32,7 @@ const LanguageToggle: React.FC = () => {
     
     // For individual entry pages - English to Japanese
     // Format: /entries/{id}/en -> /entries/{id}
-    const entryEnMatch = /^\/entries\/([^\/]+)\/en\/?$/.exec(currentPath);
+    const entryEnMatch = /^\/entries\/([^/]+)\/en\/?$/.exec(currentPath);
     if (entryEnMatch) {
       const entryId = entryEnMatch[1];
       return `/entries/${entryId}`;
