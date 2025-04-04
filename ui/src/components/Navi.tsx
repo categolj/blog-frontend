@@ -1,6 +1,7 @@
 import {NavLink} from 'react-router-dom';
 import SearchBox from "./SearchBox.tsx";
 import MobileMenu from "./MobileMenu.tsx";
+import ThemeToggleIcon from "./ThemeToggleIcon.tsx";
 
 const Navi = () => {
     return (
@@ -26,10 +27,13 @@ const Navi = () => {
                 </ul>
             </div>
             
-            {/* Desktop Search - Hidden on mobile */}
-            <div className="hidden md:block">
+            {/* Desktop Search & Theme toggle - Hidden on mobile */}
+            <div className="hidden md:flex items-center space-x-4">
                 <div className="w-[180px]">
                     <SearchBox/>
+                </div>
+                <div className="ml-2">
+                    <ThemeToggleIcon />
                 </div>
             </div>
             

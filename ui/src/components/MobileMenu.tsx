@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 import SearchBox from './SearchBox';
-import { useTheme } from '../hooks/useTheme';
+import ThemeToggleIcon from './ThemeToggleIcon';
 
 const MobileMenu: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-  const { isDark } = useTheme();
 
   // Toggle menu open/closed
   const toggleMenu = () => {
@@ -96,8 +95,13 @@ const MobileMenu: React.FC = () => {
             </li>
           </ul>
           <div className="pt-2 border-t border-fg2">
-            <div className="w-full">
-              <SearchBox />
+            <div className="flex items-center">
+              <div className="flex-grow">
+                <SearchBox />
+              </div>
+              <div className="ml-3">
+                <ThemeToggleIcon />
+              </div>
             </div>
           </div>
         </div>
