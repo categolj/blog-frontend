@@ -76,7 +76,7 @@ const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries, tenantId}) => {
         <OGP/>
         <div id="entries">
             <div className="mb-8">
-                <h2 className="text-2xl font-bold mb-2">Entries</h2>
+                <h2 className="text-2xl mb-2">Entries</h2>
 
                 {/* Filter section */}
                 {(categories || tag || query) && (

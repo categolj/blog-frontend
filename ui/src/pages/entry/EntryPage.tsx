@@ -168,7 +168,7 @@ const EntryPage: React.FC<EntryProps> = ({ preLoadedEntry, tenantId, repo, branc
             {/* Entry title with hover effect */}
             <h2 
                 id="entry-title" 
-                className={`text-3xl font-bold mb-4 transition-all duration-300 ${
+                className={`text-3xld mb-4 transition-all duration-300 ${
                     isDark ? 'hover:text-[#F4E878]' : 'hover:text-fg2'
                 }`}
             >
