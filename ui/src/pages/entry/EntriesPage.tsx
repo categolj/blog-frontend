@@ -35,8 +35,8 @@ const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries, tenantId}) => {
                       pl-4 py-2 mb-4 hover:border-l-[6px] transition-all duration-200`;
     
     // Filter badge styles
-    const filterBadgeStyle = `inline-flex items-center px-3 py-1 rounded-full text-sm 
-                           ${isDark ? 'bg-fg/15 text-fg' : 'bg-fg2/10 text-fg2'}`;
+    const filterBadgeStyle = `inline-flex items-center px-3 py-1 rounded text-sm 
+                           ${isDark ? 'bg-[#F4E878] text-gray-800' : 'bg-yellow-100 text-yellow-700'}`;
     
     let request: object = {size: limit};
     if (categories) {
@@ -101,7 +101,7 @@ const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries, tenantId}) => {
                             
                             <Link 
                                 to="/entries" 
-                                className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-fg text-bg hover:bg-fg2 transition-colors"
+                                className="inline-flex items-center px-3 py-1 rounded text-sm bg-fg text-bg hover:bg-fg2 transition-colors"
                             >
                                 Clear all
                             </Link>
