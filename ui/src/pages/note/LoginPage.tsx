@@ -79,7 +79,7 @@ const LoginPage: React.FC = () => {
         <Message {...message}/>
         
         {/* Main container for both forms */}
-        <div className="w-full max-w-6xl mx-auto">
+        <div className="w-full max-w-6xl ml-0">
             {/* Info message */}
             <div className="mb-6 p-4 border-l-4 border-[#FFDC00] bg-opacity-10 dark:bg-opacity-5 bg-[#FFDC00] text-fg">
                 <p className="mb-2">
@@ -97,7 +97,7 @@ const LoginPage: React.FC = () => {
             {/* Form container with two columns on larger screens */}
             <div className="flex flex-col md:flex-row gap-8">
                 {/* Login form */}
-                <div className="w-full md:w-1/2 bg-bg border border-fg2 rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg">
+                <div className="w-full md:w-1/2 ml-0 bg-bg border border-fg2 rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg">
                     <div className="p-4 border-b border-fg2">
                         <div className="text-lg font-medium flex items-center gap-2 mb-0 text-fg">
                             <LockIcon /> アカウントログイン
@@ -165,7 +165,7 @@ const LoginPage: React.FC = () => {
                 </div>
                 
                 {/* Password reset form */}
-                <div className="w-full md:w-1/2 bg-bg border border-fg2 rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg">
+                <div className="w-full md:w-1/2 ml-0 bg-bg border border-fg2 rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg">
                     <div className="p-4 border-b border-fg2">
                         <div className="text-lg font-medium flex items-center gap-2 mb-0 text-fg">
                             <LockIcon /> パスワードリセット
