@@ -1,11 +1,12 @@
 import React, {ReactElement} from "react";
-import { InfoIcon, SuccessIcon, ErrorIcon, WarningIcon } from "./icons";
+import { InfoIcon, SuccessIcon, ErrorIcon, WarningIcon, CloseIcon } from "./icons";
 
 export type MessageStatus = 'success' | 'info' | 'warning' | 'error';
 
 export interface MessageProps {
     status: MessageStatus,
     text: ReactElement | null,
+    onClose?: () => void, // Add optional callback for close event
 }
 
 // Define message icon mapping from icons/index.tsx
@@ -43,7 +44,7 @@ const getMessageStyles = (status: MessageStatus) => {
     };
 };
 
-const Message: React.FC<MessageProps> = ({status, text}) => {
+const Message: React.FC<MessageProps> = ({status, text, onClose}) => {
     if (!text) return null;
     
     const Icon = MessageIcons[status];
@@ -60,6 +61,15 @@ const Message: React.FC<MessageProps> = ({status, text}) => {
                     <div className="flex-1 leading-normal">{text}</div>
                 </div>
             </div>
+            {onClose && (
+                <button 
+                    onClick={onClose}
+                    className="ml-3 text-black dark:text-white hover:text-[#FFDC00] dark:hover:text-[#FFDC00] transition-colors duration-200"
+                    aria-label="Close message"
+                >
+                    <CloseIcon className="h-4 w-4" />
+                </button>
+            )}
         </div>
     );
 };

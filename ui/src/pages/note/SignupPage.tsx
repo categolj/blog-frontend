@@ -57,7 +57,10 @@ const SignupPage: React.FC = () => {
     return <>
         <OGP title={`はじめるSpring Boot 3`} url={`https://ik.am/notes`}/>
         <h2>Sign up</h2>
-        <Message {...message} />
+        <Message 
+            {...message} 
+            onClose={() => setMessage({status: 'info', text: null})}
+        />
         
         {/* Main container */}
         <div className="w-full max-w-6xl ml-0">

@@ -72,7 +72,10 @@ const LoginPage: React.FC = () => {
     return <>
         <OGP title={`はじめるSpring Boot 3`} url={`https://ik.am/notes`}/>
         <h2>Login</h2>
-        <Message {...message}/>
+        <Message 
+            {...message} 
+            onClose={() => setMessage({status: 'info', text: null})}
+        />
 
         {/* Main container for both forms */}
         <div className="w-full max-w-6xl ml-0">

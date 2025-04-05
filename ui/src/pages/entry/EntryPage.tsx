@@ -35,6 +35,8 @@ const EntryPage: React.FC<EntryProps> = ({ preLoadedEntry, tenantId, repo, branc
     const { entryId } = useParams();
     const { isDark } = useTheme();
     const [isVisible, setIsVisible] = useState(false);
+    const [showOutdatedWarning, setShowOutdatedWarning] = useState(true);
+    const [showErrorMessage, setShowErrorMessage] = useState(true);
     const location = useLocation();
     
     // Determine if the entry is preloaded or needs to be fetched
@@ -89,7 +91,13 @@ const EntryPage: React.FC<EntryProps> = ({ preLoadedEntry, tenantId, repo, branc
             return (
                 <div className="p-4 rounded-lg shadow-sm bg-opacity-10 bg-fg">
                     <h2 className="text-2xl m-0 mb-4">{problem.title}</h2>
-                    <Message status={'error'} text={<>{problem.detail}</>} />
+                    {showErrorMessage && (
+                        <Message 
+                            status={'error'} 
+                            text={<>{problem.detail}</>} 
+                            onClose={() => setShowErrorMessage(false)}
+                        />
+                    )}
                 </div>
             );
         }
@@ -209,7 +217,7 @@ const EntryPage: React.FC<EntryProps> = ({ preLoadedEntry, tenantId, repo, branc
             </div>
             
             {/* Warning message for outdated content */}
-            {isContentOutdated(entry) && (
+            {isContentOutdated(entry) && showOutdatedWarning && (
                 <div className="mb-8">
                     <Message 
                         status="warning" 
@@ -220,7 +228,8 @@ const EntryPage: React.FC<EntryProps> = ({ preLoadedEntry, tenantId, repo, branc
                                     : "この記事は2年以上前に更新されたものです。情報が古くなっている可能性があります。"
                                 }
                             </span>
-                        } 
+                        }
+                        onClose={() => setShowOutdatedWarning(false)}
                     />
                 </div>
             )}
