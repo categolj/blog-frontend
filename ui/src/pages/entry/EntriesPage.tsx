@@ -8,8 +8,16 @@ import BackToTop from "../../components/BackToTop";
 import ReactTimeAgo from "react-time-ago";
 import {OGP} from "../../components/OGP.tsx";
 import {useTheme} from "../../hooks/useTheme";
-import { ClockIcon, EmptyDocumentIcon } from "../../components/icons";
-import { getEntries, EntriesParams, Entry, CursorPageEntryInstant } from "../../api/entryApi";
+import {
+    ClockIcon,
+    CloseIcon,
+    EmptyDocumentIcon,
+    FilterIcon,
+    FolderIcon,
+    SearchIcon,
+    TagIcon
+} from "../../components/icons";
+import {CursorPageEntryInstant, EntriesParams, Entry, getEntries} from "../../api/entryApi";
 
 export interface EntriesProps {
     preLoadedEntries?: CursorPageEntryInstant;
@@ -25,29 +33,23 @@ const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries, tenantId}) => {
     const isPreLoaded = preLoadedEntries && !query;
     const {isDark} = useTheme();
 
-    // Prepare card styling based on theme
-    const cardStyle = `border-l-4 ${isDark ? 'border-fg/30' : 'border-fg2/20'} 
-                      pl-4 py-2 mb-4 hover:border-l-[6px] transition-all duration-200`;
-
-    // Filter badge styles - exactly matching EntryPage.tsx tag styles
-    const filterBadgeStyle = `inline-flex items-center rounded text-xs font-medium transition-all
-                           ${isDark ? 'bg-[#F4E878] hover:bg-[#f5ec92]'
-        : 'bg-yellow-100 hover:bg-yellow-200'}`;
+    // Main accent color for badges and highlights - lemon color in both modes
+    const accentColor = "#F4E878";
 
     // Create params object for entries API
     const params: EntriesParams = {
         size: limit,
         tenantId
     };
-    
+
     if (categories) {
         params.categories = categories.split(',');
     }
-    
+
     if (tag) {
         params.tag = tag;
     }
-    
+
     if (query) {
         params.query = query;
     }
@@ -56,11 +58,11 @@ const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries, tenantId}) => {
     const getKey = (pageIndex: number, previousPageData: Entry[] | null): EntriesParams | null => {
         // Return null to stop fetching when we've reached the end
         if (previousPageData && !previousPageData.length) return null;
-        
+
         // Use the last item's date as cursor for pagination
         const cursor = (previousPageData && pageIndex !== 0)
             ? previousPageData[previousPageData.length - 1].updated.date : '';
-        
+
         return {
             ...params,
             cursor
@@ -82,97 +84,140 @@ const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries, tenantId}) => {
         return <Loading/>
     }
 
+    // Check if filters are active
+    const hasFilters = categories || tag || query;
+
     return (<>
         <OGP/>
         <div id="entries">
-            <div className="mb-8">
-                <h2 className="text-2xl mb-2">Entries</h2>
+            <div>
+                {/* Header section with title and optional filter indicator */}
+                <div className="flex items-center justify-between mt-0">
+                    <h2 className="mt-4">
+                        Entries
+                        {hasFilters && (
+                            <span
+                                className="ml-2 text-sm font-normal px-2 py-1 rounded-full inline-flex items-center"
+                                style={{backgroundColor: accentColor, color: '#000'}}>
+                                <FilterIcon className="h-3 w-3 mr-1"/>
+                                Filtered
+                            </span>
+                        )}
+                    </h2>
+                </div>
 
-                {/* Filter section */}
-                {(categories || tag || query) && (
-                    <div className={`mt-0 mb-4 py-2 px-2 rounded-lg ${isDark ? 'bg-fg/5'
-                        : 'bg-fg2/5'}`}>
-                        <div className="flex flex-wrap gap-2 items-center">
-                            {categories && (
-                                <div className={filterBadgeStyle + " px-2 py-1"}>
-                                    <span className="mr-1">📁</span>
-                                    <span className="text-gray-900 dark:text-gray-900">
+                {/* Filter section - modernized with icons and cleaner layout */}
+                {hasFilters && (
+                    <div className={`mb-6 p-4 rounded-lg ${isDark
+                        ? 'bg-white/5 border border-white/10'
+                        : 'bg-white border border-black/10 shadow-sm'}`}>
+                        <div className="flex flex-wrap gap-2 items-center justify-between">
+                            <div className="flex flex-wrap gap-2">
+                                {categories && (
+                                    <div className="inline-flex items-center rounded-full text-xs font-medium 
+                                               px-3 py-1.5 transition-all"
+                                         style={{backgroundColor: accentColor, color: '#000'}}>
+                                        <FolderIcon className="h-3 w-3 mr-1"/>
                                         <Category
                                             categories={categories.split(',').map(c => ({name: c}))}
-                                            className={`text-gray-800`}/>
-                                    </span>
-                                </div>
-                            )}
+                                            className="text-gray-900"
+                                        />
+                                    </div>
+                                )}
 
-                            {tag && (
-                                <Link
-                                    to={`/tags/${tag}/entries`}
-                                    className={filterBadgeStyle + " px-2 py-1"}
-                                >
-                                    <span className="mr-1">🏷️</span>
-                                    <span className="text-gray-900 dark:text-gray-900">{tag}</span>
-                                </Link>
-                            )}
+                                {tag && (
+                                    <Link
+                                        to={`/tags/${tag}/entries`}
+                                        className="inline-flex items-center rounded-full text-xs font-medium 
+                                                px-3 py-1.5 transition-all hover:shadow-sm"
+                                        style={{backgroundColor: accentColor, color: '#000'}}
+                                    >
+                                        <TagIcon className="h-3 w-3 mr-1"/>
+                                        <span>{tag}</span>
+                                    </Link>
+                                )}
 
-                            {query && (
-                                <span className={filterBadgeStyle + " px-2 py-1"}>
-                                    <span className="mr-1">🔍</span>
-                                    <span
-                                        className="text-gray-900 dark:text-gray-900">{query}</span>
-                                </span>
-                            )}
-
+                                {query && (
+                                    <div className="inline-flex items-center rounded-full text-xs font-medium 
+                                               px-3 py-1.5 transition-all"
+                                         style={{backgroundColor: accentColor, color: '#000'}}>
+                                        <SearchIcon className="h-3 w-3 mr-1"/>
+                                        <span>{query}</span>
+                                    </div>
+                                )}
+                            </div>
+                            
                             <Link
                                 to="/entries"
-                                className="inline-flex items-center px-2 py-1 rounded text-xs font-medium 
-                                          border-2 border-black dark:border-white bg-transparent
-                                          text-fg hover:bg-fg hover:text-bg 
-                                          transition-colors duration-200 ml-auto"
+                                className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium
+                                        ${isDark
+                                    ? 'border border-white hover:bg-white hover:text-black'
+                                    : 'border border-black hover:bg-black hover:text-white'} 
+                                        transition-all duration-200`}
                                 aria-label="Clear all filters"
                             >
-                                <span className="mr-1">✕</span>
+                                <CloseIcon className="h-3 w-3 mr-1"/>
                                 Clear all
                             </Link>
                         </div>
                     </div>
                 )}
 
-                {/* Entries list */}
-                <div className="space-y-1">
+                {/* Entries list - modernized with better spacing and hover effects */}
+                <div className="space-y-4">
                     {entries && entries.map(entry => (
-                        <div key={entry.entryId} className={cardStyle}>
+                        <div
+                            key={entry.entryId}
+                            className={`
+                                p-4 rounded-lg
+                                ${isDark ? 'bg-white/5 hover:bg-white/10'
+                                : 'bg-white hover:bg-gray-50'} 
+                                transition-all duration-200 shadow-sm
+                            `}
+                            style={{
+                                borderLeft: `4px solid ${accentColor}`,
+                                boxShadow: isDark ? '0 1px 3px rgba(255,255,255,0.05)'
+                                    : '0 1px 3px rgba(0,0,0,0.1)'
+                            }}
+                        >
                             <Link
                                 to={`/entries/${entry.entryId}${tenantId ? `/${tenantId}` : ''}`}
-                                className="block mb-1 font-medium hover:underline"
+                                className="block mb-2 font-medium text-base hover:underline"
                             >
                                 {entry.frontMatter.title}
                             </Link>
 
-                            <div className="flex items-center text-xs text-fg2/70">
-                                <span className="inline-block mr-2">
-                                    <ClockIcon className="h-3 w-3 inline" />
-                                </span>
-                                <span>
-                                    Last Updated {entry.updated.date ?
-                                    <ReactTimeAgo date={new Date(entry.updated.date)} locale="en-US"
-                                                  timeStyle="twitter"/> : 'N/A'}
+                            <div className="flex flex-wrap items-center gap-3 text-xs text-fg2/80">
+                                <span className="inline-flex items-center">
+                                    <ClockIcon className="h-3 w-3 mr-1"/>
+                                    <span>
+                                        {entry.updated.date ?
+                                            <ReactTimeAgo
+                                                date={new Date(entry.updated.date)}
+                                                locale="en-US"
+                                                timeStyle="twitter"
+                                            />
+                                            : 'N/A'
+                                        }
+                                    </span>
                                 </span>
 
                                 {entry.frontMatter.tags && entry.frontMatter.tags.length > 0 && (
-                                    <div className="ml-3 flex gap-1.5">
+                                    <div className="flex flex-wrap gap-1.5 items-center">
+                                        <TagIcon className="h-3 w-3"/>
                                         {entry.frontMatter.tags.slice(0, 3).map(tag => (
                                             <Link
                                                 key={tag.name}
                                                 to={`/tags/${tag.name}/entries`}
-                                                className="text-xs opacity-70 hover:opacity-100 transition-opacity"
+                                                className="text-xs hover:underline transition-all"
                                             >
                                                 #{tag.name}
                                             </Link>
                                         ))}
                                         {entry.frontMatter.tags.length > 3 && (
-                                            <span
-                                                className="text-xs opacity-70">+{entry.frontMatter.tags.length
-                                                - 3}</span>
+                                            <span className="text-xs opacity-70">
+                                                +{entry.frontMatter.tags.length - 3}
+                                            </span>
                                         )}
                                     </div>
                                 )}
@@ -181,21 +226,31 @@ const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries, tenantId}) => {
                     ))}
 
                     {entries && entries.length === 0 && (
-                        <div className="text-center p-12 opacity-60">
-                            <EmptyDocumentIcon className="h-12 w-12 mx-auto mb-4" />
-                            <p className="text-sm">No entries found</p>
+                        <div className={`text-center p-12 rounded-lg border border-dashed ${isDark
+                            ? 'border-white/20' : 'border-black/20'}`}>
+                            <EmptyDocumentIcon
+                                className={`h-16 w-16 mx-auto mb-4 ${isDark ? 'opacity-50'
+                                    : 'opacity-30'}`}/>
+                            <p className="text-sm font-medium">No entries found</p>
                         </div>
                     )}
                 </div>
             </div>
 
-            {/* Load more section */}
-            <div className="flex justify-start pl-4 pr-4 w-full">
-                <LoadMore data={data} limit={limit} size={size} setSize={setSize}
-                          isPreLoaded={isPreLoaded}/>
-            </div>
-            
-            <BackToTop />
+            {/* Load more section - better centered */}
+            {entries && entries.length > 0 && (
+                <div className="flex justify-center w-full mb-12">
+                    <LoadMore
+                        data={data}
+                        limit={limit}
+                        size={size}
+                        setSize={setSize}
+                        isPreLoaded={isPreLoaded}
+                    />
+                </div>
+            )}
+
+            <BackToTop/>
         </div>
     </>)
 }

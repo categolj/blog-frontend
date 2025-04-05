@@ -165,10 +165,12 @@ class SsrControllerTest {
 			.getContentAsString();
 
 		assertThatDocument(body) //
-			.elementMatchesText("#entries > div.mb-8 > div > div:nth-child(1)", "entry2 Last Updated \\w+")
-			.elementAttributeHasText("#entries > div.mb-8 > div > div:nth-child(1) > a", "href", "/entries/2")
-			.elementMatchesText("#entries > div.mb-8 > div > div:nth-child(2)", "entry1 Last Updated \\w+")
-			.elementAttributeHasText("#entries > div.mb-8 > div > div:nth-child(2) > a", "href", "/entries/1")
+			.elementMatchesText("#entries > div:nth-child(1) > div.space-y-4 > div:nth-child(1)", "entry2 Apr 2, 2024")
+			.elementAttributeHasText("#entries > div:nth-child(1) > div.space-y-4 > div:nth-child(1) > a", "href",
+					"/entries/2")
+			.elementMatchesText("#entries > div:nth-child(1) > div.space-y-4 > div:nth-child(2)", "entry1 Apr 1, 2024")
+			.elementAttributeHasText("#entries > div:nth-child(1) > div.space-y-4 > div:nth-child(2) > a", "href",
+					"/entries/1")
 			.elementHasHtml("#__INIT_DATA__",
 					"""
 							{"preLoadedEntries":{"content":[{"entryId":2,"frontMatter":{"title":"entry2","categories":[],"tags":[]},"content":"","created":{"name":"demo","date":"2024-04-01T00:00:00Z"},"updated":{"name":"demo","date":"2024-04-02T00:00:00Z"}},{"entryId":1,"frontMatter":{"title":"entry1","categories":[],"tags":[]},"content":"","created":{"name":"demo","date":"2024-04-01T00:00:00Z"},"updated":{"name":"demo","date":"2024-04-01T00:00:00Z"}}],"size":2,"hasPrevious":false,"hasNext":true}}
