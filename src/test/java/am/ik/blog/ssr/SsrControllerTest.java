@@ -1,10 +1,5 @@
 package am.ik.blog.ssr;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-
 import am.ik.blog.Json;
 import am.ik.blog.config.SecurityConfig;
 import am.ik.blog.entry.EntryClient;
@@ -14,8 +9,11 @@ import am.ik.blog.entry.api.TagApi;
 import am.ik.blog.entry.model.CursorPageEntryInstant;
 import am.ik.blog.entry.model.Entry;
 import com.fasterxml.jackson.core.type.TypeReference;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.Test;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -263,18 +261,29 @@ class SsrControllerTest {
 			.getContentAsString();
 
 		assertThatDocument(body) //
-			.elementHasText("#categories li:nth-child(1)", "a > b")
-			.elementAttributeHasText("#categories li:nth-child(1) a:nth-of-type(1)", "href", "/categories/a/entries")
-			.elementAttributeHasText("#categories li:nth-child(1) a:nth-of-type(2)", "href", "/categories/a,b/entries")
-			.elementHasText("#categories li:nth-child(2)", "a > b > c")
-			.elementAttributeHasText("#categories li:nth-child(2) a:nth-of-type(1)", "href", "/categories/a/entries")
-			.elementAttributeHasText("#categories li:nth-child(2) a:nth-of-type(2)", "href", "/categories/a,b/entries")
-			.elementAttributeHasText("#categories li:nth-child(2) a:nth-of-type(3)", "href",
+			.elementHasText("#categories > div > div:nth-child(1) > ul > li:nth-child(1) > div", "a > b")
+			.elementAttributeHasText(
+					"#categories > div > div:nth-child(1) > ul > li:nth-child(1) > div > a:nth-child(1)", "href",
+					"/categories/a/entries")
+			.elementAttributeHasText(
+					"#categories > div > div:nth-child(1) > ul > li:nth-child(1) > div > a:nth-child(3)", "href",
+					"/categories/a,b/entries")
+			.elementHasText("#categories > div > div:nth-child(1) > ul > li:nth-child(2) > div", "a > b > c")
+			.elementAttributeHasText(
+					"#categories > div > div:nth-child(1) > ul > li:nth-child(2) > div > a:nth-child(1)", "href",
+					"/categories/a/entries")
+			.elementAttributeHasText(
+					"#categories > div > div:nth-child(1) > ul > li:nth-child(2) > div > a:nth-child(3)", "href",
+					"/categories/a,b/entries")
+			.elementAttributeHasText(
+					"#categories > div > div:nth-child(1) > ul > li:nth-child(2) > div > a:nth-child(5)", "href",
 					"/categories/a,b,c/entries")
-			.elementHasText("#categories li:nth-child(3)", "x > y > z")
-			.elementAttributeHasText("#categories li:nth-child(3) a:nth-of-type(1)", "href", "/categories/x/entries")
-			.elementAttributeHasText("#categories li:nth-child(3) a:nth-of-type(2)", "href", "/categories/x,y/entries")
-			.elementAttributeHasText("#categories li:nth-child(3) a:nth-of-type(3)", "href",
+			.elementHasText("#categories > div > div:nth-child(2) > ul > li > div", "x > y > z")
+			.elementAttributeHasText("#categories > div > div:nth-child(2) > ul > li > div > a:nth-child(1)", "href",
+					"/categories/x/entries")
+			.elementAttributeHasText("#categories > div > div:nth-child(2) > ul > li > div > a:nth-child(3)", "href",
+					"/categories/x,y/entries")
+			.elementAttributeHasText("#categories > div > div:nth-child(2) > ul > li > div > a:nth-child(5)", "href",
 					"/categories/x,y,z/entries")
 			.elementHasHtml("#__INIT_DATA__",
 					"""
