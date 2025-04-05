@@ -292,3 +292,40 @@ export const EmptyHashtagsIcon: React.FC<{ className?: string }> = ({ className 
     />
   </svg>
 );
+
+// Check icon for subscribed content
+export const CheckIcon: React.FC<{ className?: string }> = ({ className = "h-5 w-5" }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    className={className} 
+    fill="none" 
+    viewBox="0 0 24 24" 
+    stroke="currentColor"
+  >
+    <path 
+      strokeLinecap="round" 
+      strokeLinejoin="round" 
+      strokeWidth={2} 
+      d="M5 13l4 4L19 7" 
+    />
+  </svg>
+);
+
+// No Access / Forbidden icon for unsubscribed content
+export const NoAccessIcon: React.FC<{ className?: string }> = ({ className = "h-5 w-5" }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    className={className} 
+    fill="none" 
+    viewBox="0 0 24 24" 
+    stroke="currentColor"
+  >
+    <circle cx="12" cy="12" r="10" strokeWidth={1.5} />
+    <path 
+      strokeLinecap="round" 
+      strokeLinejoin="round" 
+      strokeWidth={1.5} 
+      d="M5.5 5.5l13 13" 
+    />
+  </svg>
+);
