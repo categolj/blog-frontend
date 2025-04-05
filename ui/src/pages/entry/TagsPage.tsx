@@ -3,9 +3,11 @@ import { Link } from "react-router-dom";
 import useSWR from 'swr';
 import Loading from "../../components/Loading.tsx";
 import { OGP } from "../../components/OGP.tsx";
-import { useTheme } from "../../hooks/useTheme";
 import { SearchIcon, EmptyHashtagsIcon } from "../../components/icons";
 import { TagAndCount, getTags } from "../../api/entryApi";
+import PageHeader from '../../components/PageHeader';
+import Badge from '../../components/Badge';
+import EmptyState from '../../components/EmptyState';
 
 export interface TagsProps {
     preLoadedTags?: TagAndCount[];
@@ -31,7 +33,6 @@ const getTagSize = (count: number, maxCount: number): string => {
 };
 
 const TagsPage: React.FC<TagsProps> = ({preLoadedTags}) => {
-    const { isDark } = useTheme();
     const [searchTerm, setSearchTerm] = useState('');
     const [sortBy, setSortBy] = useState<'name' | 'count'>('name');
     
@@ -69,16 +70,11 @@ const TagsPage: React.FC<TagsProps> = ({preLoadedTags}) => {
     return (<>
         <OGP title={`Tags - IK.AM`} />
         <div id="tags" className="relative">
-            {/* Header section */}
-            <div className="relative mb-6">
-                <div className="relative z-10">
-                    <h2 className="mb-2">Tags</h2>
-                    <p className="text-fg2 text-sm">
-                        Browse all {filteredTags.length} tags from the blog. 
-                        Click on any tag to see related entries.
-                    </p>
-                </div>
-            </div>
+            {/* Header section using PageHeader component */}
+            <PageHeader 
+                title="Tags" 
+                description={`Browse all ${filteredTags.length} tags from the blog. Click on any tag to see related entries.`}
+            />
             
             {/* Filter and sort controls */}
             <div className="flex flex-col sm:flex-row gap-4 mb-6">
@@ -88,7 +84,7 @@ const TagsPage: React.FC<TagsProps> = ({preLoadedTags}) => {
                         placeholder="Filter tags..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className={`w-full p-2 pl-8 rounded-md border ${isDark ? 'border-fg/30 bg-bg' : 'border-fg2/20 bg-bg'} text-fg focus:outline-none focus:ring-2 focus:ring-yellow-300`}
+                        className="w-full p-2 pl-8 rounded-md border border-[color:var(--card-border)] bg-[color:var(--bg)] text-fg focus:outline-none focus:ring-2 focus:ring-[color:var(--accent)]"
                     />
                     <SearchIcon className="h-4 w-4 absolute left-2.5 top-3 text-fg2/60" />
                 </div>
@@ -97,24 +93,28 @@ const TagsPage: React.FC<TagsProps> = ({preLoadedTags}) => {
                     <span className="text-xs text-fg2/70">Sort by:</span>
                     <button 
                         onClick={() => setSortBy('name')} 
-                        className={`px-3 py-1 text-xs rounded-md ${sortBy === 'name' ? 
-                            'bg-[#F4E878] text-black' : 
-                            'bg-fg/10 text-fg2'} transition-colors`}
+                        className={`px-3 py-1 text-xs rounded-md transition-colors ${
+                            sortBy === 'name' 
+                                ? 'bg-[color:var(--accent)] text-[color:var(--accent-text)]' 
+                                : 'bg-fg/10 text-fg2'
+                        }`}
                     >
                         Name
                     </button>
                     <button 
                         onClick={() => setSortBy('count')} 
-                        className={`px-3 py-1 text-xs rounded-md ${sortBy === 'count' ? 
-                            'bg-[#F4E878] text-black' : 
-                            'bg-fg/10 text-fg2'} transition-colors`}
+                        className={`px-3 py-1 text-xs rounded-md transition-colors ${
+                            sortBy === 'count' 
+                                ? 'bg-[color:var(--accent)] text-[color:var(--accent-text)]' 
+                                : 'bg-fg/10 text-fg2'
+                        }`}
                     >
                         Count
                     </button>
                 </div>
             </div>
             
-            {/* Visually hidden list for tests - hidden from display but still in DOM */}
+            {/* Visually hidden list for tests */}
             <ul className="sr-only">
                 {filteredTags.map(tag => (
                     <li key={tag.name}>
@@ -126,17 +126,15 @@ const TagsPage: React.FC<TagsProps> = ({preLoadedTags}) => {
             {/* Mobile view - single column */}
             <div className="flex flex-wrap gap-2 md:hidden">
                 {filteredTags.map(tag => (
-                    <Link 
-                        key={tag.name} 
-                        to={`/tags/${tag.name}/entries`} 
-                        className={`${getTagSize(tag.count, maxCount)} ${isDark ? 
-                            'bg-fg/10 hover:bg-[#F4E878] hover:text-black' : 
-                            'bg-fg2/5 hover:bg-[#F4E878] hover:text-black'} 
-                            px-3 py-1.5 rounded-full text-fg transition-colors duration-200`}
+                    <Badge
+                        key={tag.name}
+                        href={`/tags/${tag.name}/entries`}
+                        variant={sortBy === 'count' && tag.count === maxCount ? 'accent' : 'default'}
+                        size={getTagSize(tag.count, maxCount) === 'text-xs' ? 'sm' : 'md'}
                     >
                         {tag.name} 
                         <span className="ml-1 text-fg2/70 text-xs">({tag.count})</span>
-                    </Link>
+                    </Badge>
                 ))}
             </div>
             
@@ -148,10 +146,12 @@ const TagsPage: React.FC<TagsProps> = ({preLoadedTags}) => {
                             <Link 
                                 key={tag.name} 
                                 to={`/tags/${tag.name}/entries`}
-                                className={`${getTagSize(tag.count, maxCount)} ${isDark ? 
-                                    'bg-fg/10 hover:bg-[#F4E878] hover:text-black' : 
-                                    'bg-fg2/5 hover:bg-[#F4E878] hover:text-black'}
-                                    px-4 py-2 rounded-md transition-colors duration-200 flex justify-between items-center`}
+                                className={`
+                                    ${getTagSize(tag.count, maxCount)} 
+                                    bg-[color:var(--card-bg)] 
+                                    hover:bg-[color:var(--accent)] hover:text-[color:var(--accent-text)]
+                                    px-4 py-2 rounded-md transition-colors duration-200 flex justify-between items-center
+                                `}
                             >
                                 <span className="truncate">{tag.name}</span>
                                 <span className="ml-2 text-xs font-mono px-2 py-0.5 rounded bg-fg/10">{tag.count}</span>
@@ -163,10 +163,10 @@ const TagsPage: React.FC<TagsProps> = ({preLoadedTags}) => {
             
             {/* Empty state */}
             {filteredTags.length === 0 && (
-                <div className="text-center p-12 text-fg2/70">
-                    <EmptyHashtagsIcon className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                    <p>No tags found matching "{searchTerm}"</p>
-                </div>
+                <EmptyState
+                    icon={<EmptyHashtagsIcon className="h-16 w-16" />}
+                    message={`No tags found matching "${searchTerm}"`}
+                />
             )}
         </div>
     </>)

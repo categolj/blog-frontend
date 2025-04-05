@@ -4,21 +4,41 @@
 
 @layer base {
   :root {
+    /* Base colors */
     --fg: #000;
     --fg2: #333;
     --bg: #fff;
     --code-fg: #333;
     --code-bg: #f6f5f5;
     --meta: #031b4e99;
+    
+    /* Accent colors */
+    --accent: #F4E878; /* Lemon color accent for both light and dark mode */
+    --accent-text: #000; /* Text color on accent background */
+    
+    /* Component colors */
+    --card-bg: #fff;
+    --card-hover-bg: #f5f5f5;
+    --card-border: rgba(0, 0, 0, 0.1);
+    --filter-bg: rgba(0, 0, 0, 0.05);
+    --empty-border: rgba(0, 0, 0, 0.2);
   }
 
   .dark {
+    /* Base colors */
     --fg: #fff;
     --fg2: #ddd;
     --bg: #000;
     --code-fg: #061433;
     --code-bg: #dbdde7;
     --meta: #ccd2ecff;
+    
+    /* Component colors */
+    --card-bg: rgba(255, 255, 255, 0.05);
+    --card-hover-bg: rgba(255, 255, 255, 0.1);
+    --card-border: rgba(255, 255, 255, 0.1);
+    --filter-bg: rgba(255, 255, 255, 0.05);
+    --empty-border: rgba(255, 255, 255, 0.2);
   }
   
   /* Custom cursor for binary effect */

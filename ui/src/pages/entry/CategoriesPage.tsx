@@ -5,6 +5,8 @@ import Category from "../../components/Category.tsx";
 import {OGP} from "../../components/OGP.tsx";
 import { FolderIcon, ChevronDownIcon, ChevronRightIcon } from "../../components/icons"; 
 import { Category as CategoryModel, getCategories } from "../../api/entryApi";
+import PageHeader from '../../components/PageHeader';
+import Card from '../../components/Card';
 
 export interface CategoriesProps {
     preLoadedCategories?: CategoryModel[][];
@@ -45,13 +47,11 @@ const CategoriesPage: React.FC<CategoriesProps> = ({preLoadedCategories}) => {
     return (<>
         <OGP title={`Categories - IK.AM`} />
         <div id="categories" className="mx-auto">
-            <h2 className="mb-8">
-                Categories
-            </h2>
+            <PageHeader title="Categories" />
 
             <div className="grid grid-cols-1 gap-6">
                 {Object.entries(groupedCategories).map(([groupName, categoryChains]) => (
-                    <div key={groupName} className="border border-fg rounded-md overflow-hidden">
+                    <Card key={groupName} className="p-0 overflow-hidden">
                         <div 
                             className="bg-fg2 text-bg px-4 py-2 font-bold flex items-center justify-between cursor-pointer"
                             onClick={() => toggleCollapse(groupName)}
@@ -73,14 +73,14 @@ const CategoriesPage: React.FC<CategoriesProps> = ({preLoadedCategories}) => {
                                         <div className="flex items-center">
                                             <Category 
                                                 categories={chain} 
-                                                className="hover:text-[#ffff00] dark:hover:text-[#ffff00] transition-colors"
+                                                className="hover:text-[color:var(--accent)] transition-colors"
                                             />
                                         </div>
                                     </li>
                                 ))}
                             </ul>
                         )}
-                    </div>
+                    </Card>
                 ))}
             </div>
         </div>

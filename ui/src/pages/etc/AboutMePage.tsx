@@ -1,37 +1,31 @@
 import React from "react";
 import { OGP } from "../../components/OGP.tsx";
-import { useTheme } from "../../hooks/useTheme";
+import Card from "../../components/Card";
+import Badge from "../../components/Badge";
+import PageHeader from "../../components/PageHeader";
 
 const AboutMePage: React.FC = () => {
-    const { isDark } = useTheme();
-
     // Animation for profile image on hover
     const profileHoverEffect = "transform transition-transform duration-300 hover:scale-105 hover:rotate-3";
     
-    // Border styles based on theme
-    const borderStyle = "border-2 border-dashed transition-colors duration-300";
-    const borderColor = isDark ? "border-fg/40" : "border-fg2/30";
-    
-    // Section card styles
-    const sectionCardStyle = `${borderStyle} ${borderColor} rounded-lg p-4 mb-6 backdrop-blur-sm bg-bg/30 hover:bg-bg/60 transition-all duration-300`;
-    
-    // Badge styles
-    const badgeStyle = `inline-block rounded-full px-3.5 py-1 text-xs ${isDark ? "bg-fg2/20 text-fg" : "bg-fg/10 text-fg2"} font-mono m-1`;
+    // Section card styles with our reusable Card component
+    const sectionStyle = "backdrop-blur-sm bg-bg/30 hover:bg-bg/60";
 
-    return <>
-        <OGP title={`About Me - IK.AM`} />
-        
-        <div className="pl-4 pr-4">
-            {/* Header section with animated profile */}
-            <div className="mb-10">
-                <h2 className="mb-4">About Me</h2>
-                <div className="flex flex-col sm:flex-row items-start sm:space-x-6 mb-6">
+    return (
+        <>
+            <OGP title={`About Me - IK.AM`} />
+            
+            <PageHeader title="About Me" />
+            
+            {/* Profile section */}
+            <div className="mb-6">
+                <div className="flex flex-col sm:flex-row items-start sm:space-x-6 mb-4">
                     <div className={`relative mb-4 sm:mb-0 ${profileHoverEffect}`}>
                         <img 
                             src={"https://avatars.githubusercontent.com/u/106908?s=200"}
                             width={180}
                             height={180}
-                            className={`rounded-full shadow-lg ${borderStyle} ${borderColor}`}
+                            className="rounded-full shadow-lg border-2 border-dashed border-[color:var(--empty-border)] transition-colors duration-300"
                             alt="@making"
                         />
                     </div>
@@ -39,12 +33,12 @@ const AboutMePage: React.FC = () => {
                         <h3 className="text-2xl font-bold mb-1">Toshiaki Maki / 槙 俊明</h3>
                         <p className="text-fg2/80 mb-3">Senior Principal Architect at Broadcom</p>
                         <div className="space-x-2">
-                            <a href="https://x.com/making" className={`${badgeStyle} hover:bg-fg2/30`}>
+                            <Badge href="https://x.com/making" className="hover:bg-fg2/30">
                                 @making
-                            </a>
-                            <span className={badgeStyle}>
+                            </Badge>
+                            <Badge>
                                 makingx [at] gmail.com
-                            </span>
+                            </Badge>
                         </div>
                         <p className="mt-4 text-sm italic">
                             Dog lover 🐩 (<a href="https://en.wikipedia.org/wiki/Bichon_Frise">Bichon Frise</a>). 
@@ -55,7 +49,7 @@ const AboutMePage: React.FC = () => {
             </div>
         
             {/* Work Experience */}
-            <div className={sectionCardStyle}>
+            <Card isDashed={true} className={sectionStyle}>
                 <h3 className="border-b border-fg/20 pb-2 mb-4">Work Experience</h3>
                 
                 <div className="space-y-6">
@@ -141,10 +135,10 @@ const AboutMePage: React.FC = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </Card>
             
             {/* Education */}
-            <div className={sectionCardStyle}>
+            <Card isDashed={true} className={sectionStyle}>
                 <h3 className="border-b border-fg/20 pb-2 mb-4">Education</h3>
                 
                 <div className="space-y-6">
@@ -176,9 +170,9 @@ const AboutMePage: React.FC = () => {
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </>;
+            </Card>
+        </>
+    );
 };
 
 export default AboutMePage;
