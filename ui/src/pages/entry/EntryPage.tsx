@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useLocation } from "react-router-dom";
 import useSWR from 'swr';
 import Loading from "../../components/Loading.tsx";
 import BackToTop from "../../components/BackToTop";
@@ -35,6 +35,7 @@ const EntryPage: React.FC<EntryProps> = ({ preLoadedEntry, tenantId, repo, branc
     const { entryId } = useParams();
     const { isDark } = useTheme();
     const [isVisible, setIsVisible] = useState(false);
+    const location = useLocation();
     
     // Determine if the entry is preloaded or needs to be fetched
     const isPreLoaded = preLoadedEntry && preLoadedEntry.entryId == Number(entryId);
@@ -46,6 +47,21 @@ const EntryPage: React.FC<EntryProps> = ({ preLoadedEntry, tenantId, repo, branc
     );
     
     const entry = data || preLoadedEntry;
+    
+    // Check if content is outdated (more than 2 years old)
+    const isContentOutdated = (entry?: Entry) => {
+        if (!entry?.updated?.date) return false;
+        
+        const updatedDate = new Date(entry.updated.date);
+        const twoYearsAgo = new Date();
+        twoYearsAgo.setFullYear(twoYearsAgo.getFullYear() - 2);
+        
+        return updatedDate < twoYearsAgo;
+    };
+    
+    // Determine if we're in English mode
+    // Check both patterns: URL ending with /en or exactly matching /entries/en
+    const isEnglish = location.pathname.endsWith('/en') || location.pathname === '/entries/en';
     
     // Add copy button functionality to code blocks
     useEffect(addCopyButton, [entry]);
@@ -191,6 +207,23 @@ const EntryPage: React.FC<EntryProps> = ({ preLoadedEntry, tenantId, repo, branc
                     )}
                 </div>
             </div>
+            
+            {/* Warning message for outdated content */}
+            {isContentOutdated(entry) && (
+                <div className="mb-8">
+                    <Message 
+                        status="warning" 
+                        text={
+                            <span>
+                                {isEnglish 
+                                    ? "This article was last updated more than 2 years ago. The information may be outdated."
+                                    : "この記事は2年以上前に更新されたものです。情報が古くなっている可能性があります。"
+                                }
+                            </span>
+                        } 
+                    />
+                </div>
+            )}
             
             {/* Main content with enhanced styling */}
             <article 
