@@ -13,10 +13,15 @@ import {ShareWithX} from "../../components/ShareWithX.tsx";
 import {ShareWithBlueSky} from "../../components/ShareWithBlueSky.tsx";
 import {ShareWithHatebu} from "../../components/ShareWithHatebu.tsx";
 import {NotTranslated} from "./NotTranslated.tsx";
-import {useTheme} from "../../hooks/useTheme";
-import {CalendarIcon, EditIcon, EyeIcon, InfoIcon, ListIcon} from "../../components/icons";
+import {CalendarIcon, EditIcon, EyeIcon, FolderIcon, InfoIcon} from "../../components/icons";
 import {Entry, getEntry} from "../../api/entryApi";
 import {ApiError, ProblemDetail} from "../../utils/fetch";
+import EntryTag from "../../components/EntryTag";
+import Card from "../../components/Card";
+import PageHeader from "../../components/PageHeader";
+import EntryMetaSection from "../../components/EntryMetaSection";
+import InfoBox from "../../components/InfoBox";
+import ShareSection from "../../components/ShareSection";
 
 export interface EntryProps {
     preLoadedEntry?: Entry;
@@ -29,11 +34,9 @@ const plainTextRenderer = new PlainTextRenderer();
 
 /**
  * EntryPage component displays a single blog entry
- * Includes styling for both light and dark modes
  */
 const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch}) => {
     const {entryId} = useParams();
-    const {isDark} = useTheme();
     const [showOutdatedWarning, setShowOutdatedWarning] = useState(true);
     const [showErrorMessage, setShowErrorMessage] = useState(true);
     const location = useLocation();
@@ -61,7 +64,6 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch
     };
 
     // Determine if we're in English mode
-    // Check both patterns: URL ending with /en or exactly matching /entries/en
     const isEnglish = location.pathname.endsWith('/en') || location.pathname === '/entries/en';
 
     // Add copy button functionality to code blocks
@@ -77,7 +79,7 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch
                 detail: error.statusText
             };
             return (
-                <div className="p-4 rounded-lg shadow-sm bg-opacity-10 bg-fg">
+                <Card>
                     <h2 className="text-2xl m-0 mb-4">{problem.title}</h2>
                     {showErrorMessage && (
                         <Message
@@ -86,7 +88,7 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch
                             onClose={() => setShowErrorMessage(false)}
                         />
                     )}
-                </div>
+                </Card>
             );
         }
     } else if (isLoading || !entry) {
@@ -97,22 +99,6 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch
     const contentHtml = marked.parse(entry.content, {async: false, gfm: true}) as string;
     const contentText = marked.parse(entry.content,
         {async: false, gfm: true, renderer: plainTextRenderer}) as string;
-
-    // Format tags with links
-    const tags = entry.frontMatter.tags.length > 0 ? entry.frontMatter.tags
-            .map<React.ReactNode>(t => (
-                <Link
-                    key={t.name}
-                    to={`/tags/${t.name}/entries`}
-                    className={`px-2 py-1 mr-2 text-xs rounded font-medium transition-all 
-                    ${isDark
-                        ? 'bg-[#F4E878] text-gray-800 hover:bg-[#f5ec92]'
-                        : 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200'}`}
-                >
-                    {t.name}
-                </Link>
-            ))
-        : '';
 
     // Create meta description for OGP
     const metaDescription = contentText
@@ -143,34 +129,25 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch
                 description={metaDescription}
             />
 
-            {/* Categories navigation with improved styling */}
-            <div
-                id="entry-categories"
-                className="mb-6 flex items-center text-sm font-medium"
-            >
+            {/* Categories navigation */}
+            <div className="mb-6 flex items-center text-sm font-medium">
                 <div className="flex items-center text-meta">
-                    <ListIcon className="h-4 w-4 mr-1"/>
+                    <FolderIcon className="h-4 w-4 mr-1"/>
                     <Category categories={entry.frontMatter.categories}/>
                 </div>
             </div>
 
-            {/* Entry title with hover effect */}
-            <h2
-                id="entry-title"
-                className={`text-3xld mb-4 transition-all duration-300 ${
-                    isDark ? 'hover:text-[#F4E878]' : 'hover:text-fg2'
-                }`}
-            >
-                <Link to={`/entries/${entry.entryId}${tenantId ? '/' + tenantId : ''}`}>
-                    {entry.frontMatter.title}
-                </Link>
-            </h2>
+            {/* Entry title with proper page header component */}
+            <PageHeader
+                title={
+                    <Link to={`/entries/${entry.entryId}${tenantId ? '/' + tenantId : ''}`}>
+                        {entry.frontMatter.title}
+                    </Link>
+                }
+            />
 
-            {/* Meta information with improved layout */}
-            <div
-                id="entry-meta"
-                className="mb-8 pb-6 border-b border-fg border-opacity-10 text-meta"
-            >
+            {/* Meta information using EntryMetaSection component */}
+            <EntryMetaSection>
                 <div className="flex flex-wrap items-center justify-between">
                     <div className="flex flex-wrap items-center text-sm mb-2 sm:mb-0">
                         <div className="flex items-center mr-4">
@@ -193,14 +170,16 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch
                         </div>
                     </div>
 
-                    {/* Tags with improved styling */}
+                    {/* Tags using EntryTag component */}
                     {entry.frontMatter.tags.length > 0 && (
-                        <div id="entry-tags" className="flex flex-wrap items-center">
-                            {tags}
+                        <div className="flex flex-wrap items-center">
+                            {entry.frontMatter.tags.map(tag => (
+                                <EntryTag key={tag.name} name={tag.name} />
+                            ))}
                         </div>
                     )}
                 </div>
-            </div>
+            </EntryMetaSection>
 
             {/* Warning message for outdated content */}
             {isContentOutdated(entry) && showOutdatedWarning && (
@@ -220,41 +199,30 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch
                 </div>
             )}
 
-            {/* Main content with enhanced styling */}
+            {/* Main content */}
             <article
-                id="entry"
                 className="prose prose-sm max-w-none mb-8"
                 dangerouslySetInnerHTML={{__html: contentHtml}}
             />
 
-            {/* Footer section with edit link and share buttons */}
-            <div className="mt-10 pt-6 border-t border-fg border-opacity-10 text-meta">
-                <div className={`p-4 rounded-lg ${isDark ? 'bg-gray-800' : 'bg-gray-100'} mb-6`}>
-                    <div className="flex items-start">
-                        <InfoIcon className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0"/>
-                        <span>
-                            Found a mistake? <a
-                            href={`https://github.com/making/${repo}/blob/${branch}/content/${entry.entryId.toString().padStart(
-                                5, '0')}.md`}
-                            className="underline hover:text-fg transition-colors"
-                        >
-                                Update the entry
-                            </a>.
-                        </span>
-                    </div>
-                </div>
+            {/* Footer section with InfoBox component */}
+            <div className="mt-10 pt-6 border-t border-[color:var(--entry-border-color)] text-meta">
+                <InfoBox icon={<InfoIcon className="h-5 w-5" />}>
+                    Found a mistake? <a
+                        href={`https://github.com/making/${repo}/blob/${branch}/content/${entry.entryId.toString().padStart(
+                            5, '0')}.md`}
+                        className="underline hover:text-fg transition-colors"
+                    >
+                        Update the entry
+                    </a>.
+                </InfoBox>
 
-                {/* Share buttons with improved layout */}
-                <div className="flex flex-col">
-                    <div className="text-sm mb-2">
-                        Share this article:
-                    </div>
-                    <div className="flex space-x-2">
-                        <ShareWithX url={entryUrl} text={entry.frontMatter.title}/>
-                        <ShareWithBlueSky url={entryUrl} text={entry.frontMatter.title}/>
-                        <ShareWithHatebu url={entryUrl}/>
-                    </div>
-                </div>
+                {/* Share buttons using ShareSection component */}
+                <ShareSection>
+                    <ShareWithX url={entryUrl} text={entry.frontMatter.title}/>
+                    <ShareWithBlueSky url={entryUrl} text={entry.frontMatter.title}/>
+                    <ShareWithHatebu url={entryUrl}/>
+                </ShareSection>
             </div>
 
             <BackToTop/>

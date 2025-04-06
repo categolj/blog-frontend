@@ -19,28 +19,28 @@ const MessageIcons = {
 
 // Get tailwind classes based on message status and theme
 const getMessageStyles = (status: MessageStatus) => {
-    // Using only black, white, and lemon color as requested
+    // Using CSS variables for consistent colors
     const baseClasses = "flex items-start p-4 mb-6 rounded-lg max-w-full border";
     
-    // Style mapping using only the allowed colors
+    // Style mapping using CSS variables
     const statusClasses = {
-        success: "bg-white dark:bg-black border-[#FFDC00] border-l-[8px] text-black dark:text-white",
-        error: "bg-white dark:bg-black border-black dark:border-white border-l-[8px] text-black dark:text-white",
-        warning: "bg-white dark:bg-black border-[#FFDC00] border-l-[8px] text-black dark:text-white",
-        info: "bg-white dark:bg-black border-[#FFDC00] border-l-[8px] text-black dark:text-white"
+        success: "bg-[color:var(--message-bg)] border-[color:var(--message-border)] border-l-[8px] text-[color:var(--message-text)]",
+        error: "bg-[color:var(--message-bg)] border-[color:var(--message-text)] border-l-[8px] text-[color:var(--message-text)]",
+        warning: "bg-[color:var(--message-bg)] border-[color:var(--message-border)] border-l-[8px] text-[color:var(--message-text)]",
+        info: "bg-[color:var(--message-bg)] border-[color:var(--message-border)] border-l-[8px] text-[color:var(--message-text)]"
     };
     
     const iconClasses = {
-        success: "text-[#FFDC00]",
-        error: "text-black dark:text-white",
-        warning: "text-[#FFDC00]",
-        info: "text-[#FFDC00]"
+        success: "text-[color:var(--message-border)]",
+        error: "text-[color:var(--message-text)]",
+        warning: "text-[color:var(--message-border)]",
+        info: "text-[color:var(--message-border)]"
     };
     
     return {
         container: `${baseClasses} ${statusClasses[status]}`,
         icon: `mr-3 flex-shrink-0 ${iconClasses[status]}`,
-        title: `font-medium text-black dark:text-white capitalize mr-2`
+        title: `font-medium text-[color:var(--message-text)] capitalize mr-2`
     };
 };
 

@@ -21,6 +21,7 @@ import Badge from "../../components/Badge";
 import FilterSection from "../../components/FilterSection";
 import Card from "../../components/Card";
 import EmptyState from "../../components/EmptyState";
+import EntryTag from "../../components/EntryTag";
 
 export interface EntriesProps {
     preLoadedEntries?: CursorPageEntryInstant;
@@ -95,7 +96,7 @@ const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries, tenantId}) => {
                 <PageHeader title="Entries">
                     {hasFilters && (
                         <Badge
-                            variant="accent"
+                            variant="tag"
                             icon={<FilterIcon className="h-3 w-3"/>}
                             className="ml-2"
                         >
@@ -108,17 +109,17 @@ const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries, tenantId}) => {
                 {hasFilters && (
                     <FilterSection clearHref="/entries">
                         {categories && (
-                            <Badge variant="accent" icon={<FolderIcon className="h-3 w-3"/>}>
+                            <Badge variant="tag" icon={<FolderIcon className="h-3 w-3"/>}>
                                 <Category
                                     categories={categories.split(',').map(c => ({name: c}))}
-                                    className="text-[color:var(--accent-text)]"
+                                    className="text-[color:var(--tag-text)]"
                                 />
                             </Badge>
                         )}
 
                         {tag && (
                             <Badge
-                                variant="accent"
+                                variant="tag"
                                 icon={<TagIcon className="h-3 w-3"/>}
                                 href={`/tags/${tag}/entries`}
                             >
@@ -127,7 +128,7 @@ const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries, tenantId}) => {
                         )}
 
                         {query && (
-                            <Badge variant="accent" icon={<SearchIcon className="h-3 w-3"/>}>
+                            <Badge variant="tag" icon={<SearchIcon className="h-3 w-3"/>}>
                                 {query}
                             </Badge>
                         )}
@@ -168,13 +169,11 @@ const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries, tenantId}) => {
                                     <div className="flex flex-wrap gap-1.5 items-center">
                                         <TagIcon className="h-3 w-3"/>
                                         {entry.frontMatter.tags.slice(0, 3).map(tag => (
-                                            <Link
-                                                key={tag.name}
-                                                to={`/tags/${tag.name}/entries`}
-                                                className="text-xs hover:underline transition-all"
-                                            >
-                                                #{tag.name}
-                                            </Link>
+                                            <EntryTag 
+                                                key={tag.name} 
+                                                name={tag.name}
+                                                className="p-0 m-0 mr-1 bg-transparent hover:underline"
+                                            />
                                         ))}
                                         {entry.frontMatter.tags.length > 3 && (
                                             <span className="text-xs opacity-70">

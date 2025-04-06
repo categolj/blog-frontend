@@ -20,8 +20,27 @@
     --card-bg: #fff;
     --card-hover-bg: #f5f5f5;
     --card-border: rgba(0, 0, 0, 0.1);
-    --filter-bg: rgba(0, 0, 0, 0.05);
+    --filter-bg: rgba(255, 255, 255, 0.9); /* Almost white for better contrast with tags */
     --empty-border: rgba(0, 0, 0, 0.2);
+    
+    /* Entry page specific colors */
+    --entry-title-hover: #333;
+    --entry-border-color: rgba(0, 0, 0, 0.1);
+    --entry-meta-text: var(--meta);
+    --entry-meta-bg: rgba(0, 0, 0, 0.05);
+    --message-border: var(--accent);
+    --message-bg: #fff;
+    --message-text: #000;
+    --footer-bg: rgba(0, 0, 0, 0.05);
+    
+    /* Tag and badge colors */
+    --tag-bg: #f5f5f4; /* stone-100 equivalent */
+    --tag-text: #292524; /* stone-800 equivalent */
+    --tag-hover-bg: #e7e5e4; /* stone-200 equivalent */
+    
+    /* Info section colors */
+    --info-bg: #f5f5f5; /* Light gray for info sections */
+    --info-text: var(--fg2); /* Use secondary foreground color */
   }
 
   .dark {
@@ -37,8 +56,27 @@
     --card-bg: rgba(255, 255, 255, 0.05);
     --card-hover-bg: rgba(255, 255, 255, 0.1);
     --card-border: rgba(255, 255, 255, 0.1);
-    --filter-bg: rgba(255, 255, 255, 0.05);
+    --filter-bg: rgba(255, 255, 255, 0.12); /* Slightly lighter for better contrast with tags */
     --empty-border: rgba(255, 255, 255, 0.2);
+    
+    /* Entry page specific colors */
+    --entry-title-hover: var(--accent);
+    --entry-border-color: rgba(255, 255, 255, 0.1);
+    --entry-meta-text: var(--meta);
+    --entry-meta-bg: rgba(255, 255, 255, 0.05);
+    --message-border: var(--accent);
+    --message-bg: #000;
+    --message-text: #fff;
+    --footer-bg: rgba(255, 255, 255, 0.05);
+    
+    /* Tag and badge colors */
+    --tag-bg: #57534e; /* stone-700 equivalent */
+    --tag-text: #f5f5f4; /* stone-100 equivalent */
+    --tag-hover-bg: #44403c; /* stone-600 equivalent */
+    
+    /* Info section colors */
+    --info-bg: #1f1f1f; /* Dark gray for info sections */
+    --info-text: var(--fg2); /* Use secondary foreground color */
   }
   
   /* Custom cursor for binary effect */

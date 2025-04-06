@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 
 interface PageHeaderProps {
-    title: string;
+    title: ReactNode;
     description?: string;
     children?: ReactNode;
 }

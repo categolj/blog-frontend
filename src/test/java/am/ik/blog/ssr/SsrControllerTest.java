@@ -104,10 +104,10 @@ class SsrControllerTest {
 			.getContentAsString();
 
 		assertThatDocument(body) //
-			.elementHasText("#entry-title > a", "Hello World!") //
-			.elementAttributeHasText("#entry-title > a", "href", "/entries/100") //
-			.elementHasText("#entry", "Welcome Hello world, this is my first blog post. I hope you like it!") //
-			.elementHasText("#entry strong", "Hello world") //
+			.elementHasText("#root h2 > a", "Hello World!") //
+			.elementAttributeHasText("#root h2 > a", "href", "/entries/100") //
+			.elementHasText("#root article > p", "Welcome Hello world, this is my first blog post. I hope you like it!") //
+			.elementHasText("#root article > p > strong", "Hello world") //
 			.elementHasHtml("#__INIT_DATA__",
 					"""
 							{"preLoadedEntry":{"entryId":100,"frontMatter":{"title":"Hello World!","categories":[{"name":"a"},{"name":"b"},{"name":"c"}],"tags":[{"name":"x","version":null},{"name":"y","version":null},{"name":"z","version":null}]},"content":"Welcome\\n**Hello world**, this is my first blog post.\\nI hope you like it!","created":{"name":"demo","date":"2024-04-01T00:00:00Z"},"updated":{"name":"demo","date":"2024-04-01T00:00:00Z"}}}

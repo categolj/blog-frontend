@@ -7,7 +7,7 @@ interface BadgeProps {
     href?: string;
     onClick?: () => void;
     className?: string;
-    variant?: 'accent' | 'default' | 'outline';
+    variant?: 'accent' | 'default' | 'outline' | 'tag';
     size?: 'sm' | 'md';
 }
 
@@ -32,7 +32,8 @@ const Badge: React.FC<BadgeProps> = ({
     const variantClasses = {
         accent: 'bg-[color:var(--accent)] text-[color:var(--accent-text)]',
         default: 'bg-fg/10 text-fg hover:bg-fg/20',
-        outline: 'border border-fg text-fg hover:bg-fg hover:text-bg'
+        outline: 'border border-fg text-fg hover:bg-fg hover:text-bg',
+        tag: 'bg-[color:var(--tag-bg)] text-[color:var(--tag-text)] hover:bg-[color:var(--tag-hover-bg)]'
     }[variant];
     
     // Combined classes for the badge
