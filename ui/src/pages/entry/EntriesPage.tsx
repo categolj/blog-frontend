@@ -197,7 +197,7 @@ const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries, tenantId}) => {
 
             {/* Load more section */}
             {entries && entries.length > 0 && (
-                <div className="flex justify-center w-full mb-12">
+                <div className="flex w-full mb-12 mt-4">
                     <LoadMore
                         data={data}
                         limit={limit}
