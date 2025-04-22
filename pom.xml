@@ -90,7 +90,7 @@
 		<dependency>
 			<groupId>cc.jilt</groupId>
 			<artifactId>jilt</artifactId>
-			<version>1.8</version>
+			<version>1.8.1</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -147,7 +147,7 @@
 						<path>
 							<groupId>cc.jilt</groupId>
 							<artifactId>jilt</artifactId>
-							<version>1.8</version>
+							<version>1.8.1</version>
 						</path>
 						<path>
 							<groupId>com.google.errorprone</groupId>
