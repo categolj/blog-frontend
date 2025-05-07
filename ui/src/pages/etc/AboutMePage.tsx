@@ -9,7 +9,7 @@ const AboutMePage: React.FC = () => {
     const profileHoverEffect = "transform transition-transform duration-300 hover:scale-105 hover:rotate-3";
     
     // Section card styles with our reusable Card component
-    const sectionStyle = "backdrop-blur-sm bg-bg/30 hover:bg-bg/60";
+    const sectionStyle = "backdrop-blur-xs bg-bg/30 hover:bg-bg/60";
 
     return (
         <>
@@ -25,7 +25,7 @@ const AboutMePage: React.FC = () => {
                             src={"https://avatars.githubusercontent.com/u/106908?s=200"}
                             width={180}
                             height={180}
-                            className="rounded-full shadow-lg border-2 border-dashed border-[color:var(--empty-border)] transition-colors duration-300"
+                            className="rounded-full shadow-lg border-2 border-dashed border-(color:--empty-border) transition-colors duration-300"
                             alt="@making"
                         />
                     </div>
@@ -63,7 +63,7 @@ const AboutMePage: React.FC = () => {
                             <div className="mb-3">
                                 <div className="flex justify-between items-center">
                                     <span className="font-bold">Senior Principal Architect (P6)</span>
-                                    <span className="text-xs bg-fg/10 px-2 py-0.5 rounded">Dec 2023 - Present</span>
+                                    <span className="text-xs bg-fg/10 px-2 py-0.5 rounded-sm">Dec 2023 - Present</span>
                                 </div>
                                 <div className="text-sm">Tokyo</div>
                             </div>
@@ -80,14 +80,14 @@ const AboutMePage: React.FC = () => {
                             <div className="mb-3">
                                 <div className="flex justify-between items-center">
                                     <span className="font-bold">Senior Staff Cloud Native Architect (P6)</span>
-                                    <span className="text-xs bg-fg/10 px-2 py-0.5 rounded">Aug 2022 - Dec 2023</span>
+                                    <span className="text-xs bg-fg/10 px-2 py-0.5 rounded-sm">Aug 2022 - Dec 2023</span>
                                 </div>
                                 <div className="text-sm">Tokyo</div>
                             </div>
                             <div className="mb-3">
                                 <div className="flex justify-between items-center">
                                     <span className="font-bold">Staff Cloud Native Architect (P5)</span>
-                                    <span className="text-xs bg-fg/10 px-2 py-0.5 rounded">Apr 2020 - Jul 2022</span>
+                                    <span className="text-xs bg-fg/10 px-2 py-0.5 rounded-sm">Apr 2020 - Jul 2022</span>
                                 </div>
                                 <div className="text-sm">Tokyo</div>
                             </div>
@@ -104,14 +104,14 @@ const AboutMePage: React.FC = () => {
                             <div className="mb-3">
                                 <div className="flex justify-between items-center">
                                     <span className="font-bold">Advisory Solutions Architect (P5)</span>
-                                    <span className="text-xs bg-fg/10 px-2 py-0.5 rounded">Sep 2018 - Apr 2020</span>
+                                    <span className="text-xs bg-fg/10 px-2 py-0.5 rounded-sm">Sep 2018 - Apr 2020</span>
                                 </div>
                                 <div className="text-sm">Tokyo</div>
                             </div>
                             <div className="mb-3">
                                 <div className="flex justify-between items-center">
                                     <span className="font-bold">Senior Solutions Architect (P4)</span>
-                                    <span className="text-xs bg-fg/10 px-2 py-0.5 rounded">Jan 2016 - Aug 2018</span>
+                                    <span className="text-xs bg-fg/10 px-2 py-0.5 rounded-sm">Jan 2016 - Aug 2018</span>
                                 </div>
                                 <div className="text-sm">Tokyo</div>
                             </div>
@@ -128,7 +128,7 @@ const AboutMePage: React.FC = () => {
                             <div className="mb-3">
                                 <div className="flex justify-between items-center">
                                     <span className="font-bold">Assistant Manager</span>
-                                    <span className="text-xs bg-fg/10 px-2 py-0.5 rounded">Apr 2009 - Dec 2015</span>
+                                    <span className="text-xs bg-fg/10 px-2 py-0.5 rounded-sm">Apr 2009 - Dec 2015</span>
                                 </div>
                                 <div className="text-sm">Tokyo</div>
                             </div>
@@ -152,7 +152,7 @@ const AboutMePage: React.FC = () => {
                             <div className="mb-3">
                                 <div className="flex justify-between items-center">
                                     <span className="font-bold">Master of Science, Mechano-Informatics</span>
-                                    <span className="text-xs bg-fg/10 px-2 py-0.5 rounded">Apr 2007 - Mar 2009</span>
+                                    <span className="text-xs bg-fg/10 px-2 py-0.5 rounded-sm">Apr 2007 - Mar 2009</span>
                                 </div>
                                 <div className="text-sm">
                                     <a href={'https://www.i.u-tokyo.ac.jp/'} className="hover:underline">Graduate School of Information Science and Technology</a>
@@ -161,7 +161,7 @@ const AboutMePage: React.FC = () => {
                             <div className="mb-3">
                                 <div className="flex justify-between items-center">
                                     <span className="font-bold">Bachelor of Science, Mechano-Informatics</span>
-                                    <span className="text-xs bg-fg/10 px-2 py-0.5 rounded">Apr 2003 - Mar 2007</span>
+                                    <span className="text-xs bg-fg/10 px-2 py-0.5 rounded-sm">Apr 2003 - Mar 2007</span>
                                 </div>
                                 <div className="text-sm">
                                     <a href={'https://www.u-tokyo.ac.jp/'} className="hover:underline">Faculty of Engineering</a>

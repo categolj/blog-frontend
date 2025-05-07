@@ -23,9 +23,9 @@ const Card: React.FC<CardProps> = ({
     // Base classes for all cards
     const baseClasses = `
         p-4 rounded-lg transition-all duration-200 
-        bg-[color:var(--card-bg)] 
-        ${isHighlighted ? 'hover:bg-[color:var(--card-hover-bg)]' : ''}
-        ${isDashed ? 'border border-dashed border-[color:var(--empty-border)]' : 'shadow-sm'}
+        bg-(color:--card-bg) 
+        ${isHighlighted ? 'hover:bg-(color:--card-hover-bg)' : ''}
+        ${isDashed ? 'border border-dashed border-(color:--empty-border)' : 'shadow-xs'}
         ${onClick ? 'cursor-pointer' : ''}
         ${className}
     `;

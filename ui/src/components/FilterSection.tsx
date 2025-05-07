@@ -19,7 +19,7 @@ const FilterSection: React.FC<FilterSectionProps> = ({
     return (
         <div className={`
             mb-6 p-4 rounded-lg
-            bg-[color:var(--filter-bg)] border-2 border-[color:var(--card-border)]
+            bg-(color:--filter-bg) border-2 border-(color:--card-border)
             ${className}
         `}>
             <div className="flex flex-wrap gap-2 items-center justify-between">

@@ -59,7 +59,7 @@ const BackToTop: React.FC = () => {
       onClick={scrollToTop}
       aria-label="Scroll to top"
       className={twMerge(
-        'fixed bottom-4 right-4 z-50 p-2 rounded-full shadow-lg transition-all duration-300 ease-in-out transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2',
+        'fixed bottom-4 right-4 z-50 p-2 rounded-full shadow-lg transition-all duration-300 ease-in-out transform hover:scale-110 focus:outline-hidden focus:ring-2 focus:ring-offset-2',
         // Dark mode styles
         isDarkMode 
           ? 'bg-gray-700 text-white hover:bg-gray-600 focus:ring-gray-500' 

@@ -78,13 +78,13 @@ const TagsPage: React.FC<TagsProps> = ({preLoadedTags}) => {
             
             {/* Filter and sort controls */}
             <div className="flex flex-col sm:flex-row gap-4 mb-6">
-                <div className="relative flex-grow">
+                <div className="relative grow">
                     <input
                         type="text"
                         placeholder="Filter tags..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full p-2 pl-8 rounded-md border border-[color:var(--card-border)] bg-[color:var(--bg)] text-fg focus:outline-none focus:ring-2 focus:ring-[color:var(--accent)]"
+                        className="w-full p-2 pl-8 rounded-md border border-(color:--card-border) bg-(color:--bg) text-fg focus:outline-hidden focus:ring-2 focus:ring-(color:--accent)"
                     />
                     <SearchIcon className="h-4 w-4 absolute left-2.5 top-3 text-fg2/60" />
                 </div>
@@ -95,7 +95,7 @@ const TagsPage: React.FC<TagsProps> = ({preLoadedTags}) => {
                         onClick={() => setSortBy('name')} 
                         className={`px-3 py-1 text-xs rounded-md transition-colors ${
                             sortBy === 'name' 
-                                ? 'bg-[color:var(--accent)] text-[color:var(--accent-text)]' 
+                                ? 'bg-(color:--accent) text-(color:--accent-text)' 
                                 : 'bg-fg/10 text-fg2'
                         }`}
                     >
@@ -105,7 +105,7 @@ const TagsPage: React.FC<TagsProps> = ({preLoadedTags}) => {
                         onClick={() => setSortBy('count')} 
                         className={`px-3 py-1 text-xs rounded-md transition-colors ${
                             sortBy === 'count' 
-                                ? 'bg-[color:var(--accent)] text-[color:var(--accent-text)]' 
+                                ? 'bg-(color:--accent) text-(color:--accent-text)' 
                                 : 'bg-fg/10 text-fg2'
                         }`}
                     >
@@ -148,13 +148,13 @@ const TagsPage: React.FC<TagsProps> = ({preLoadedTags}) => {
                                 to={`/tags/${tag.name}/entries`}
                                 className={`
                                     ${getTagSize(tag.count, maxCount)} 
-                                    bg-[color:var(--card-bg)] 
-                                    hover:bg-[color:var(--accent)] hover:text-[color:var(--accent-text)]
+                                    bg-(color:--card-bg) 
+                                    hover:bg-(color:--accent) hover:text-(color:--accent-text)
                                     px-4 py-2 rounded-md transition-colors duration-200 flex justify-between items-center
                                 `}
                             >
                                 <span className="truncate">{tag.name}</span>
-                                <span className="ml-2 text-xs font-mono px-2 py-0.5 rounded bg-fg/10">{tag.count}</span>
+                                <span className="ml-2 text-xs font-mono px-2 py-0.5 rounded-sm bg-fg/10">{tag.count}</span>
                             </Link>
                         ))}
                     </div>

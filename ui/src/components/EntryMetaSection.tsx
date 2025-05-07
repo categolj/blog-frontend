@@ -18,7 +18,7 @@ const EntryMetaSection: React.FC<EntryMetaSectionProps> = ({
         <div
             className={`
                 mb-6 pb-4 text-meta
-                ${hasBorder ? 'border-b border-[color:var(--entry-border-color)]' : ''}
+                ${hasBorder ? 'border-b border-(color:--entry-border-color)' : ''}
                 ${className}
             `}
         >

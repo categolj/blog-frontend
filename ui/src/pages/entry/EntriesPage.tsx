@@ -112,7 +112,7 @@ const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries, tenantId}) => {
                             <Badge variant="tag" icon={<FolderIcon className="h-3 w-3"/>}>
                                 <Category
                                     categories={categories.split(',').map(c => ({name: c}))}
-                                    className="text-[color:var(--tag-text)]"
+                                    className="text-(color:--tag-text)"
                                 />
                             </Badge>
                         )}

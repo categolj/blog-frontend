@@ -17,17 +17,17 @@ const InfoBox: React.FC<InfoBoxProps> = ({
     return (
         <div 
             className={`
-                p-4 rounded-lg bg-[color:var(--info-bg)] mb-6
+                p-4 rounded-lg bg-(color:--info-bg) mb-6
                 ${className}
             `}
         >
             <div className="flex items-start">
                 {icon && (
-                    <span className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0 text-[color:var(--info-text)]">
+                    <span className="h-5 w-5 mr-2 mt-0.5 shrink-0 text-(color:--info-text)">
                         {icon}
                     </span>
                 )}
-                <span className="text-[color:var(--info-text)]">
+                <span className="text-(color:--info-text)">
                     {children}
                 </span>
             </div>

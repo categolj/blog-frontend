@@ -97,7 +97,7 @@ const MobileMenu: React.FC = () => {
             </li>
           </ul>
           <div className="pt-2 border-t border-fg2">
-            <div className="flex-grow mb-3">
+            <div className="grow mb-3">
               <SearchBox />
             </div>
             <div className="flex items-center space-x-4">
