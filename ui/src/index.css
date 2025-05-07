@@ -1,6 +1,158 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-fg: var(--fg);
+  --color-fg2: var(--fg2);
+  --color-bg: var(--bg);
+  --color-code-fg: var(--code-fg);
+  --color-code-bg: var(--code-bg);
+  --color-meta: var(--meta);
+
+  --font-mono: Menlo, Monaco, Courier New, monospace;
+
+  --text-xs: 12px;
+  --text-sm: 13px;
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+@utility div-copy {
+  /* https://github.com/markedjs/marked/blob/master/docs/css/style.css */
+  @apply absolute top-0 right-0;
+
+  & .icon-copy {
+    @apply opacity-100 transition-opacity duration-300 h-7 w-7 cursor-pointer p-1;
+  }
+
+  &.active .icon-copy {
+    @apply opacity-100;
+  }
+
+  & .tooltip-copy {
+    @apply relative;
+  }
+
+  & .tooltip-copy::before {
+    content: 'Copied';
+    @apply absolute top-1/2 -translate-y-1/2 right-full mr-[5px] py-[2px] px-[7px] rounded-[5px] bg-fg2 text-bg text-center opacity-0 transition-opacity duration-300;
+  }
+
+  &.click .tooltip-copy::before {
+    @apply opacity-100;
+  }
+
+  & .tooltip-copy::after {
+    content: '';
+    @apply absolute right-full mr-[-5px] top-1/2 -translate-y-1/2 border-solid border-[2px_2px_5px_8px] border-transparent border-l-fg2 opacity-0 transition-opacity duration-300;
+  }
+
+  &.click .tooltip-copy::after {
+    @apply opacity-100;
+  }
+
+  /* Mobile menu styles */
+}
+
+@utility icon-copy {
+  .div-copy & {
+    @apply opacity-100 transition-opacity duration-300 h-7 w-7 cursor-pointer p-1;
+  }
+
+  .div-copy.active & {
+    @apply opacity-100;
+  }
+
+  /* Mobile menu styles */
+}
+
+@utility active {
+  &.div-copy .icon-copy {
+    @apply opacity-100;
+  }
+
+  /* Mobile menu styles */
+}
+
+@utility tooltip-copy {
+  .div-copy & {
+    @apply relative;
+  }
+
+  .div-copy &::before {
+    content: 'Copied';
+    @apply absolute top-1/2 -translate-y-1/2 right-full mr-[5px] py-[2px] px-[7px] rounded-[5px] bg-fg2 text-bg text-center opacity-0 transition-opacity duration-300;
+  }
+
+  .div-copy.click &::before {
+    @apply opacity-100;
+  }
+
+  .div-copy &::after {
+    content: '';
+    @apply absolute right-full mr-[-5px] top-1/2 -translate-y-1/2 border-solid border-[2px_2px_5px_8px] border-transparent border-l-fg2 opacity-0 transition-opacity duration-300;
+  }
+
+  .div-copy.click &::after {
+    @apply opacity-100;
+  }
+
+  /* Mobile menu styles */
+}
+
+@utility click {
+  &.div-copy .tooltip-copy::before {
+    @apply opacity-100;
+  }
+
+  &.div-copy .tooltip-copy::after {
+    @apply opacity-100;
+  }
+
+  /* Mobile menu styles */
+}
+
+@utility hamburger-line {
+  /* Mobile menu styles */
+  @media (max-width: 768px) {
+    /* Styles for mobile menu burger icon */
+    @apply transition-all duration-300 ease-in-out;
+  }
+}
+
+@utility mobile-menu-shadow {
+  /* Mobile menu styles */
+  @media (max-width: 768px) {
+    /* Add shadow to the mobile menu */
+    @apply shadow-lg;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  }
+}
+
+@utility mobile-menu-container {
+  /* Mobile menu styles */
+  @media (max-width: 768px) {
+    /* Smooth fade-in for mobile menu */
+    @apply transition-all duration-300 ease-in-out;
+  }
+}
 
 @layer base {
   :root {
@@ -120,7 +272,7 @@
   }
 
   pre {
-    @apply border border-solid border-fg rounded-[5px] leading-[1.25em] text-xs flex relative p-[10px] text-[color:var(--code-fg)] bg-[color:var(--code-bg)] overflow-x-auto my-4;
+    @apply border border-solid border-fg rounded-[5px] leading-[1.25em] text-xs flex relative p-[10px] text-(color:--code-fg) bg-(color:--code-bg) overflow-x-auto my-4;
   }
   
   /* Add spacing when pre, table, or blockquote are followed by each other */
@@ -192,61 +344,5 @@
 
   h6:before {
     content: "###### ";
-  }
-}
-
-@layer components {
-  /* https://github.com/markedjs/marked/blob/master/docs/css/style.css */
-  .div-copy {
-    @apply absolute top-0 right-0;
-  }
-
-  .div-copy .icon-copy {
-    @apply opacity-100 transition-opacity duration-300 h-7 w-7 cursor-pointer p-1;
-  }
-
-  .div-copy.active .icon-copy {
-    @apply opacity-100;
-  }
-
-  .div-copy .tooltip-copy {
-    @apply relative;
-  }
-
-  .div-copy .tooltip-copy::before {
-    content: "Copied";
-    @apply absolute top-1/2 -translate-y-1/2 right-full mr-[5px] py-[2px] px-[7px] rounded-[5px] bg-fg2 text-bg text-center opacity-0 transition-opacity duration-300;
-  }
-
-  .div-copy.click .tooltip-copy::before {
-    @apply opacity-100;
-  }
-
-  .div-copy .tooltip-copy::after {
-    content: "";
-    @apply absolute right-full mr-[-5px] top-1/2 -translate-y-1/2 border-solid border-[2px_2px_5px_8px] border-transparent border-l-fg2 opacity-0 transition-opacity duration-300;
-  }
-
-  .div-copy.click .tooltip-copy::after {
-    @apply opacity-100;
-  }
-  
-  /* Mobile menu styles */
-  @media (max-width: 768px) {
-    /* Styles for mobile menu burger icon */
-    .hamburger-line {
-      @apply transition-all duration-300 ease-in-out;
-    }
-    
-    /* Add shadow to the mobile menu */
-    .mobile-menu-shadow {
-      @apply shadow-lg;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    }
-    
-    /* Smooth fade-in for mobile menu */
-    .mobile-menu-container {
-      @apply transition-all duration-300 ease-in-out;
-    }
   }
 }

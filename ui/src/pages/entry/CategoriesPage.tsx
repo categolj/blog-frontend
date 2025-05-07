@@ -69,11 +69,11 @@ const CategoriesPage: React.FC<CategoriesProps> = ({preLoadedCategories}) => {
                             <ul className="p-4">
                                 {categoryChains.map(chain => (
                                     <li key={chain.map(x => x.name).join('-')} 
-                                        className="py-2 hover:bg-[color:var(--bg)] transition-colors rounded px-2">
+                                        className="py-2 hover:bg-(color:--bg) transition-colors rounded-sm px-2">
                                         <div className="flex items-center">
                                             <Category 
                                                 categories={chain} 
-                                                className="hover:text-[color:var(--accent)] transition-colors"
+                                                className="hover:text-(color:--accent) transition-colors"
                                             />
                                         </div>
                                     </li>

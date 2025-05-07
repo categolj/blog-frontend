@@ -206,7 +206,7 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch
             />
 
             {/* Footer section with InfoBox component */}
-            <div className="mt-10 pt-6 border-t border-[color:var(--entry-border-color)] text-meta">
+            <div className="mt-10 pt-6 border-t border-(color:--entry-border-color) text-meta">
                 <InfoBox icon={<InfoIcon className="h-5 w-5" />}>
                     Found a mistake? <a
                         href={`https://github.com/making/${repo}/blob/${branch}/content/${entry.entryId.toString().padStart(

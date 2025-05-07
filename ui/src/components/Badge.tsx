@@ -30,10 +30,10 @@ const Badge: React.FC<BadgeProps> = ({
     
     // Classes specific to each variant
     const variantClasses = {
-        accent: 'bg-[color:var(--accent)] text-[color:var(--accent-text)]',
+        accent: 'bg-(color:--accent) text-(color:--accent-text)',
         default: 'bg-fg/10 text-fg hover:bg-fg/20',
         outline: 'border border-fg text-fg hover:bg-fg hover:text-bg',
-        tag: 'bg-[color:var(--tag-bg)] text-[color:var(--tag-text)] hover:bg-[color:var(--tag-hover-bg)]'
+        tag: 'bg-(color:--tag-bg) text-(color:--tag-text) hover:bg-(color:--tag-hover-bg)'
     }[variant];
     
     // Combined classes for the badge

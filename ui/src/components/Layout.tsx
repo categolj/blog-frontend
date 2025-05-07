@@ -44,7 +44,7 @@ const Layout = () => {
             <div className="relative">
                 <BinaryRain active={showBinaryRain} />
                 <div className="relative z-10 flex flex-wrap">
-                    <div className="flex-grow">
+                    <div className="grow">
                         <Header 
                             onMouseEnter={handleMouseEnter} 
                             onMouseLeave={handleMouseLeave}

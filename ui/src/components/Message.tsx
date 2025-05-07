@@ -24,23 +24,23 @@ const getMessageStyles = (status: MessageStatus) => {
     
     // Style mapping using CSS variables
     const statusClasses = {
-        success: "bg-[color:var(--message-bg)] border-[color:var(--message-border)] border-l-[8px] text-[color:var(--message-text)]",
-        error: "bg-[color:var(--message-bg)] border-[color:var(--message-text)] border-l-[8px] text-[color:var(--message-text)]",
-        warning: "bg-[color:var(--message-bg)] border-[color:var(--message-border)] border-l-[8px] text-[color:var(--message-text)]",
-        info: "bg-[color:var(--message-bg)] border-[color:var(--message-border)] border-l-[8px] text-[color:var(--message-text)]"
+        success: "bg-(color:--message-bg) border-(color:--message-border) border-l-[8px] text-(color:--message-text)",
+        error: "bg-(color:--message-bg) border-(color:--message-text) border-l-[8px] text-(color:--message-text)",
+        warning: "bg-(color:--message-bg) border-(color:--message-border) border-l-[8px] text-(color:--message-text)",
+        info: "bg-(color:--message-bg) border-(color:--message-border) border-l-[8px] text-(color:--message-text)"
     };
     
     const iconClasses = {
-        success: "text-[color:var(--message-border)]",
-        error: "text-[color:var(--message-text)]",
-        warning: "text-[color:var(--message-border)]",
-        info: "text-[color:var(--message-border)]"
+        success: "text-(color:--message-border)",
+        error: "text-(color:--message-text)",
+        warning: "text-(color:--message-border)",
+        info: "text-(color:--message-border)"
     };
     
     return {
         container: `${baseClasses} ${statusClasses[status]}`,
-        icon: `mr-3 flex-shrink-0 ${iconClasses[status]}`,
-        title: `font-medium text-[color:var(--message-text)] capitalize mr-2`
+        icon: `mr-3 shrink-0 ${iconClasses[status]}`,
+        title: `font-medium text-(color:--message-text) capitalize mr-2`
     };
 };
 

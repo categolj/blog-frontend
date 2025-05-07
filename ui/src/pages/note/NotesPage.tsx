@@ -42,7 +42,7 @@ const NotesPage: React.FC = () => {
         {/* Header section */}
         <div className="mb-8">
             <h2>Notes</h2>
-            <div className="flex items-center justify-between mt-4 mb-8 p-4 bg-bg border border-fg2 rounded-lg shadow-sm">
+            <div className="flex items-center justify-between mt-4 mb-8 p-4 bg-bg border border-fg2 rounded-lg shadow-xs">
                 <div className="flex items-center gap-2">
                     <div className="h-8 w-8 flex items-center justify-center bg-[#FFDC00] text-black rounded-full">
                         {me?.preferred_username?.charAt(0).toUpperCase() || '?'}
@@ -61,13 +61,13 @@ const NotesPage: React.FC = () => {
         <div className="mb-6">
             <div className="flex items-baseline mb-4">
                 <h3 className="mb-0 mr-2">はじめるSpring Boot 3</h3>
-                <span className="bg-[#FFDC00] text-black text-xs py-1 px-2 rounded">
+                <span className="bg-[#FFDC00] text-black text-xs py-1 px-2 rounded-sm">
                     {data.filter(note => note.subscribed).length}/{data.length} 購読済み
                 </span>
             </div>
             
             <div className="overflow-x-auto">
-                <table className="w-full border-separate border-spacing-0 rounded-lg overflow-hidden shadow-sm">
+                <table className="w-full border-separate border-spacing-0 rounded-lg overflow-hidden shadow-xs">
                     <thead>
                         <tr className="bg-[#FFDC00] bg-opacity-10 dark:bg-opacity-5">
                             <th className="py-3 px-4 text-left border-b border-fg2">タイトル</th>

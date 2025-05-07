@@ -20,8 +20,8 @@ const EntryTag: React.FC<EntryTagProps> = ({
             to={`${linkPrefix}/${name}/entries`}
             className={`
                 inline-block px-2 py-1 mr-2 rounded text-xs font-medium
-                bg-[color:var(--tag-bg)] text-[color:var(--tag-text)]
-                hover:bg-[color:var(--tag-hover-bg)] transition-all duration-200
+                bg-(color:--tag-bg) text-(color:--tag-text)
+                hover:bg-(color:--tag-hover-bg) transition-all duration-200
                 ${className}
             `}
         >

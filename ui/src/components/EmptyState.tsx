@@ -17,7 +17,7 @@ const EmptyState: React.FC<EmptyStateProps> = ({
     return (
         <div className={`
             text-center p-12 border border-dashed rounded-lg
-            border-[color:var(--empty-border)]
+            border-(color:--empty-border)
             ${className}
         `}>
             <div className="h-16 w-16 mx-auto mb-4 opacity-50">

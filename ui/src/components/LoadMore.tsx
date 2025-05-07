@@ -40,7 +40,7 @@ const LoadMore: React.FC<LoadMoreProps> = ({data, limit, size, setSize, isPreLoa
             disabled={isLoading}
             className="bg-fg text-bg border-none px-4 md:px-16 py-4 cursor-pointer rounded-[0.35rem]
                      transition-colors duration-300 mt-2 mb-4 w-full md:w-auto md:min-w-[600px]
-                     hover:bg-fg2 focus:outline-none disabled:opacity-75"
+                     hover:bg-fg2 focus:outline-hidden disabled:opacity-75"
         >
             {isLoading ? (
                 <span className="flex justify-center items-center gap-2">
