@@ -59,7 +59,10 @@ public class InfoController {
 			});
 		Map<String, Object> note = this.noteInfoApi.info();
 		Map<String, Object> counter = this.restClient.get()
-			.uri(UriComponentsBuilder.fromUriString(this.counterApiProps.url()).path("/actuator/info").build().toUri())
+			.uri(UriComponentsBuilder.fromUriString(this.counterApiProps.url())
+				.replacePath("/actuator/info")
+				.build()
+				.toUri())
 			.retrieve()
 			.body(new ParameterizedTypeReference<>() {
 			});
