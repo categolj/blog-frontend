@@ -1,20 +1,19 @@
 package am.ik.blog.info;
 
-import am.ik.blog.CounterApiProps;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
 import am.ik.blog.CommentApiProps;
+import am.ik.blog.CounterApiProps;
 import am.ik.blog.ImageProxyProps;
 import am.ik.blog.TranslationApiProps;
 import am.ik.blog.entry.api.InfoApi;
-
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import org.springframework.boot.actuate.info.InfoEndpoint;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 public class InfoController {
@@ -53,11 +52,6 @@ public class InfoController {
 	public List<Map<String, Object>> info() {
 		Map<String, Object> self = this.infoEndpoint.info();
 		Map<String, Object> entry = this.entryInfoApi.info();
-		Map<String, Object> comment = this.restClient.get()
-			.uri(this.commentApiProps.url() + "/actuator/info")
-			.retrieve()
-			.body(new ParameterizedTypeReference<>() {
-			});
 		Map<String, Object> translation = this.restClient.get()
 			.uri(this.translationApiProps.url() + "/actuator/info")
 			.retrieve()
@@ -65,7 +59,7 @@ public class InfoController {
 			});
 		Map<String, Object> note = this.noteInfoApi.info();
 		Map<String, Object> counter = this.restClient.get()
-			.uri(this.counterApiProps.url() + "/actuator/info")
+			.uri(UriComponentsBuilder.fromUriString(this.counterApiProps.url()).path("/actuator/info").build().toUri())
 			.retrieve()
 			.body(new ParameterizedTypeReference<>() {
 			});
@@ -75,7 +69,6 @@ public class InfoController {
 			.body(new ParameterizedTypeReference<>() {
 			});
 		return List.of(Map.of("name", "Self", "info", self), Map.of("name", "Entry API", "info", entry),
-				Map.of("name", "Comment API", "info", Objects.requireNonNull(comment)),
 				Map.of("name", "Translation API", "info", Objects.requireNonNull(translation)),
 				Map.of("name", "Note API", "info", note), Map.of("name", "Counter API", "info", counter),
 				Map.of("name", "Image Proxy", "info", Objects.requireNonNull(imageProxy)));
