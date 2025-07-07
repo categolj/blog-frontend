@@ -1,17 +1,17 @@
 package am.ik.blog.entry;
 
-import java.time.Instant;
-
 import am.ik.blog.BlogApiProps;
 import am.ik.blog.entry.model.CursorPageEntryInstant;
 import am.ik.blog.entry.model.Entry;
 import jakarta.annotation.Nullable;
-
+import java.time.Instant;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestClient;
+
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Component
 public class EntryClient {
@@ -36,6 +36,8 @@ public class EntryClient {
 		return this.restClient.get()
 			.uri(prefix(tenantId) + "/entries/{entryId}", entryId)
 			.retrieve()
+			.onStatus(statusCode -> statusCode == NOT_FOUND, (req, res) -> {
+			})
 			.toEntity(Entry.class);
 	}
 

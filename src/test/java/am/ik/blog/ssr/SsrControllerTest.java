@@ -116,6 +116,20 @@ class SsrControllerTest {
 	}
 
 	@Test
+	void getEntry404() throws Exception {
+		given(this.entryClient.getEntry(100L, null)).willReturn(ResponseEntity.notFound().build());
+
+		String body = this.mvc.perform(get("/entries/100"))
+			.andExpect(status().isNotFound())
+			.andReturn()
+			.getResponse()
+			.getContentAsString();
+
+		assertThatDocument(body) //
+			.elementHasText("#root h2", "Not Found");
+	}
+
+	@Test
 	void getEntries() throws Exception {
 		given(this.entryClient.getEntries(any(), any())).willReturn(ResponseEntity
 			.ok(new CursorPageEntryInstant().size(2).hasNext(true).hasPrevious(false).content(Json.parse("""

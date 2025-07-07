@@ -1,12 +1,10 @@
 package am.ik.blog.execption;
 
+import am.ik.blog.ssr.ReactRenderer;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import am.ik.blog.ssr.ReactRenderer;
-
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -41,7 +39,7 @@ public class ExceptionHandlerControllerAdvice {
 
 	@ExceptionHandler(NoResourceFoundException.class)
 	public ResponseEntity<String> handleResourceNotFound() {
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(this.reactRenderer.render("/", Map.of()));
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(this.reactRenderer.render("/notfound", Map.of()));
 	}
 
 	private static final Pattern LOGFMT_PATTERN = Pattern.compile("(\\w+)=\"([^\"]*)\"|(\\w+)=([^\\s]*)");

@@ -1,19 +1,18 @@
 package am.ik.blog.ssr;
 
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import am.ik.blog.entry.EntryClient;
 import am.ik.blog.entry.EntryRequest;
 import am.ik.blog.entry.EntryRequestBuilder;
 import am.ik.blog.entry.ImageProxyReplacer;
 import am.ik.blog.entry.api.CategoryApi;
 import am.ik.blog.entry.api.TagApi;
+import am.ik.blog.entry.model.Entry;
 import jakarta.annotation.Nullable;
-
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
@@ -66,7 +65,12 @@ public class SsrController {
 	@GetMapping(path = { "/entries/{entryId:[0-9]+}", "/entries/{entryId:[0-9]+}/{tenantId:[a-z]+}" })
 	public ResponseEntity<String> entry(@PathVariable long entryId,
 			@Nullable @PathVariable(required = false) String tenantId) {
-		var entry = this.imageProxyReplacer.replaceImage(this.entryClient.getEntry(entryId, tenantId).getBody());
+		ResponseEntity<Entry> response = this.entryClient.getEntry(entryId, tenantId);
+		if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
+			return ResponseEntity.status(response.getStatusCode())
+				.body(this.reactRenderer.render("/notfound", Map.of()));
+		}
+		var entry = this.imageProxyReplacer.replaceImage(response.getBody());
 		Matcher matcher = scriptPattern.matcher(entry.getContent());
 		return ResponseEntity.ok(this.reactRenderer.render("/entries/%d".formatted(entryId),
 				Map.of("preLoadedEntry", entry.content(matcher.replaceAll("")))));

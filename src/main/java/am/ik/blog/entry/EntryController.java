@@ -1,23 +1,22 @@
 package am.ik.blog.entry;
 
-import java.time.Duration;
-import java.time.Instant;
-import java.time.OffsetDateTime;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-
 import am.ik.blog.entry.api.CategoryApi;
 import am.ik.blog.entry.api.TagApi;
 import am.ik.blog.entry.model.Category;
 import am.ik.blog.entry.model.CursorPageEntryInstant;
 import am.ik.blog.entry.model.Entry;
 import am.ik.blog.entry.model.TagAndCount;
-
+import java.time.Duration;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -64,7 +63,7 @@ public class EntryController {
 	}
 
 	@GetMapping(path = { "/api/entries/{entryId}", "/api/tenants/{tenantId}/entries/{entryId}" })
-	public ResponseEntity<Entry> getEntry(@PathVariable Long entryId,
+	public ResponseEntity<?> getEntry(@PathVariable Long entryId,
 			@RequestHeader(name = HttpHeaders.IF_MODIFIED_SINCE) Optional<Instant> lastModifiedDate,
 			@PathVariable(required = false) String tenantId) {
 		if (lastModifiedDate.isPresent()) {
@@ -74,6 +73,11 @@ public class EntryController {
 			}
 		}
 		ResponseEntity<Entry> response = this.entryClient.getEntry(entryId, tenantId);
+		if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
+			return ResponseEntity.status(response.getStatusCode())
+				.body(ProblemDetail.forStatusAndDetail(response.getStatusCode(),
+						"Entry not found (entryId=%d)".formatted(entryId)));
+		}
 		return ResponseEntity.ok().headers(headers -> {
 			long lastModified = response.getHeaders().getLastModified();
 			if (lastModified != -1) {
