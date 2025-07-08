@@ -18,6 +18,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -76,7 +77,12 @@ public class EntryController {
 		if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
 			return ResponseEntity.status(response.getStatusCode())
 				.body(ProblemDetail.forStatusAndDetail(response.getStatusCode(),
-						"Entry not found (entryId=%d)".formatted(entryId)));
+						"Entry not found (%s)".formatted(new EntryKey(entryId, tenantId))));
+		}
+		else if (response.getStatusCode() == HttpStatus.FORBIDDEN) {
+			return ResponseEntity.status(response.getStatusCode())
+				.body(ProblemDetail.forStatusAndDetail(response.getStatusCode(),
+						"Forbidden (%s)".formatted(new EntryKey(entryId, tenantId))));
 		}
 		return ResponseEntity.ok().headers(headers -> {
 			long lastModified = response.getHeaders().getLastModified();
@@ -94,6 +100,13 @@ public class EntryController {
 	@GetMapping(path = "/api/categories")
 	public ResponseEntity<List<List<Category>>> getCategories() {
 		return ResponseEntity.ok(this.categoryApi.categories());
+	}
+
+	record EntryKey(Long entryId, @Nullable String tenantId) {
+		@Override
+		public String toString() {
+			return (tenantId == null ? "" : "tenantId=" + tenantId + ", ") + "entryId=" + entryId;
+		}
 	}
 
 }

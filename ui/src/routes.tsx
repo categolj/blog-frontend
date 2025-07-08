@@ -17,6 +17,7 @@ import SignupPage from "./pages/note/SignupPage.tsx";
 import ActivationPage from "./pages/note/ActivationPage.tsx";
 import PasswordResetPage from "./pages/note/PasswordResetPage.tsx";
 import 'highlight.js/styles/school-book.min.css';
+import Error403Page from "./pages/etc/Error403Page.tsx";
 
 TimeAgo.addDefaultLocale(en);
 export default function routes(initData: object): RouteObject[] {
@@ -26,6 +27,9 @@ export default function routes(initData: object): RouteObject[] {
             children: [
                 {
                     path: "*", element: <Error404Page/>
+                },
+                {
+                    path: "/forbidden", element: <Error403Page/>
                 },
                 {
                     path: "/", element: <EntriesPage {...initData as EntriesProps} />
@@ -63,7 +67,8 @@ export default function routes(initData: object): RouteObject[] {
                     path: "/tags/:tag/entries", element: <EntriesPage/>
                 },
                 {
-                    path: "/categories", element: <CategoriesPage {...initData as CategoriesProps} />
+                    path: "/categories",
+                    element: <CategoriesPage {...initData as CategoriesProps} />
                 },
                 {
                     path: "/categories/:categories/entries", element: <EntriesPage/>
@@ -75,7 +80,8 @@ export default function routes(initData: object): RouteObject[] {
                     path: "/note/signup", element: <SignupPage/>
                 },
                 {
-                    path: "/note/readers/:readerId/activations/:activationLinkId", element: <ActivationPage/>
+                    path: "/note/readers/:readerId/activations/:activationLinkId",
+                    element: <ActivationPage/>
                 },
                 {
                     path: "/note/password_reset/:resetId", element: <PasswordResetPage/>

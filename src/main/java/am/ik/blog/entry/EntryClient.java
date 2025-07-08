@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestClient;
 
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Component
@@ -36,7 +37,7 @@ public class EntryClient {
 		return this.restClient.get()
 			.uri(prefix(tenantId) + "/entries/{entryId}", entryId)
 			.retrieve()
-			.onStatus(statusCode -> statusCode == NOT_FOUND, (req, res) -> {
+			.onStatus(statusCode -> (statusCode == NOT_FOUND || statusCode == FORBIDDEN), (req, res) -> {
 			})
 			.toEntity(Entry.class);
 	}

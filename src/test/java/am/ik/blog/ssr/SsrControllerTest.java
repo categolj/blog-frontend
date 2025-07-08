@@ -19,6 +19,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -127,6 +128,21 @@ class SsrControllerTest {
 
 		assertThatDocument(body) //
 			.elementHasText("#root h2", "Not Found");
+	}
+
+	@Test
+	void getEntry403() throws Exception {
+		given(this.entryClient.getEntry(100L, "premium"))
+			.willReturn(ResponseEntity.status(HttpStatus.FORBIDDEN).build());
+
+		String body = this.mvc.perform(get("/entries/100/premium"))
+			.andExpect(status().isForbidden())
+			.andReturn()
+			.getResponse()
+			.getContentAsString();
+
+		assertThatDocument(body) //
+			.elementHasText("#root h2", "Forbidden");
 	}
 
 	@Test
