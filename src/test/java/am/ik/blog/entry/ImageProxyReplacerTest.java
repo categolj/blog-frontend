@@ -2,11 +2,9 @@ package am.ik.blog.entry;
 
 import am.ik.blog.ImageProxyProps;
 import am.ik.blog.entry.model.Entry;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class ImageProxyReplacerTest {
 
@@ -14,12 +12,14 @@ class ImageProxyReplacerTest {
 
 	@Test
 	void replaceImageOldFormat() {
-		Entry entry = new Entry().content(
-				"""
-						<img width="1912" alt="image" src="https://github.com/making/blog.ik.am/assets/106908/2d4c7e0b-f34b-4375-801a-688816bb2de7">
-						""");
+		Entry entry = Entry.builder()
+			.content(
+					"""
+							<img width="1912" alt="image" src="https://github.com/making/blog.ik.am/assets/106908/2d4c7e0b-f34b-4375-801a-688816bb2de7">
+							""")
+			.build();
 		Entry replaced = this.imageProxyReplacer.replaceImage(entry);
-		assertThat(replaced.getContent()).isEqualToIgnoringNewLines(
+		assertThat(replaced.content()).isEqualToIgnoringNewLines(
 				"""
 						<img width="1912" alt="image" src="https://example.com/making/blog.ik.am/assets/106908/2d4c7e0b-f34b-4375-801a-688816bb2de7">
 						""");
@@ -27,12 +27,14 @@ class ImageProxyReplacerTest {
 
 	@Test
 	void replaceImageNewFormat() {
-		Entry entry = new Entry().content(
-				"""
-						<img width="710" alt="image" src="https://github.com/user-attachments/assets/9ebb404a-db44-43b4-bfba-cb4b25edbeec">
-						""");
+		Entry entry = Entry.builder()
+			.content(
+					"""
+							<img width="710" alt="image" src="https://github.com/user-attachments/assets/9ebb404a-db44-43b4-bfba-cb4b25edbeec">
+							""")
+			.build();
 		Entry replaced = this.imageProxyReplacer.replaceImage(entry);
-		assertThat(replaced.getContent()).isEqualToIgnoringNewLines(
+		assertThat(replaced.content()).isEqualToIgnoringNewLines(
 				"""
 						<img width="710" alt="image" src="https://example.com/user-attachments/assets/9ebb404a-db44-43b4-bfba-cb4b25edbeec">
 						""");

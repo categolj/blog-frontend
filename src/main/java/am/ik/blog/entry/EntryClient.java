@@ -1,10 +1,13 @@
 package am.ik.blog.entry;
 
 import am.ik.blog.BlogApiProps;
-import am.ik.blog.entry.model.CursorPageEntryInstant;
+import am.ik.blog.entry.model.Category;
 import am.ik.blog.entry.model.Entry;
+import am.ik.blog.entry.model.TagAndCount;
+import am.ik.pagination.CursorPage;
 import jakarta.annotation.Nullable;
 import java.time.Instant;
+import java.util.List;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -25,7 +28,7 @@ public class EntryClient {
 			.build();
 	}
 
-	public ResponseEntity<CursorPageEntryInstant> getEntries(EntryRequest request, @Nullable String tenantId) {
+	public ResponseEntity<CursorPage<Entry, Instant>> getEntries(EntryRequest request, @Nullable String tenantId) {
 		return this.restClient.get()
 			.uri(builder -> builder.path(prefix(tenantId) + "/entries").queryParams(request.toQueryParams()).build())
 			.retrieve()
@@ -46,6 +49,22 @@ public class EntryClient {
 		return this.restClient.head().uri(prefix(tenantId) + "/entries/{entryId}", entryId).headers(headers -> {
 			headers.setIfModifiedSince(lastModifiedDate);
 		}).retrieve().toBodilessEntity();
+	}
+
+	public ResponseEntity<List<TagAndCount>> getTags(@Nullable String tenantId) {
+		return this.restClient.get()
+			.uri(prefix(tenantId) + "/tags")
+			.retrieve()
+			.toEntity(new ParameterizedTypeReference<>() {
+			});
+	}
+
+	public ResponseEntity<List<List<Category>>> getCategories(@Nullable String tenantId) {
+		return this.restClient.get()
+			.uri(prefix(tenantId) + "/categories")
+			.retrieve()
+			.toEntity(new ParameterizedTypeReference<>() {
+			});
 	}
 
 	static String prefix(@Nullable String tenantId) {

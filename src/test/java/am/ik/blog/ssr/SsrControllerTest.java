@@ -4,15 +4,17 @@ import am.ik.blog.Json;
 import am.ik.blog.config.SecurityConfig;
 import am.ik.blog.entry.EntryClient;
 import am.ik.blog.entry.ImageProxyReplacer;
-import am.ik.blog.entry.api.CategoryApi;
-import am.ik.blog.entry.api.TagApi;
-import am.ik.blog.entry.model.CursorPageEntryInstant;
+import am.ik.blog.entry.model.Category;
 import am.ik.blog.entry.model.Entry;
+import am.ik.blog.entry.model.TagAndCount;
+import am.ik.pagination.CursorPage;
 import com.fasterxml.jackson.core.type.TypeReference;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -41,12 +43,6 @@ class SsrControllerTest {
 
 	@MockitoBean
 	EntryClient entryClient;
-
-	@MockitoBean
-	TagApi tagApi;
-
-	@MockitoBean
-	CategoryApi categoryApi;
 
 	Entry entry100 = Json.parse("""
 						{
@@ -111,7 +107,7 @@ class SsrControllerTest {
 			.elementHasText("#root article > p > strong", "Hello world") //
 			.elementHasHtml("#__INIT_DATA__",
 					"""
-							{"preLoadedEntry":{"entryId":100,"frontMatter":{"title":"Hello World!","categories":[{"name":"a"},{"name":"b"},{"name":"c"}],"tags":[{"name":"x","version":null},{"name":"y","version":null},{"name":"z","version":null}]},"content":"Welcome\\n**Hello world**, this is my first blog post.\\nI hope you like it!","created":{"name":"demo","date":"2024-04-01T00:00:00Z"},"updated":{"name":"demo","date":"2024-04-01T00:00:00Z"}}}
+							{"preLoadedEntry":{"entryId":100,"tenantId":"_","frontMatter":{"title":"Hello World!","summary":"","categories":[{"name":"a"},{"name":"b"},{"name":"c"}],"tags":[{"name":"x"},{"name":"y"},{"name":"z"}]},"content":"Welcome\\n**Hello world**, this is my first blog post.\\nI hope you like it!","created":{"name":"demo","date":"2024-04-01T00:00:00Z"},"updated":{"name":"demo","date":"2024-04-01T00:00:00Z"}}}
 							"""
 						.trim());
 	}
@@ -147,46 +143,45 @@ class SsrControllerTest {
 
 	@Test
 	void getEntries() throws Exception {
-		given(this.entryClient.getEntries(any(), any())).willReturn(ResponseEntity
-			.ok(new CursorPageEntryInstant().size(2).hasNext(true).hasPrevious(false).content(Json.parse("""
-					[
-					  {
-					    "entryId": 2,
-					    "frontMatter": {
-					      "title": "entry2",
-					      "categories": [],
-					      "tags": []
-					    },
-					    "content": "",
-					    "created": {
-					      "name": "demo",
-					      "date": "2024-04-01T00:00:00Z"
-					    },
-					    "updated": {
-					      "name": "demo",
-					      "date": "2024-04-02T00:00:00Z"
-					    }
-					  },
-					  {
-					    "entryId": 1,
-					    "frontMatter": {
-					      "title": "entry1",
-					      "categories": [],
-					      "tags": []
-					    },
-					    "content": "",
-					    "created": {
-					      "name": "demo",
-					      "date": "2024-04-01T00:00:00Z"
-					    },
-					    "updated": {
-					      "name": "demo",
-					      "date": "2024-04-01T00:00:00Z"
-					    }
-					  }
-					]
-					""", new TypeReference<>() {
-			}))));
+		given(this.entryClient.getEntries(any(), any())).willReturn(ResponseEntity.ok(new CursorPage<>(Json.parse("""
+				[
+				  {
+				    "entryId": 2,
+				    "frontMatter": {
+				      "title": "entry2",
+				      "categories": [],
+				      "tags": []
+				    },
+				    "content": "",
+				    "created": {
+				      "name": "demo",
+				      "date": "2024-04-01T00:00:00Z"
+				    },
+				    "updated": {
+				      "name": "demo",
+				      "date": "2024-04-02T00:00:00Z"
+				    }
+				  },
+				  {
+				    "entryId": 1,
+				    "frontMatter": {
+				      "title": "entry1",
+				      "categories": [],
+				      "tags": []
+				    },
+				    "content": "",
+				    "created": {
+				      "name": "demo",
+				      "date": "2024-04-01T00:00:00Z"
+				    },
+				    "updated": {
+				      "name": "demo",
+				      "date": "2024-04-01T00:00:00Z"
+				    }
+				  }
+				]
+				""", new TypeReference<>() {
+		}), 2, Entry::toCursor, false, true)));
 
 		String body = this.mvc.perform(get("/entries"))
 			.andExpect(status().isOk())
@@ -203,14 +198,14 @@ class SsrControllerTest {
 					"/entries/1")
 			.elementHasHtml("#__INIT_DATA__",
 					"""
-							{"preLoadedEntries":{"content":[{"entryId":2,"frontMatter":{"title":"entry2","categories":[],"tags":[]},"content":"","created":{"name":"demo","date":"2024-04-01T00:00:00Z"},"updated":{"name":"demo","date":"2024-04-02T00:00:00Z"}},{"entryId":1,"frontMatter":{"title":"entry1","categories":[],"tags":[]},"content":"","created":{"name":"demo","date":"2024-04-01T00:00:00Z"},"updated":{"name":"demo","date":"2024-04-01T00:00:00Z"}}],"size":2,"hasPrevious":false,"hasNext":true}}
+							{"preLoadedEntries":{"content":[{"entryId":2,"tenantId":"_","frontMatter":{"title":"entry2","summary":"","categories":[],"tags":[]},"content":"","created":{"name":"demo","date":"2024-04-01T00:00:00Z"},"updated":{"name":"demo","date":"2024-04-02T00:00:00Z"}},{"entryId":1,"tenantId":"_","frontMatter":{"title":"entry1","summary":"","categories":[],"tags":[]},"content":"","created":{"name":"demo","date":"2024-04-01T00:00:00Z"},"updated":{"name":"demo","date":"2024-04-01T00:00:00Z"}}],"size":2,"hasPrevious":false,"hasNext":true}}
 							"""
 						.trim());
 	}
 
 	@Test
 	void getTags() throws Exception {
-		given(this.tagApi.tags()).willReturn(Json.parse("""
+		given(this.entryClient.getTags(null)).willReturn(new ResponseEntity<>(Json.parse("""
 				[
 				  {
 				    "name": "A",
@@ -225,8 +220,8 @@ class SsrControllerTest {
 				    "count": 1
 				  }
 				]
-				""", new TypeReference<>() {
-		}));
+				""", new TypeReference<List<TagAndCount>>() {
+		}), HttpStatus.OK));
 
 		String body = this.mvc.perform(get("/tags"))
 			.andExpect(status().isOk())
@@ -241,16 +236,14 @@ class SsrControllerTest {
 			.elementAttributeHasText("#tags li:nth-child(2) > a", "href", "/tags/B/entries")
 			.elementHasText("#tags li:nth-child(3)", "C (1)")
 			.elementAttributeHasText("#tags li:nth-child(3) > a", "href", "/tags/C/entries")
-			.elementHasHtml("#__INIT_DATA__",
-					"""
-							{"preLoadedTags":[{"name":"A","version":null,"count":1},{"name":"B","version":null,"count":2},{"name":"C","version":null,"count":1}]}
-							"""
-						.trim());
+			.elementHasHtml("#__INIT_DATA__", """
+					{"preLoadedTags":[{"name":"A","count":1},{"name":"B","count":2},{"name":"C","count":1}]}
+					""".trim());
 	}
 
 	@Test
 	void getCategories() throws Exception {
-		given(this.categoryApi.categories()).willReturn(Json.parse("""
+		given(this.entryClient.getCategories(null)).willReturn(new ResponseEntity<>(Json.parse("""
 				[
 				  [
 				    {
@@ -283,8 +276,8 @@ class SsrControllerTest {
 				    }
 				  ]
 				]
-				""", new TypeReference<>() {
-		}));
+				""", new TypeReference<List<List<Category>>>() {
+		}), HttpStatus.OK));
 
 		String body = this.mvc.perform(get("/categories"))
 			.andExpect(status().isOk())
@@ -353,6 +346,7 @@ class SsrControllerTest {
 		@Bean
 		public ImageProxyReplacer imageProxyReplacer() {
 			return new ImageProxyReplacer(null) {
+				@NotNull
 				@Override
 				public Entry replaceImage(Entry entry) {
 					return entry;

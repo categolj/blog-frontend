@@ -1,9 +1,9 @@
 package am.ik.blog.info;
 
 import am.ik.blog.BlogApiProps;
-import am.ik.blog.CommentApiProps;
 import am.ik.blog.CounterApiProps;
 import am.ik.blog.ImageProxyProps;
+import am.ik.blog.NoteApiProps;
 import am.ik.blog.TranslationApiProps;
 import java.util.List;
 import java.util.Map;
@@ -22,11 +22,9 @@ public class InfoController {
 
 	private final InfoEndpoint infoEndpoint;
 
-	private final am.ik.note.api.InfoApi noteInfoApi;
-
 	private final RestClient restClient;
 
-	private final CommentApiProps commentApiProps;
+	private final NoteApiProps noteApiProps;
 
 	private final TranslationApiProps translationApiProps;
 
@@ -34,15 +32,14 @@ public class InfoController {
 
 	private final ImageProxyProps imageProxyProps;
 
-	public InfoController(BlogApiProps blogApiProps, InfoEndpoint infoEndpoint, am.ik.note.api.InfoApi noteInfoApi,
-			RestClient.Builder restClientBuilder, CommentApiProps commentApiProps,
-			TranslationApiProps translationApiProps, CounterApiProps counterApiProps, ImageProxyProps imageProxyProps) {
+	public InfoController(BlogApiProps blogApiProps, InfoEndpoint infoEndpoint, RestClient.Builder restClientBuilder,
+			NoteApiProps noteApiProps, TranslationApiProps translationApiProps, CounterApiProps counterApiProps,
+			ImageProxyProps imageProxyProps) {
 		this.blogApiProps = blogApiProps;
 		this.infoEndpoint = infoEndpoint;
-		this.noteInfoApi = noteInfoApi;
 		this.restClient = restClientBuilder.defaultStatusHandler(__ -> true, (req, res) -> {
 		}).build();
-		this.commentApiProps = commentApiProps;
+		this.noteApiProps = noteApiProps;
 		this.translationApiProps = translationApiProps;
 		this.counterApiProps = counterApiProps;
 		this.imageProxyProps = imageProxyProps;
@@ -61,7 +58,11 @@ public class InfoController {
 			.retrieve()
 			.body(new ParameterizedTypeReference<>() {
 			});
-		Map<String, Object> note = this.noteInfoApi.info();
+		Map<String, Object> note = this.restClient.get()
+			.uri(this.noteApiProps.url() + "/actuator/info")
+			.retrieve()
+			.body(new ParameterizedTypeReference<>() {
+			});
 		Map<String, Object> counter = this.restClient.get()
 			.uri(UriComponentsBuilder.fromUriString(this.counterApiProps.url())
 				.replacePath("/actuator/info")

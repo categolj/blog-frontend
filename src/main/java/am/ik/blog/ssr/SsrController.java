@@ -4,8 +4,6 @@ import am.ik.blog.entry.EntryClient;
 import am.ik.blog.entry.EntryRequest;
 import am.ik.blog.entry.EntryRequestBuilder;
 import am.ik.blog.entry.ImageProxyReplacer;
-import am.ik.blog.entry.api.CategoryApi;
-import am.ik.blog.entry.api.TagApi;
 import am.ik.blog.entry.model.Entry;
 import jakarta.annotation.Nullable;
 import java.util.Map;
@@ -32,20 +30,13 @@ public class SsrController {
 
 	private final ImageProxyReplacer imageProxyReplacer;
 
-	private final TagApi tagApi;
-
-	private final CategoryApi categoryApi;
-
 	static final Pattern scriptPattern = Pattern.compile("<script[^>]*>.*?</script>",
 			Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
 
-	public SsrController(ReactRenderer reactRenderer, EntryClient entryClient, ImageProxyReplacer imageProxyReplacer,
-			TagApi tagApi, CategoryApi categoryApi) {
+	public SsrController(ReactRenderer reactRenderer, EntryClient entryClient, ImageProxyReplacer imageProxyReplacer) {
 		this.reactRenderer = reactRenderer;
 		this.entryClient = entryClient;
 		this.imageProxyReplacer = imageProxyReplacer;
-		this.tagApi = tagApi;
-		this.categoryApi = categoryApi;
 	}
 
 	@GetMapping(path = "/")
@@ -75,9 +66,9 @@ public class SsrController {
 				.body(this.reactRenderer.render("/forbidden", Map.of()));
 		}
 		var entry = this.imageProxyReplacer.replaceImage(response.getBody());
-		Matcher matcher = scriptPattern.matcher(entry.getContent());
+		Matcher matcher = scriptPattern.matcher(entry.content());
 		return ResponseEntity.ok(this.reactRenderer.render("/entries/%d".formatted(entryId),
-				Map.of("preLoadedEntry", entry.content(matcher.replaceAll("")))));
+				Map.of("preLoadedEntry", entry.toBuilder().content(matcher.replaceAll("")).build())));
 	}
 
 	@GetMapping(path = "/entry/view/id/{entryId:[0-9]+}/**")
@@ -89,13 +80,13 @@ public class SsrController {
 
 	@GetMapping(path = "/tags")
 	public String tags() {
-		var tags = this.tagApi.tags();
+		var tags = this.entryClient.getTags(null).getBody();
 		return this.reactRenderer.render("/tags", Map.of("preLoadedTags", Objects.requireNonNull(tags)));
 	}
 
 	@GetMapping(path = "/categories")
 	public String categories() {
-		var categories = this.categoryApi.categories();
+		var categories = this.entryClient.getCategories(null).getBody();
 		return this.reactRenderer.render("/categories",
 				Map.of("preLoadedCategories", Objects.requireNonNull(categories)));
 	}

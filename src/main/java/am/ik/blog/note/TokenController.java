@@ -1,12 +1,10 @@
 package am.ik.blog.note;
 
+import am.ik.blog.note.model.OAuth2Token;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Base64;
 import java.util.regex.Pattern;
-
-import am.ik.note.model.OAuth2Token;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseCookie;
@@ -21,10 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TokenController {
 
-	private final TokenClient tokenClient;
+	private final NoteClient noteClient;
 
-	public TokenController(TokenClient tokenClient) {
-		this.tokenClient = tokenClient;
+	public TokenController(NoteClient noteClient) {
+		this.noteClient = noteClient;
 	}
 
 	@GetMapping(path = "/api/me", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -39,9 +37,9 @@ public class TokenController {
 
 	@PostMapping(path = "/api/token")
 	public ResponseEntity<OAuth2Token> token(@RequestParam String username, @RequestParam String password) {
-		OAuth2Token token = this.tokenClient.token(username, password);
-		Long expiresIn = token.getExpiresIn();
-		ResponseCookie cookie = cookie().value(token.getAccessToken()).maxAge(Duration.ofSeconds(expiresIn)).build();
+		OAuth2Token token = this.noteClient.token(username, password);
+		Long expiresIn = token.expiresIn();
+		ResponseCookie cookie = cookie().value(token.accessToken()).maxAge(Duration.ofSeconds(expiresIn)).build();
 		return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(token);
 	}
 

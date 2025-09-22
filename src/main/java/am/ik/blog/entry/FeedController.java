@@ -6,11 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
-import am.ik.blog.entry.model.CursorPageEntryInstant;
-
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,11 +30,11 @@ public class FeedController {
 	@GetMapping(path = { "/feed", "/feed/", "/rss", "/rss/", "/feed/{tenantId:[a-z]+}", "/rss/{tenantId:[a-z]+}" },
 			produces = MediaType.APPLICATION_XML_VALUE)
 	public String feed(UriComponentsBuilder builder, @PathVariable(required = false) String tenantId) {
-		String baseUrl = builder.path("").build().toString();
-		ResponseEntity<CursorPageEntryInstant> response = this.entryClient.getEntries(entryRequest().build(), tenantId);
-		CursorPageEntryInstant page = Objects.requireNonNull(response.getBody());
-		int size = Objects.requireNonNull(page.getSize());
-		String items = size > 0 ? Objects.requireNonNull(page.getContent())
+		String baseUrl = builder.path("").build() + (tenantId == null ? "" : "/tenants/" + tenantId);
+		var response = this.entryClient.getEntries(entryRequest().build(), tenantId);
+		var page = Objects.requireNonNull(response.getBody());
+		int size = page.size();
+		String items = size > 0 ? page.content()
 			.stream()
 			.map(entry -> """
 					<item>
@@ -47,12 +43,12 @@ public class FeedController {
 						<guid isPermaLink="true">%s/entries/%d</guid>
 						<pubDate>%s</pubDate>
 					</item>
-					""".formatted(entry.getFrontMatter().getTitle(), baseUrl, entry.getEntryId(), baseUrl,
-					entry.getEntryId(), DATE_FORMATTER.format(Objects.requireNonNull(entry.getUpdated().getDate()))))
+					""".formatted(entry.frontMatter().title(), baseUrl, entry.entryKey().entryId(), baseUrl,
+					entry.entryKey().entryId(), DATE_FORMATTER.format(Objects.requireNonNull(entry.updated().date()))))
 			.collect(Collectors.joining()) : "";
 		String lastUpdatedDate = size > 0
-				? DATE_FORMATTER.format(Objects
-					.requireNonNull(Objects.requireNonNull(page.getContent()).getFirst().getUpdated().getDate()))
+				? DATE_FORMATTER
+					.format(Objects.requireNonNull(Objects.requireNonNull(page.content()).getFirst().updated().date()))
 				: Instant.ofEpochMilli(0).toString();
 		return """
 				<?xml version="1.0" encoding="UTF-8"?><rss   xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">

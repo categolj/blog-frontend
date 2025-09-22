@@ -1,16 +1,13 @@
 package am.ik.blog.entry;
 
-import am.ik.blog.entry.api.CategoryApi;
-import am.ik.blog.entry.api.TagApi;
 import am.ik.blog.entry.model.Category;
-import am.ik.blog.entry.model.CursorPageEntryInstant;
 import am.ik.blog.entry.model.Entry;
+import am.ik.blog.entry.model.EntryKey;
 import am.ik.blog.entry.model.TagAndCount;
+import am.ik.pagination.CursorPage;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 import org.springframework.http.CacheControl;
@@ -18,7 +15,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -31,33 +27,26 @@ public class EntryController {
 
 	private final ImageProxyReplacer imageProxyReplacer;
 
-	private final TagApi tagApi;
-
-	private final CategoryApi categoryApi;
-
 	private static final CacheControl swrCacheControl = CacheControl.maxAge(Duration.ofHours(1))
 		.staleWhileRevalidate(Duration.ofMinutes(10));
 
-	public EntryController(EntryClient entryClient, ImageProxyReplacer imageProxyReplacer, TagApi tagApi,
-			CategoryApi categoryApi) {
+	public EntryController(EntryClient entryClient, ImageProxyReplacer imageProxyReplacer) {
 		this.entryClient = entryClient;
 		this.imageProxyReplacer = imageProxyReplacer;
-		this.tagApi = tagApi;
-		this.categoryApi = categoryApi;
 	}
 
 	@GetMapping(path = { "/api/entries", "/api/tenants/{tenantId}/entries" })
 	@RegisterReflectionForBinding(EntryRequest.class)
-	public ResponseEntity<CursorPageEntryInstant> getEntries(EntryRequest request,
+	public ResponseEntity<CursorPage<Entry, Instant>> getEntries(EntryRequest request,
 			@PathVariable(required = false) String tenantId) {
-		ResponseEntity<CursorPageEntryInstant> response = this.entryClient.getEntries(request, tenantId);
+		var response = this.entryClient.getEntries(request, tenantId);
 		return ResponseEntity.ok().headers(headers -> {
 			var page = response.getBody();
 			if (page != null) {
-				List<Entry> content = page.getContent();
+				List<Entry> content = page.content();
 				if (content != null && !content.isEmpty()) {
-					OffsetDateTime updated = content.getFirst().getUpdated().getDate();
-					headers.setLastModified(Objects.requireNonNull(updated).toInstant());
+					Instant updated = content.getFirst().updated().date();
+					headers.setLastModified(updated);
 				}
 			}
 		}).cacheControl(swrCacheControl).body(response.getBody());
@@ -94,19 +83,12 @@ public class EntryController {
 
 	@GetMapping(path = "/api/tags")
 	public ResponseEntity<List<TagAndCount>> getTags() {
-		return ResponseEntity.ok(this.tagApi.tags());
+		return this.entryClient.getTags(null);
 	}
 
 	@GetMapping(path = "/api/categories")
 	public ResponseEntity<List<List<Category>>> getCategories() {
-		return ResponseEntity.ok(this.categoryApi.categories());
-	}
-
-	record EntryKey(Long entryId, @Nullable String tenantId) {
-		@Override
-		public String toString() {
-			return (tenantId == null ? "" : "tenantId=" + tenantId + ", ") + "entryId=" + entryId;
-		}
+		return this.entryClient.getCategories(null);
 	}
 
 }
