@@ -19,6 +19,8 @@ on:
 jobs:
   unit-test:
     uses: categolj/workflows/.github/workflows/unit-test.yaml@main
+    with:
+      java_version: '21'
   build-oci-image-jvm-amd64:
     needs: unit-test
     uses: categolj/workflows/.github/workflows/build-oci-image-jvm.yaml@main
@@ -26,6 +28,7 @@ jobs:
       image_name: jvm_amd64
       image_file: jvm_amd64.yaml
       runs_on: ubuntu-latest
+      java_version: '21'
   build-oci-image-jvm-aarch64:
     needs: unit-test
     uses: categolj/workflows/.github/workflows/build-oci-image-jvm.yaml@main
@@ -33,6 +36,7 @@ jobs:
       image_name: jvm_aarch64
       image_file: jvm_aarch64.yaml
       runs_on: ubuntu-24.04-arm
+      java_version: '21'
   push-multi-arch-image-jvm:
     needs:
     - build-oci-image-jvm-amd64
@@ -59,6 +63,7 @@ jobs:
       image_name: native_amd64
       image_file: native_amd64.yaml
       runs_on: ubuntu-latest
+      java_version: '21'
   build-oci-image-native-aarch64:
     needs: unit-test
     uses: categolj/workflows/.github/workflows/build-oci-image-native.yaml@main
@@ -66,6 +71,7 @@ jobs:
       image_name: native_aarch64
       image_file: native_aarch64.yaml
       runs_on: ubuntu-24.04-arm
+      java_version: '21'
   push-multi-arch-image-native:
     needs:
     - build-oci-image-native-amd64
