@@ -83,12 +83,14 @@ public class EntryController {
 
 	@GetMapping(path = "/api/tags")
 	public ResponseEntity<List<TagAndCount>> getTags() {
-		return this.entryClient.getTags(null);
+		ResponseEntity<List<TagAndCount>> tags = this.entryClient.getTags(null);
+		return ResponseEntity.ok(tags.getBody());
 	}
 
 	@GetMapping(path = "/api/categories")
 	public ResponseEntity<List<List<Category>>> getCategories() {
-		return this.entryClient.getCategories(null);
+		ResponseEntity<List<List<Category>>> categories = this.entryClient.getCategories(null);
+		return ResponseEntity.ok(categories.getBody());
 	}
 
 }
