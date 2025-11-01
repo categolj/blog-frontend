@@ -194,6 +194,10 @@
       <plugin>
         <groupId>org.graalvm.buildtools</groupId>
         <artifactId>native-maven-plugin</artifactId>
+        <configuration>
+          <!-- https://github.com/oracle/graalvm-reachability-metadata/issues/697 -->
+          <buildArgs>-H:Preserve=package=tools.jackson.*</buildArgs>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.springframework.boot</groupId>
@@ -234,6 +238,8 @@
             <env>
               <BP_OCI_SOURCE>https://github.com/${env.GITHUB_REPOSITORY}</BP_OCI_SOURCE>
               <BP_OCI_REVISION>${env.GITHUB_SHA}</BP_OCI_REVISION>
+              <!-- https://github.com/oracle/graalvm-reachability-metadata/issues/697 -->
+              <BP_NATIVE_IMAGE_BUILD_ARGUMENTS>-H:Preserve=package=tools.jackson.*</BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
             </env>
             <buildpacks>
               <buildpack>docker.io/paketobuildpacks/oracle</buildpack>
