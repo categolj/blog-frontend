@@ -1,13 +1,11 @@
 package am.ik.blog.config;
 
 import am.ik.spring.http.client.RetryableClientHttpRequestInterceptor;
-import java.util.List;
-import org.springframework.boot.web.client.RestClientCustomizer;
-import org.springframework.boot.web.client.RestTemplateCustomizer;
+import org.springframework.boot.restclient.RestClientCustomizer;
+import org.springframework.boot.restclient.RestTemplateCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.backoff.ExponentialBackOff;
-import org.zalando.logbook.spring.LogbookClientHttpRequestInterceptor;
 
 import static am.ik.spring.http.client.RetryableIOExceptionPredicate.ANY;
 import static am.ik.spring.http.client.RetryableIOExceptionPredicate.defaults;
@@ -27,18 +25,14 @@ public class ClientConfig {
 
 	@Bean
 	public RestTemplateCustomizer restTemplateCustomizer(
-			LogbookClientHttpRequestInterceptor logbookClientHttpRequestInterceptor,
 			RetryableClientHttpRequestInterceptor retryableClientHttpRequestInterceptor) {
-		return restTemplate -> restTemplate.getInterceptors()
-			.addAll(List.of(logbookClientHttpRequestInterceptor, retryableClientHttpRequestInterceptor));
+		return restTemplate -> restTemplate.getInterceptors().add(retryableClientHttpRequestInterceptor);
 	}
 
 	@Bean
 	public RestClientCustomizer restClientCustomizer(
-			LogbookClientHttpRequestInterceptor logbookClientHttpRequestInterceptor,
 			RetryableClientHttpRequestInterceptor retryableClientHttpRequestInterceptor) {
-		return restClientBuilder -> restClientBuilder.requestInterceptor(logbookClientHttpRequestInterceptor)
-			.requestInterceptor(retryableClientHttpRequestInterceptor);
+		return restClientBuilder -> restClientBuilder.requestInterceptor(retryableClientHttpRequestInterceptor);
 	}
 
 }
