@@ -1,5 +1,6 @@
 package am.ik.blog.ssr;
 
+import io.micrometer.observation.annotation.Observed;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,9 +17,6 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.IntFunction;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.micrometer.observation.annotation.Observed;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Engine;
 import org.graalvm.polyglot.Source;
@@ -26,7 +24,6 @@ import org.graalvm.polyglot.Value;
 import org.graalvm.polyglot.io.IOAccess;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.core.NativeDetector;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
@@ -35,13 +32,14 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StreamUtils;
+import tools.jackson.databind.json.JsonMapper;
 
 @Component
 public class ReactRenderer implements AutoCloseable {
 
 	private final String template;
 
-	private final ObjectMapper objectMapper;
+	private final JsonMapper jsonMapper;
 
 	private final StripedLockedCache<Value> renderCache;
 
@@ -55,8 +53,8 @@ public class ReactRenderer implements AutoCloseable {
 
 	private static final Logger log = LoggerFactory.getLogger(ReactRenderer.class);
 
-	public ReactRenderer(ObjectMapper objectMapper) throws IOException {
-		this.objectMapper = objectMapper;
+	public ReactRenderer(JsonMapper jsonMapper) throws IOException {
+		this.jsonMapper = jsonMapper;
 		this.globalSource = Source.create("js", """
 				globalThis.Buffer = require('buffer').Buffer;
 				globalThis.URL = require('whatwg-url-without-unicode').URL;
@@ -111,26 +109,21 @@ public class ReactRenderer implements AutoCloseable {
 
 	@Observed(name = "react.render")
 	public String render(String url, Map<String, Object> input) {
-		try {
-			String s = this.objectMapper.writeValueAsString(input);
-			Rendered rendered = this.renderCache.lock((int) Thread.currentThread().threadId(), render -> {
-				Value executed = render.execute(url, s);
-				Value html = executed.getMember("html");
-				Value head = executed.getMember("head");
-				return new Rendered(html == null ? "" : html.asString(), head == null ? "" : head.asString());
-			});
-			String head = rendered.head();
-			boolean containsTitle = head.contains("<title");
-			return (containsTitle ? this.template.replaceFirst("<title>.+</title>", "") : this.template)
-				.replace("<!--app-html-->", rendered.html())
-				.replace("<!--app-head-->", head)
-				.replace("<!--app-init-data-->", """
-						<script id="__INIT_DATA__" type="application/json">%s</script>
-						""".formatted(s));
-		}
-		catch (IOException e) {
-			throw new UncheckedIOException(e);
-		}
+		String s = this.jsonMapper.writeValueAsString(input);
+		Rendered rendered = this.renderCache.lock((int) Thread.currentThread().threadId(), render -> {
+			Value executed = render.execute(url, s);
+			Value html = executed.getMember("html");
+			Value head = executed.getMember("head");
+			return new Rendered(html == null ? "" : html.asString(), head == null ? "" : head.asString());
+		});
+		String head = rendered.head();
+		boolean containsTitle = head.contains("<title");
+		return (containsTitle ? this.template.replaceFirst("<title>.+</title>", "") : this.template)
+			.replace("<!--app-html-->", rendered.html())
+			.replace("<!--app-head-->", head)
+			.replace("<!--app-init-data-->", """
+					<script id="__INIT_DATA__" type="application/json">%s</script>
+					""".formatted(s));
 	}
 
 	static File getRoot(String root) {
