@@ -93,7 +93,7 @@
     <dependency>
       <groupId>cc.jilt</groupId>
       <artifactId>jilt</artifactId>
-      <version>1.8.3</version>
+      <version>1.8.4</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -160,31 +160,45 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <compilerArgs>
-            <arg>-XDcompilePolicy=simple</arg>
-            <arg>--should-stop=ifError=FLOW</arg>
-            <arg>-Xplugin:ErrorProne -Xep:NullAway:WARN
-              -XepOpt:NullAway:AnnotatedPackages=am.ik.blog
-              -XepExcludedPaths:(.*/test/java/.*|.*/target/generated-sources/.*)
-            </arg>
-          </compilerArgs>
           <annotationProcessorPaths>
             <path>
               <groupId>cc.jilt</groupId>
               <artifactId>jilt</artifactId>
-              <version>1.8.3</version>
+              <version>1.8.4</version>
+            </path>
+            <path>
+              <groupId>org.springframework.boot</groupId>
+              <artifactId>spring-boot-configuration-processor</artifactId>
             </path>
             <path>
               <groupId>com.google.errorprone</groupId>
               <artifactId>error_prone_core</artifactId>
-              <version>2.42.0</version>
+              <version>2.44.0</version>
             </path>
             <path>
               <groupId>com.uber.nullaway</groupId>
               <artifactId>nullaway</artifactId>
-              <version>0.12.10</version>
+              <version>0.12.12</version>
             </path>
           </annotationProcessorPaths>
+          <fork>true</fork>
+          <compilerArgs>
+            <arg>-XDcompilePolicy=simple</arg>
+            <arg>--should-stop=ifError=FLOW</arg>
+            <!-- @formatter:off -->
+            <arg>-Xplugin:ErrorProne -XepDisableAllChecks -XepOpt:NullAway:OnlyNullMarked=true -XepOpt:NullAway:CustomContractAnnotations=org.springframework.lang.Contract -XepOpt:NullAway:JSpecifyMode=true -Xep:NullAway:ERROR -XepExcludedPaths:(.*/test/java/.*|.*/target/generated-sources/.*)</arg>
+            <!-- @formatter:on -->
+            <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED</arg>
+            <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED</arg>
+            <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED</arg>
+            <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED</arg>
+            <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED</arg>
+            <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
+            <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</arg>
+            <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
+            <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
+            <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED</arg>
+          </compilerArgs>
         </configuration>
       </plugin>
       <plugin>
@@ -239,7 +253,8 @@
               <BP_OCI_SOURCE>https://github.com/${env.GITHUB_REPOSITORY}</BP_OCI_SOURCE>
               <BP_OCI_REVISION>${env.GITHUB_SHA}</BP_OCI_REVISION>
               <!-- https://github.com/oracle/graalvm-reachability-metadata/issues/697 -->
-              <BP_NATIVE_IMAGE_BUILD_ARGUMENTS>-H:Preserve=package=tools.jackson.*</BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
+              <BP_NATIVE_IMAGE_BUILD_ARGUMENTS>-H:Preserve=package=tools.jackson.*
+              </BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
             </env>
             <buildpacks>
               <buildpack>docker.io/paketobuildpacks/oracle</buildpack>

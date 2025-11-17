@@ -8,6 +8,7 @@ import am.ik.pagination.CursorPage;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 import org.springframework.http.CacheControl;
@@ -46,7 +47,9 @@ public class EntryController {
 				List<Entry> content = page.content();
 				if (content != null && !content.isEmpty()) {
 					Instant updated = content.getFirst().updated().date();
-					headers.setLastModified(updated);
+					if (updated != null) {
+						headers.setLastModified(updated);
+					}
 				}
 			}
 		}).cacheControl(swrCacheControl).body(response.getBody());
@@ -78,7 +81,9 @@ public class EntryController {
 			if (lastModified != -1) {
 				headers.setLastModified(lastModified);
 			}
-		}).cacheControl(swrCacheControl).body(this.imageProxyReplacer.replaceImage(response.getBody()));
+		})
+			.cacheControl(swrCacheControl)
+			.body(this.imageProxyReplacer.replaceImage(Objects.requireNonNull(response.getBody())));
 	}
 
 	@GetMapping(path = "/api/tags")

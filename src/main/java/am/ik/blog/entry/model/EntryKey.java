@@ -2,6 +2,7 @@ package am.ik.blog.entry.model;
 
 import java.util.Objects;
 import org.jspecify.annotations.Nullable;
+import org.springframework.util.Assert;
 
 public record EntryKey(Long entryId, String tenantId) {
 
@@ -26,7 +27,7 @@ public record EntryKey(Long entryId, String tenantId) {
 
 	public static class Builder {
 
-		private Long entryId = null;
+		private @Nullable Long entryId = null;
 
 		private @Nullable String tenantId = null;
 
@@ -44,6 +45,7 @@ public record EntryKey(Long entryId, String tenantId) {
 		}
 
 		public EntryKey build() {
+			Assert.notNull(entryId, "entryId is required");
 			return new EntryKey(entryId, tenantId);
 		}
 

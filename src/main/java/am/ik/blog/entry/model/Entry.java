@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import java.time.Instant;
 import org.jspecify.annotations.Nullable;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 public record Entry(@JsonUnwrapped EntryKey entryKey, FrontMatter frontMatter,
@@ -61,15 +62,15 @@ public record Entry(@JsonUnwrapped EntryKey entryKey, FrontMatter frontMatter,
 
 	public static class Builder {
 
-		private EntryKey entryKey;
+		private @Nullable EntryKey entryKey;
 
-		private FrontMatter frontMatter;
+		private @Nullable FrontMatter frontMatter;
 
 		private @Nullable String content;
 
-		private Author created;
+		private @Nullable Author created;
 
-		private Author updated;
+		private @Nullable Author updated;
 
 		private Builder() {
 		}
@@ -100,6 +101,10 @@ public record Entry(@JsonUnwrapped EntryKey entryKey, FrontMatter frontMatter,
 		}
 
 		public Entry build() {
+			Assert.notNull(entryKey, "entryKey is required");
+			Assert.notNull(frontMatter, "frontMatter is required");
+			Assert.notNull(created, "created must not be null");
+			Assert.notNull(updated, "updated must not be null");
 			return new Entry(entryKey, frontMatter, content, created, updated);
 		}
 

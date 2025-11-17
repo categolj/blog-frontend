@@ -2,6 +2,7 @@ package am.ik.blog.entry.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.jspecify.annotations.Nullable;
+import org.springframework.util.Assert;
 
 public record Tag(String name, @Nullable @JsonInclude(JsonInclude.Include.NON_EMPTY) String version) {
 
@@ -19,7 +20,7 @@ public record Tag(String name, @Nullable @JsonInclude(JsonInclude.Include.NON_EM
 
 	public static class Builder {
 
-		private String name;
+		private @Nullable String name;
 
 		private @Nullable String version;
 
@@ -37,6 +38,7 @@ public record Tag(String name, @Nullable @JsonInclude(JsonInclude.Include.NON_EM
 		}
 
 		public Tag build() {
+			Assert.hasText(name, "name is required");
 			return new Tag(name, version);
 		}
 
