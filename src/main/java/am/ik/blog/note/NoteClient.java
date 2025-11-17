@@ -11,6 +11,7 @@ import am.ik.blog.note.model.SendLinkInput;
 import am.ik.blog.note.model.SubscribeOutput;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
@@ -29,48 +30,53 @@ public class NoteClient {
 	}
 
 	public OAuth2Token token(String username, String password) {
-		return this.restClient.post()
+		return Objects.requireNonNull(this.restClient.post()
 			.uri("/oauth/token")
 			.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 			.body(new LinkedMultiValueMap<>(Map.of("username", List.of(username), "password", List.of(password))))
 			.retrieve()
-			.body(OAuth2Token.class);
+			.body(OAuth2Token.class));
 	}
 
 	public List<NoteSummary> getNotes() {
-		return this.restClient.get().uri("/notes").retrieve().body(new ParameterizedTypeReference<>() {
-		});
+		return Objects
+			.requireNonNull(this.restClient.get().uri("/notes").retrieve().body(new ParameterizedTypeReference<>() {
+			}));
 	}
 
 	public NoteDetails getNoteByEntryId(Long entryId) {
-		return this.restClient.get().uri("/notes/{entryId}", entryId).retrieve().body(NoteDetails.class);
+		return Objects
+			.requireNonNull(this.restClient.get().uri("/notes/{entryId}", entryId).retrieve().body(NoteDetails.class));
 	}
 
 	public SubscribeOutput subscribe(UUID noteId) {
-		return this.restClient.post().uri("/notes/{noteId}/subscribe", noteId).retrieve().body(SubscribeOutput.class);
+		return Objects.requireNonNull(
+				this.restClient.post().uri("/notes/{noteId}/subscribe", noteId).retrieve().body(SubscribeOutput.class));
 	}
 
 	public ResponseMessage createReader(CreateReaderInput input) {
-		return this.restClient.post().uri("/readers").body(input).retrieve().body(ResponseMessage.class);
+		return Objects
+			.requireNonNull(this.restClient.post().uri("/readers").body(input).retrieve().body(ResponseMessage.class));
 	}
 
 	public ResponseMessage activateReader(UUID readerId, UUID activationLinkId) {
-		return this.restClient.post()
+		return Objects.requireNonNull(this.restClient.post()
 			.uri("/readers/{readerId}/activations/{activationLinkId}", readerId, activationLinkId)
 			.retrieve()
-			.body(ResponseMessage.class);
+			.body(ResponseMessage.class));
 	}
 
 	public ResponseMessage sendPasswordResetLink(SendLinkInput input) {
-		return this.restClient.post()
+		return Objects.requireNonNull(this.restClient.post()
 			.uri("/password_reset/send_link")
 			.body(input)
 			.retrieve()
-			.body(ResponseMessage.class);
+			.body(ResponseMessage.class));
 	}
 
 	public ResponseMessage resetPassword(PasswordResetInput input) {
-		return this.restClient.post().uri("/password_reset").body(input).retrieve().body(ResponseMessage.class);
+		return Objects.requireNonNull(
+				this.restClient.post().uri("/password_reset").body(input).retrieve().body(ResponseMessage.class));
 	}
 
 }

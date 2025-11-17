@@ -65,8 +65,8 @@ public class SsrController {
 			return ResponseEntity.status(response.getStatusCode())
 				.body(this.reactRenderer.render("/forbidden", Map.of()));
 		}
-		var entry = this.imageProxyReplacer.replaceImage(response.getBody());
-		Matcher matcher = scriptPattern.matcher(entry.content());
+		var entry = this.imageProxyReplacer.replaceImage(Objects.requireNonNull(response.getBody()));
+		Matcher matcher = scriptPattern.matcher(Objects.requireNonNull(entry.content()));
 		return ResponseEntity.ok(this.reactRenderer.render("/entries/%d".formatted(entryId),
 				Map.of("preLoadedEntry", entry.toBuilder().content(matcher.replaceAll("")).build())));
 	}
