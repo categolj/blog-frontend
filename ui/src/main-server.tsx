@@ -1,9 +1,7 @@
 import ReactDOMServer from 'react-dom/server'
 import './index.css'
 import routes from "./routes.tsx";
-import { StaticRouter } from "react-router-dom/server";
-import { Route, RouteObject, Routes } from "react-router-dom";
-import { RouteProps } from "react-router/dist/lib/components";
+import { StaticRouter, Route, RouteObject, Routes, RouteProps } from "react-router";
 import Layout from "./components/Layout.tsx";
 import { HelmetProvider } from "react-helmet-async";
 
