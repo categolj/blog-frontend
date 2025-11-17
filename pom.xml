@@ -221,12 +221,12 @@
             <id>process-aot</id>
             <configuration>
               <systemPropertyVariables>
-                <management.otlp.tracing.endpoint>
+                <management.opentelemetry.tracing.export.otlp.endpoint>
                   http://otel-collector.opentelemetry.svc.cluster.local:4318/v1/traces
-                </management.otlp.tracing.endpoint>
-                <management.otlp.logging.endpoint>
+                </management.opentelemetry.tracing.export.otlp.endpoint>
+                <management.opentelemetry.logging.export.otlp.endpoint>
                   http://otel-collector.opentelemetry.svc.cluster.local:4318/v1/logs
-                </management.otlp.logging.endpoint>
+                </management.opentelemetry.logging.export.otlp.endpoint>
               </systemPropertyVariables>
             </configuration>
           </execution>
