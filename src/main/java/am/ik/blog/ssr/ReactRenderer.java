@@ -77,6 +77,9 @@ public class ReactRenderer implements AutoCloseable {
 					}
 				};
 				global = globalThis;
+				const { TextEncoder, TextDecoder } = require('fastestsmallesttextencoderdecoder');
+				globalThis.TextEncoder = TextEncoder;
+				globalThis.TextDecoder = TextDecoder;
 				require('url-search-params-polyfill');
 				""");
 		Path mainServer = Paths.get(getRoot("server").getAbsolutePath(), "main-server.js");

@@ -1,10 +1,10 @@
 import { HelmetProvider } from "react-helmet-async";
 import { RouterProvider } from "react-router-dom";
 import { useTheme } from './hooks/useTheme';
-import type { Router as RouterType } from '@remix-run/router';
+import type { DataRouter } from 'react-router';
 
 interface AppProps {
-  router: RouterType;
+  router: DataRouter;
 }
 
 const App = ({ router }: AppProps) => {
