@@ -60,6 +60,9 @@ public class ReactRenderer implements AutoCloseable {
 		this.globalSource = Source.create("js", """
 				globalThis.Buffer = require('buffer').Buffer;
 				globalThis.URL = require('whatwg-url-without-unicode').URL;
+				const { TextEncoder, TextDecoder } = require('fastestsmallesttextencoderdecoder');
+				globalThis.TextEncoder = TextEncoder;
+				globalThis.TextDecoder = TextDecoder;
 				globalThis.process = {
 					env: {
 						NODE_ENV: 'production'
