@@ -1,7 +1,7 @@
 package am.ik.blog.config;
 
 import am.ik.blog.entry.EntryRequest;
-
+import java.util.Locale;
 import org.springframework.aot.hint.ExecutableMode;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
 import org.springframework.context.annotation.Configuration;
@@ -16,9 +16,11 @@ public class NativeHints {
 		@Override
 		public void registerHints(org.springframework.aot.hint.RuntimeHints hints, ClassLoader classLoader) {
 			try {
-				hints.resources().registerPattern("server/*");
-				hints.resources().registerPattern("polyfill/*");
+				hints.resources().registerPattern("server/**/*");
+				hints.resources().registerPattern("polyfill/**/*");
 				hints.reflection().registerConstructor(EntryRequest.class.getConstructors()[0], ExecutableMode.INVOKE);
+				hints.reflection()
+					.registerMethod(Locale.class.getMethod("getDefault", Locale.Category.class), ExecutableMode.INVOKE);
 			}
 			catch (Exception e) {
 				throw new RuntimeException(e);
