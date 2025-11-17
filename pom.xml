@@ -283,7 +283,7 @@
         <version>1.15.4</version>
         <configuration>
           <installDirectory>target</installDirectory>
-          <nodeVersion>v22.11.0</nodeVersion>
+          <nodeVersion>v22.12.0</nodeVersion>
         </configuration>
         <executions>
           <execution>
