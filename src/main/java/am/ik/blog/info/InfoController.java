@@ -8,6 +8,8 @@ import am.ik.blog.TranslationApiProps;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.StructuredTaskScope;
+import java.util.concurrent.StructuredTaskScope.Subtask;
 import org.springframework.boot.actuate.info.InfoEndpoint;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,41 +47,51 @@ public class InfoController {
 		this.imageProxyProps = imageProxyProps;
 	}
 
+	@SuppressWarnings("preview")
 	@GetMapping(path = "/api/info")
-	public List<Map<String, Object>> info() {
-		Map<String, Object> self = this.infoEndpoint.info();
-		Map<String, Object> entry = this.restClient.get()
-			.uri(this.blogApiProps.url() + "/actuator/info")
-			.retrieve()
-			.body(new ParameterizedTypeReference<>() {
-			});
-		Map<String, Object> translation = this.restClient.get()
-			.uri(this.translationApiProps.url() + "/actuator/info")
-			.retrieve()
-			.body(new ParameterizedTypeReference<>() {
-			});
-		Map<String, Object> note = this.restClient.get()
-			.uri(this.noteApiProps.url() + "/actuator/info")
-			.retrieve()
-			.body(new ParameterizedTypeReference<>() {
-			});
-		Map<String, Object> counter = this.restClient.get()
-			.uri(UriComponentsBuilder.fromUriString(this.counterApiProps.url())
-				.replacePath("/actuator/info")
-				.build()
-				.toUri())
-			.retrieve()
-			.body(new ParameterizedTypeReference<>() {
-			});
-		Map<String, Object> imageProxy = this.restClient.get()
-			.uri(this.imageProxyProps.url() + "/actuator/info")
-			.retrieve()
-			.body(new ParameterizedTypeReference<>() {
-			});
-		return List.of(Map.of("name", "Self", "info", self), Map.of("name", "Entry API", "info", entry),
-				Map.of("name", "Translation API", "info", Objects.requireNonNull(translation)),
-				Map.of("name", "Note API", "info", note), Map.of("name", "Counter API", "info", counter),
-				Map.of("name", "Image Proxy", "info", Objects.requireNonNull(imageProxy)));
+	public List<Map<String, Object>> info() throws InterruptedException {
+		try (var scope = StructuredTaskScope.open()) {
+			Subtask<Map<String, Object>> self = scope.fork(this.infoEndpoint::info);
+			Subtask<Map<String, Object>> entry = scope.fork(() -> Objects.requireNonNullElseGet(this.restClient.get()
+				.uri(this.blogApiProps.url() + "/actuator/info")
+				.retrieve()
+				.body(new ParameterizedTypeReference<>() {
+				}), Map::of));
+			Subtask<Map<String, Object>> translation = scope
+				.fork(() -> Objects.requireNonNullElseGet(this.restClient.get()
+					.uri(this.translationApiProps.url() + "/actuator/info")
+					.retrieve()
+					.body(new ParameterizedTypeReference<>() {
+					}), Map::of));
+			Subtask<Map<String, Object>> note = scope.fork(() -> Objects.requireNonNullElseGet(this.restClient.get()
+				.uri(this.noteApiProps.url() + "/actuator/info")
+				.retrieve()
+				.body(new ParameterizedTypeReference<>() {
+				}), Map::of));
+			Subtask<Map<String, Object>> counter = scope.fork(() -> Objects.requireNonNullElseGet(this.restClient.get()
+				.uri(UriComponentsBuilder.fromUriString(this.counterApiProps.url())
+					.replacePath("/actuator/info")
+					.build()
+					.toUri())
+				.retrieve()
+				.body(new ParameterizedTypeReference<>() {
+				}), Map::of));
+			Subtask<Map<String, Object>> imageProxy = scope
+				.fork(() -> Objects.requireNonNullElseGet(this.restClient.get()
+					.uri(this.imageProxyProps.url() + "/actuator/info")
+					.retrieve()
+					.body(new ParameterizedTypeReference<>() {
+					}), Map::of));
+			scope.join();
+			return List.of( //
+					Map.of("name", "Self", "info", self.get()), //
+					Map.of("name", "Entry API", "info", entry.get()), //
+					Map.of("name", "Translation API", "info", translation.get()), //
+					Map.of("name", "Note API", "info", note.get()), //
+					Map.of("name", "Counter API", "info", counter.get()), //
+					Map.of("name", "Image Proxy", "info", imageProxy.get()) //
+			);
+		}
 	}
 
 }
