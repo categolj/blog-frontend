@@ -1,11 +1,9 @@
 package am.ik.blog.counter;
 
-import java.util.Locale;
-
 import am.ik.blog.CounterApiProps;
 import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpServletRequest;
-
+import java.util.Locale;
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,7 +35,7 @@ public class CounterController {
 		String ipAddress = getIpAddress();
 		if (!CollectionUtils.isEmpty(props.ipBlackList()) && ipAddress != null) {
 			if (props.ipBlackList().contains(ipAddress)) {
-				return new Counter(0);
+				return this.counterClient.getCount(request);
 			}
 		}
 		return this.counterClient.increment(request);

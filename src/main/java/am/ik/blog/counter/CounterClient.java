@@ -31,4 +31,17 @@ public class CounterClient {
 		return Objects.requireNonNullElseGet(body, () -> new Counter(-1L));
 	}
 
+	public Counter getCount(IncrementRequest request) {
+		Counter body = this.restClient.post()
+			.uri("?readOnly=true")
+			.contentType(MediaType.APPLICATION_JSON)
+			.body(request)
+			.retrieve()
+			.body(Counter.class);
+		if (body == null) {
+			logger.warn("Counter increment failed, using default -1");
+		}
+		return Objects.requireNonNullElseGet(body, () -> new Counter(-1L));
+	}
+
 }
