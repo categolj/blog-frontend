@@ -20,12 +20,14 @@ public class AppConfig {
 			public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
 				if (bean instanceof Sampler) {
 					AttributeKey<String> uri = AttributeKey.stringKey("uri");
+					AttributeKey<String> codeFunction = AttributeKey.stringKey("code.function");
 					return RuleBasedRoutingSampler.builder(SpanKind.SERVER, (Sampler) bean)
 						.drop(uri, "^/readyz")
 						.drop(uri, "^/livez")
 						.drop(uri, "^/actuator")
 						.drop(uri, "^/cloudfoundryapplication")
 						.drop(uri, "^/_static")
+						.drop(codeFunction, "^cleanupExpiredEntries$")
 						.build();
 				}
 				return bean;
