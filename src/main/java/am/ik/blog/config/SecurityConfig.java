@@ -2,6 +2,8 @@ package am.ik.blog.config;
 
 import am.ik.blog.ratelimit.RateLimitFilter;
 import am.ik.blog.ratelimit.RateLimitProperties;
+import am.ik.blog.security.BotBlockingFilter;
+import am.ik.blog.security.BotBlockingProperties;
 
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -13,9 +15,10 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.context.SecurityContextHolderFilter;
 
 @Configuration(proxyBeanMethods = false)
-@EnableConfigurationProperties(RateLimitProperties.class)
+@EnableConfigurationProperties({ RateLimitProperties.class, BotBlockingProperties.class })
 public class SecurityConfig {
 
 	@Bean
@@ -25,8 +28,15 @@ public class SecurityConfig {
 	}
 
 	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http,
+	public BotBlockingFilter botBlockingFilter(BotBlockingProperties botBlockingProperties) {
+		return new BotBlockingFilter(botBlockingProperties.patterns());
+	}
+
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity http, BotBlockingFilter botBlockingFilter,
 			ObjectProvider<RateLimitFilter> rateLimitFilterProvider) throws Exception {
+		// Add bot blocking filter first to block malicious requests early
+		http.addFilterBefore(botBlockingFilter, SecurityContextHolderFilter.class);
 		rateLimitFilterProvider
 			.ifAvailable(filter -> http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class));
 		return http.authorizeHttpRequests(authorize -> authorize
