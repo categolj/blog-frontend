@@ -32,6 +32,14 @@ class BotBlockingFilterTest {
 	}
 
 	@Test
+	void shouldBlockPhpFiles() throws Exception {
+		this.mvc.perform(get("/admin.php")).andExpect(status().isGone());
+		this.mvc.perform(get("/xmlrpc.php")).andExpect(status().isGone());
+		this.mvc.perform(get("/config.php")).andExpect(status().isGone());
+		this.mvc.perform(get("/shell.php")).andExpect(status().isGone());
+	}
+
+	@Test
 	void shouldAllowNormalPaths() throws Exception {
 		this.mvc.perform(get("/test")).andExpect(status().isOk());
 		this.mvc.perform(get("/api/entries")).andExpect(status().isOk());

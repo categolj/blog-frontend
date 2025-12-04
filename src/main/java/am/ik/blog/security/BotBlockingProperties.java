@@ -11,5 +11,5 @@ import org.springframework.boot.context.properties.bind.DefaultValue;
  */
 @ConfigurationProperties(prefix = "bot-blocking")
 public record BotBlockingProperties(@DefaultValue( {
-		"/wp-" }) List<String> patterns){
+		"/wp-", "\\.php$" }) List<String> patterns){
 }
