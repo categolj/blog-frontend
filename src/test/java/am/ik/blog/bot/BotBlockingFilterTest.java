@@ -1,4 +1,4 @@
-package am.ik.blog.security;
+package am.ik.blog.bot;
 
 import am.ik.blog.config.SecurityConfig;
 import org.junit.jupiter.api.Test;

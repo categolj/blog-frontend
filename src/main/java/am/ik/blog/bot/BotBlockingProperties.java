@@ -1,4 +1,4 @@
-package am.ik.blog.security;
+package am.ik.blog.bot;
 
 import java.util.List;
 

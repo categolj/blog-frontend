@@ -2,8 +2,8 @@ package am.ik.blog.config;
 
 import am.ik.blog.ratelimit.RateLimitFilter;
 import am.ik.blog.ratelimit.RateLimitProperties;
-import am.ik.blog.security.BotBlockingFilter;
-import am.ik.blog.security.BotBlockingProperties;
+import am.ik.blog.bot.BotBlockingFilter;
+import am.ik.blog.bot.BotBlockingProperties;
 
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
