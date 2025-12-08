@@ -45,6 +45,15 @@ public class EntryClient {
 			.toEntity(Entry.class);
 	}
 
+	public ResponseEntity<String> getEntryAsMarkdown(long entryId, @Nullable String tenantId) {
+		return this.restClient.get()
+			.uri(prefix(tenantId) + "/entries/{entryId}.md", entryId)
+			.retrieve()
+			.onStatus(statusCode -> (statusCode == NOT_FOUND || statusCode == FORBIDDEN), (req, res) -> {
+			})
+			.toEntity(String.class);
+	}
+
 	public ResponseEntity<Void> headEntry(long entryId, Instant lastModifiedDate, @Nullable String tenantId) {
 		return this.restClient.head().uri(prefix(tenantId) + "/entries/{entryId}", entryId).headers(headers -> {
 			headers.setIfModifiedSince(lastModifiedDate);
