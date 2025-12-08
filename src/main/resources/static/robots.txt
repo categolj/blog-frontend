@@ -1,3 +1,5 @@
+Llms-Txt: /llms.txt
+
 User-agent: YandexBot
 Disallow: /
 
