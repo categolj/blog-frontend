@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 import static am.ik.blog.entry.EntryRequestBuilder.entryRequest;
 
 @RestController
-public class LmmsController {
+public class LlmsController {
 
 	private final EntryClient entryClient;
 
-	public LmmsController(EntryClient entryClient) {
+	public LlmsController(EntryClient entryClient) {
 		this.entryClient = entryClient;
 	}
 
