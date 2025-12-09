@@ -13,7 +13,7 @@ import {ShareWithX} from "../../components/ShareWithX.tsx";
 import {ShareWithBlueSky} from "../../components/ShareWithBlueSky.tsx";
 import {ShareWithHatebu} from "../../components/ShareWithHatebu.tsx";
 import {NotTranslated} from "./NotTranslated.tsx";
-import {CalendarIcon, EditIcon, EyeIcon, FolderIcon, InfoIcon} from "../../components/icons";
+import {CalendarIcon, EditIcon, EyeIcon, FolderIcon, InfoIcon, MarkdownIcon} from "../../components/icons";
 import {Entry, getEntry} from "../../api/entryApi";
 import {ApiError, ProblemDetail} from "../../utils/fetch";
 import EntryTag from "../../components/EntryTag";
@@ -164,10 +164,19 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch
                             </span>
                         </div>
 
-                        <div className="flex items-center">
+                        <div className="flex items-center mr-4">
                             <EyeIcon className="h-4 w-4 mr-1"/>
                             <Counter entryId={entryId!}/>
                         </div>
+
+                        <a
+                            href={`/entries/${entry.entryId}.md`}
+                            className="flex items-center text-meta hover:text-fg transition-colors"
+                            title="View as Markdown"
+                            data-discover="false"
+                        >
+                            <MarkdownIcon className="h-4 w-4"/>
+                        </a>
                     </div>
 
                     {/* Tags using EntryTag component */}

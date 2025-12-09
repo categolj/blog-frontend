@@ -476,18 +476,26 @@ export const ChevronDownIcon: React.FC<{ className?: string }> = ({ className = 
 
 // Chevron Right icon for collapsible elements
 export const ChevronRightIcon: React.FC<{ className?: string }> = ({ className = "h-5 w-5" }) => (
-  <svg 
-    xmlns="http://www.w3.org/2000/svg" 
-    className={className} 
-    fill="none" 
-    viewBox="0 0 24 24" 
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className={className}
+    fill="none"
+    viewBox="0 0 24 24"
     stroke="currentColor"
   >
-    <path 
-      strokeLinecap="round" 
-      strokeLinejoin="round" 
-      strokeWidth={2} 
-      d="M9 5l7 7-7 7" 
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M9 5l7 7-7 7"
     />
+  </svg>
+);
+
+// Markdown icon for raw markdown content (MD in a square box, similar to JaIcon/EnIcon)
+export const MarkdownIcon: React.FC<{ className?: string }> = ({ className = "h-5 w-5" }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor">
+    <rect x="2" y="2" width="20" height="20" rx="2" strokeWidth="1.5" />
+    <text x="50%" y="50%" dominantBaseline="middle" textAnchor="middle" fill="currentColor" fontSize="9" fontWeight="bold" fontFamily="sans-serif">MD</text>
   </svg>
 );
