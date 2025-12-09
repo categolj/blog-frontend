@@ -15,7 +15,7 @@
     "@kevincobain2000/json-to-html-table": "^1.0.4",
     "highlight.js": "^11.11.0",
     "javascript-time-ago": "^2.5.11",
-    "marked": "^12.0.2",
+    "marked": "^17.0.1",
     "marked-alert": "^2.1.2",
     "marked-gfm-heading-id": "^3.2.0",
     "marked-highlight": "^2.1.3",
