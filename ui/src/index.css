@@ -154,6 +154,32 @@
   }
 }
 
+/* Title animation: IK.AM <-> MA.KI */
+.title-animation-container {
+  perspective: 1000px;
+  display: inline-block;
+}
+
+.title-animation-inner {
+  display: inline-flex;
+  transform-style: preserve-3d;
+}
+
+.title-animation-inner.flipping {
+  animation: flip 0.8s ease-in-out;
+}
+
+@keyframes flip {
+  0% { transform: rotateY(0deg); }
+  50% { transform: rotateY(90deg); }
+  100% { transform: rotateY(0deg); }
+}
+
+.title-char {
+  display: inline-block;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 @layer base {
   :root {
     /* Base colors */
