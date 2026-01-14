@@ -22,6 +22,9 @@ import FilterSection from "../../components/FilterSection";
 import Card from "../../components/Card";
 import EmptyState from "../../components/EmptyState";
 import EntryTag from "../../components/EntryTag";
+import Error403Page from "../etc/Error403Page";
+import Error429Page from "../etc/Error429Page";
+import {ApiError} from "../../utils/fetch";
 
 export interface EntriesProps {
     preLoadedEntries?: CursorPageEntryInstant;
@@ -77,10 +80,21 @@ const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries, tenantId}) => {
         return result.content || [];
     };
 
-    const {data, isLoading, size, setSize} = useSWRInfinite(getKey, fetcher,
+    const {data, error, isLoading, size, setSize} = useSWRInfinite(getKey, fetcher,
         {revalidateFirstPage: false});
     const entries = data ? ([] as Entry[]).concat(...data) : isPreLoaded
         && preLoadedEntries.content;
+
+    // Handle HTTP errors (e.g., WAF blocking the query)
+    if (error) {
+        const apiError = error as ApiError;
+        if (apiError.status === 403) {
+            return <Error403Page/>;
+        }
+        if (apiError.status === 429) {
+            return <Error429Page/>;
+        }
+    }
 
     if (!isPreLoaded && (isLoading || !entries)) {
         return <Loading/>
