@@ -4,13 +4,14 @@ import am.ik.blog.entry.EntryClient;
 import am.ik.blog.entry.EntryRequest;
 import am.ik.blog.entry.model.Entry;
 import am.ik.pagination.CursorPage;
-import jakarta.annotation.Nullable;
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.StructuredTaskScope;
 import java.util.concurrent.StructuredTaskScope.Subtask;
 import java.util.stream.Collectors;
+
+import org.jspecify.annotations.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
