@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.web.servlet.client.RestTestClient;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
@@ -36,6 +37,8 @@ class E2ETest {
 
 	Page page;
 
+	RestTestClient restTestClient;
+
 	@BeforeAll
 	static void launchBrowser() {
 		playwright = Playwright.create();
@@ -49,9 +52,10 @@ class E2ETest {
 	}
 
 	@BeforeEach
-	void createPage() {
+	void setUp() {
 		page = browser.newPage();
 		this.mockServer.reset();
+		this.restTestClient = RestTestClient.bindToServer().baseUrl("http://localhost:" + port).build();
 	}
 
 	@AfterEach
@@ -271,6 +275,58 @@ class E2ETest {
 
 		// Verify SPA navigation worked - entries by tag should be displayed
 		assertThat(page.locator("#entries a[href='/entries/1']").first()).hasText("Java Article");
+	}
+
+	@Test
+	void getLlmsTxt() {
+		// Mock Japanese entries (no tenant)
+		mockServer.GET("/entries", request -> Response.json("""
+				{
+				  "content": [
+				    {
+				      "entryId": 100,
+				      "frontMatter": {"title": "Japanese Entry", "categories": [], "tags": []},
+				      "content": "",
+				      "created": {"name": "demo", "date": "2024-04-01T00:00:00Z"},
+				      "updated": {"name": "demo", "date": "2024-04-02T00:00:00Z"}
+				    }
+				  ],
+				  "size": 1,
+				  "hasPrevious": false,
+				  "hasNext": false
+				}
+				"""));
+		// Mock English entries (tenant=en)
+		mockServer.GET("/tenants/en/entries", request -> Response.json("""
+				{
+				  "content": [
+				    {
+				      "entryId": 200,
+				      "frontMatter": {"title": "English Entry", "categories": [], "tags": []},
+				      "content": "",
+				      "created": {"name": "demo", "date": "2024-04-01T00:00:00Z"},
+				      "updated": {"name": "demo", "date": "2024-04-03T00:00:00Z"}
+				    }
+				  ],
+				  "size": 1,
+				  "hasPrevious": false,
+				  "hasNext": false
+				}
+				"""));
+
+		restTestClient.get()
+			.uri("/llms.txt")
+			.exchange()
+			.expectStatus()
+			.isOk()
+			.expectHeader()
+			.contentType("text/plain;charset=UTF-8")
+			.expectBody(String.class)
+			.value(body -> {
+				org.assertj.core.api.Assertions.assertThat(body).contains("# IK.AM");
+				org.assertj.core.api.Assertions.assertThat(body).contains("- [Japanese Entry](/entries/100.md)");
+				org.assertj.core.api.Assertions.assertThat(body).contains("- [English Entry](/entries/200/en.md)");
+			});
 	}
 
 }

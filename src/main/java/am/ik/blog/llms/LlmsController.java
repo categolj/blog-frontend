@@ -3,9 +3,13 @@ package am.ik.blog.llms;
 import am.ik.blog.entry.EntryClient;
 import am.ik.blog.entry.EntryRequest;
 import am.ik.blog.entry.model.Entry;
+import am.ik.pagination.CursorPage;
 import jakarta.annotation.Nullable;
+import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.StructuredTaskScope;
+import java.util.concurrent.StructuredTaskScope.Subtask;
 import java.util.stream.Collectors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,43 +26,49 @@ public class LlmsController {
 		this.entryClient = entryClient;
 	}
 
+	@SuppressWarnings("preview")
 	@GetMapping(path = "/llms.txt", produces = "text/plain")
-	public String llms() {
-		var responseJa = this.entryClient.getEntries(entryRequest().build(), null);
-		var responseEn = this.entryClient.getEntries(entryRequest().build(), "en");
-		String entriesJa = Objects.requireNonNull(responseJa.getBody(), "response body must not be null")
-			.content()
-			.stream()
-			.map(entry -> """
-					- [%s](/entries/%d.md) - 最終更新時刻 %s
-					""".formatted(entry.frontMatter().title(), entry.entryKey().entryId(), entry.updated().date())
-				.trim())
-			.collect(Collectors.joining("\n"));
-		String entriesEn = Objects.requireNonNull(responseEn.getBody(), "response body must not be null")
-			.content()
-			.stream()
-			.map(entry -> """
-					- [%s](/entries/%d/en.md) - Last Updated at %s
-					""".formatted(entry.frontMatter().title(), entry.entryKey().entryId(), entry.updated().date())
-				.trim())
-			.collect(Collectors.joining("\n"));
-		return """
-				# IK.AM
-				IK.AMは@makingの技術ブログです。
+	public String llms() throws InterruptedException {
+		try (var scope = StructuredTaskScope.open()) {
+			Subtask<CursorPage<Entry, Instant>> responseJa = scope
+				.fork(() -> this.entryClient.getEntries(entryRequest().build(), null).getBody());
+			Subtask<CursorPage<Entry, Instant>> responseEn = scope
+				.fork(() -> this.entryClient.getEntries(entryRequest().build(), "en").getBody());
+			scope.join();
+			String entriesJa = Objects.requireNonNull(responseJa.get(), "response body must not be null")
+				.content()
+				.stream()
+				.map(entry -> """
+						- [%s](/entries/%d.md) - 最終更新時刻 %s
+						""".formatted(entry.frontMatter().title(), entry.entryKey().entryId(), entry.updated().date())
+					.trim())
+				.collect(Collectors.joining("\n"));
+			String entriesEn = Objects.requireNonNull(responseEn.get(), "response body must not be null")
+				.content()
+				.stream()
+				.map(entry -> """
+						- [%s](/entries/%d/en.md) - Last Updated at %s
+						""".formatted(entry.frontMatter().title(), entry.entryKey().entryId(), entry.updated().date())
+					.trim())
+				.collect(Collectors.joining("\n"));
+			return """
+					# IK.AM
+					IK.AMは@makingの技術ブログです。
 
-				## ナビゲーション
-				- [記事一覧](/entries.md): Markdown形式の記事一覧
-				- [記事一覧 (English)](/entries/en.md): Markdown形式の記事一覧
-				- [記事ページ](/entries/[entryId].md): `entryId`に対応するMarkdown形式の記事ページ
-				- [記事ページ (English)](/entries/[entryId]/en.md): `entryId`に対応する英語に翻訳されたMarkdown形式の記事ページ。ただし、未翻訳の場合は404エラーになります。
+					## ナビゲーション
+					- [記事一覧](/entries.md): Markdown形式の記事一覧
+					- [記事一覧 (English)](/entries/en.md): Markdown形式の記事一覧
+					- [記事ページ](/entries/[entryId].md): `entryId`に対応するMarkdown形式の記事ページ
+					- [記事ページ (English)](/entries/[entryId]/en.md): `entryId`に対応する英語に翻訳されたMarkdown形式の記事ページ。ただし、未翻訳の場合は404エラーになります。
 
-				## 最新の記事 (日本語版)
-				%s
+					## 最新の記事 (日本語版)
+					%s
 
-				## Latest Entries (English)
-				%s
-				"""
-			.formatted(entriesJa, entriesEn);
+					## Latest Entries (English)
+					%s
+					"""
+				.formatted(entriesJa, entriesEn);
+		}
 	}
 
 	@GetMapping(path = { "/entries.md", "/entries/{tenantId:[a-z]+}.md" }, produces = "text/plain")
