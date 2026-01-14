@@ -2,13 +2,15 @@ import React, { useEffect, useRef } from 'react';
 
 interface BinaryRainProps {
   active: boolean;
+  color?: string;
+  fadeColor?: string;
 }
 
 /**
  * Binary rain animation component that renders on a canvas
  * Only runs when active prop is true
  */
-const BinaryRain: React.FC<BinaryRainProps> = ({ active }) => {
+const BinaryRain: React.FC<BinaryRainProps> = ({ active, color = '#F4E878', fadeColor = 'rgba(0, 0, 0, 0.05)' }) => {
   // Canvas reference
   const canvasRef = useRef<HTMLCanvasElement>(null);
   // Animation frame reference for cleanup
@@ -46,12 +48,12 @@ const BinaryRain: React.FC<BinaryRainProps> = ({ active }) => {
 
     // Drawing function
     const draw = () => {
-      // Semi-transparent black to create the fade effect
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      // Semi-transparent background to create the fade effect
+      ctx.fillStyle = fadeColor;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Lemon color text for the Binary effect
-      ctx.fillStyle = '#F4E878'; // Lemon color
+      // Text color for the Binary effect
+      ctx.fillStyle = color;
       ctx.font = `${fontSize}px monospace`;
 
       // Loop through drops array
@@ -87,7 +89,7 @@ const BinaryRain: React.FC<BinaryRainProps> = ({ active }) => {
       }
       window.removeEventListener('resize', resizeCanvas);
     };
-  }, [active]);
+  }, [active, color, fadeColor]);
 
   return (
     <canvas 

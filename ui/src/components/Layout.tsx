@@ -2,9 +2,9 @@ import Header from './Header.tsx';
 import {Outlet} from 'react-router-dom';
 import Footer from "./Footer.tsx";
 import Navi from "./Navi.tsx";
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import BinaryRain from './BinaryRain.tsx';
-import { useTheme, getCurrentTheme } from '../hooks/useTheme';
+import { useTheme } from '../hooks/useTheme';
 
 const Layout = () => {
     const { theme, isDark } = useTheme();
@@ -12,26 +12,17 @@ const Layout = () => {
     
     // Get real-time dark mode status directly from DOM
     const isDarkMode = isDark || theme === 'dark';
-    
-    // Only show binary rain in dark mode
-    const showBinaryRain = isDarkMode && isHovering;
-    
-    // Effect to sync dark mode state with DOM
-    useEffect(() => {
-        // When theme changes, check if we need to update binary visibility
-        const currentTheme = getCurrentTheme();
-        if (currentTheme === 'light' && isHovering) {
-            // If we switched to light mode while hovering, stop the effect
-            setIsHovering(false);
-        }
-    }, [theme, isHovering]);
-    
+
+    // Show binary rain on hover (both light and dark mode)
+    const showBinaryRain = isHovering;
+
+    // Binary rain colors based on theme
+    const binaryRainColor = isDarkMode ? '#F4E878' : '#000000';
+    const binaryRainFadeColor = isDarkMode ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)';
+
     // Handlers for the hover event on IK.AM
     const handleMouseEnter = () => {
-        // Only set hovering if in dark mode
-        if (getCurrentTheme() === 'dark') {
-            setIsHovering(true);
-        }
+        setIsHovering(true);
     };
     
     const handleMouseLeave = () => {
@@ -42,7 +33,7 @@ const Layout = () => {
         <div className="p-6 md:p-8 sm:px-2">
             {/* Header container with relative positioning for binary rain effect */}
             <div className="relative">
-                <BinaryRain active={showBinaryRain} />
+                <BinaryRain active={showBinaryRain} color={binaryRainColor} fadeColor={binaryRainFadeColor} />
                 <div className="relative z-10 flex flex-wrap">
                     <div className="grow">
                         <Header 
