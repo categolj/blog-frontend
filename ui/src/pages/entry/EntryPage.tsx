@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Link, useLocation, useParams} from "react-router-dom";
 import useSWR from 'swr';
+import Giscus from '@giscus/react';
 import Loading from "../../components/Loading.tsx";
 import BackToTop from "../../components/BackToTop";
 import {addCopyButton} from '../../utils/copy.ts';
@@ -234,6 +235,24 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch
                     <ShareWithBlueSky url={entryUrl} text={entry.frontMatter.title}/>
                     <ShareWithHatebu url={entryUrl}/>
                 </ShareSection>
+            </div>
+
+            {/* Comments section using Giscus */}
+            <div className="mt-10 pt-6 border-t border-(color:--entry-border-color)">
+                <Giscus
+                    repo="making/blog.ik.am"
+                    repoId="MDEwOlJlcG9zaXRvcnk0ODMzMTM4Ng=="
+                    category="General"
+                    categoryId="DIC_kwDOAuF6es4C1OVk"
+                    mapping="pathname"
+                    strict="0"
+                    reactionsEnabled="1"
+                    emitMetadata="0"
+                    inputPosition="top"
+                    theme="preferred_color_scheme"
+                    lang="ja"
+                    loading="lazy"
+                />
             </div>
 
             <BackToTop/>
