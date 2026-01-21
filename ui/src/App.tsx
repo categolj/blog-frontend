@@ -1,19 +1,18 @@
-import { HelmetProvider } from "react-helmet-async";
 import { RouterProvider } from "react-router-dom";
+import { HelmetProvider } from "react-helmet-async";
 import { useTheme } from './hooks/useTheme';
-import type { DataRouter } from 'react-router';
+import type { createBrowserRouter } from "react-router-dom";
 
 interface AppProps {
-  router: DataRouter;
+  router: ReturnType<typeof createBrowserRouter>;
 }
 
 const App = ({ router }: AppProps) => {
   // This hook will apply the theme class to the root element
   useTheme();
-  
   return (
     <HelmetProvider>
-      <RouterProvider router={router}/>
+      <RouterProvider router={router} />
     </HelmetProvider>
   );
 };
