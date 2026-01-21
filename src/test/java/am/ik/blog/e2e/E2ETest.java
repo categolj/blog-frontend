@@ -70,6 +70,7 @@ class E2ETest {
 				  "entryId": 100,
 				  "frontMatter": {
 				    "title": "Hello World!",
+				    "summary": "This is a test summary for OGP",
 				    "categories": [{"name": "a"}, {"name": "b"}, {"name": "c"}],
 				    "tags": [{"name": "x"}, {"name": "y"}, {"name": "z"}]
 				  },
@@ -91,6 +92,10 @@ class E2ETest {
 		assertThat(page.locator("#root article > p > strong")).hasText("Hello world");
 		// Verify counter is displayed
 		assertThat(page.getByText("42 Views")).isVisible();
+		// Verify OGP meta tags use summary
+		assertThat(page.locator("meta[name='description']")).hasAttribute("content", "This is a test summary for OGP");
+		assertThat(page.locator("meta[property='og:description']")).hasAttribute("content",
+				"This is a test summary for OGP");
 	}
 
 	@Test

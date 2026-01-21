@@ -101,11 +101,13 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch
         {async: false, gfm: true, renderer: plainTextRenderer}) as string;
 
     // Create meta description for OGP
-    const metaDescription = contentText
-        .replace('<', '')
-        .replace('>', '')
-        .substring(0, 150)
-        .replace(/[\n\r]/g, '') + '...';
+    const metaDescription = entry.frontMatter.summary
+        ? entry.frontMatter.summary
+        : contentText
+            .replace('<', '')
+            .replace('>', '')
+            .substring(0, 150)
+            .replace(/[\n\r]/g, '') + '...';
 
     // Build entry URL
     const entryUrl = `https://ik.am/entries/${entry.entryId}${tenantId ? '/' + tenantId : ''}`;
