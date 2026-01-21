@@ -250,7 +250,7 @@ const EntryPage: React.FC<EntryProps> = ({preLoadedEntry, tenantId, repo, branch
                     emitMetadata="0"
                     inputPosition="top"
                     theme="preferred_color_scheme"
-                    lang="ja"
+                    lang={isEnglish ? 'en' : 'ja'}
                     loading="lazy"
                 />
             </div>
