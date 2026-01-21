@@ -34,18 +34,21 @@ public class FeedController {
 		var response = this.entryClient.getEntries(entryRequest().build(), tenantId);
 		var page = Objects.requireNonNull(response.getBody());
 		int size = page.size();
-		String items = size > 0 ? page.content()
-			.stream()
-			.map(entry -> """
+		String items = size > 0 ? page.content().stream().map(entry -> {
+			String summary = entry.frontMatter().summary();
+			String description = summary.isEmpty() ? ""
+					: "\n\t\t\t<description><![CDATA[%s]]></description>".formatted(summary);
+			return """
 					<item>
 						<title><![CDATA[%s]]></title>
 						<link>%s/entries/%d</link>
 						<guid isPermaLink="true">%s/entries/%d</guid>
-						<pubDate>%s</pubDate>
+						<pubDate>%s</pubDate>%s
 					</item>
 					""".formatted(entry.frontMatter().title(), baseUrl, entry.entryKey().entryId(), baseUrl,
-					entry.entryKey().entryId(), DATE_FORMATTER.format(Objects.requireNonNull(entry.updated().date()))))
-			.collect(Collectors.joining()) : "";
+					entry.entryKey().entryId(), DATE_FORMATTER.format(Objects.requireNonNull(entry.updated().date())),
+					description);
+		}).collect(Collectors.joining()) : "";
 		String lastUpdatedDate = size > 0
 				? DATE_FORMATTER
 					.format(Objects.requireNonNull(Objects.requireNonNull(page.content()).getFirst().updated().date()))
