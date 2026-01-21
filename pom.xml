@@ -250,6 +250,7 @@
           <layers>
             <enabled>true</enabled>
           </layers>
+          <jvmArguments>--enable-preview</jvmArguments>
           <additionalProperties>
             <spring.boot.version>${project.parent.version}
             </spring.boot.version>
