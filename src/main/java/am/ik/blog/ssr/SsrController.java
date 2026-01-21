@@ -49,9 +49,9 @@ public class SsrController {
 	@SuppressWarnings("UnnecessaryParentheses")
 	public String entries(EntryRequest request, @Nullable @PathVariable(required = false) String tenantId) {
 		var entries = this.entryClient.getEntries(request, tenantId).getBody();
-		return this.reactRenderer.render(
-				"/entries" + ((StringUtils.hasText(request.query()) ? "?query=" + request.query() : "")),
-				Map.of("preLoadedEntries", Objects.requireNonNull(entries)));
+		String path = "/entries" + (StringUtils.hasText(tenantId) ? "/" + tenantId : "")
+				+ ((StringUtils.hasText(request.query()) ? "?query=" + request.query() : ""));
+		return this.reactRenderer.render(path, Map.of("preLoadedEntries", Objects.requireNonNull(entries)));
 	}
 
 	@GetMapping(path = { "/entries/{entryId:[0-9]+}", "/entries/{entryId:[0-9]+}/{tenantId:[a-z]+}" },
@@ -71,9 +71,10 @@ public class SsrController {
 		}
 		var entry = this.imageProxyReplacer.replaceImage(Objects.requireNonNull(response.getBody()));
 		Matcher matcher = scriptPattern.matcher(Objects.requireNonNull(entry.content()));
+		String path = "/entries/%d".formatted(entryId) + (StringUtils.hasText(tenantId) ? "/" + tenantId : "");
 		return ResponseEntity.ok()
 			.contentType(MediaType.TEXT_HTML)
-			.body(this.reactRenderer.render("/entries/%d".formatted(entryId),
+			.body(this.reactRenderer.render(path,
 					Map.of("preLoadedEntry", entry.toBuilder().content(matcher.replaceAll("")).build())));
 	}
 
