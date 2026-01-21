@@ -164,6 +164,12 @@ const EntriesPage: React.FC<EntriesProps> = ({preLoadedEntries, tenantId}) => {
                                 {entry.frontMatter.title}
                             </Link>
 
+                            {entry.frontMatter.summary && (
+                                <p className="text-sm text-fg2/80 mb-2 line-clamp-2">
+                                    {entry.frontMatter.summary}
+                                </p>
+                            )}
+
                             <div className="flex flex-wrap items-center gap-3 text-xs text-fg2/80">
                                 <span className="inline-flex items-center">
                                     <ClockIcon className="h-3 w-3 mr-1"/>

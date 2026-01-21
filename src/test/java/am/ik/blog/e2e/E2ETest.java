@@ -107,29 +107,30 @@ class E2ETest {
 
 	@Test
 	void getEntries() {
-		mockServer.GET("/entries", request -> Response.json("""
-				{
-				  "content": [
-				    {
-				      "entryId": 2,
-				      "frontMatter": {"title": "entry2", "categories": [], "tags": []},
-				      "content": "",
-				      "created": {"name": "demo", "date": "2024-04-01T00:00:00Z"},
-				      "updated": {"name": "demo", "date": "2024-04-02T00:00:00Z"}
-				    },
-				    {
-				      "entryId": 1,
-				      "frontMatter": {"title": "entry1", "categories": [], "tags": []},
-				      "content": "",
-				      "created": {"name": "demo", "date": "2024-04-01T00:00:00Z"},
-				      "updated": {"name": "demo", "date": "2024-04-01T00:00:00Z"}
-				    }
-				  ],
-				  "size": 2,
-				  "hasPrevious": false,
-				  "hasNext": true
-				}
-				"""));
+		mockServer.GET("/entries", request -> Response
+			.json("""
+					{
+					  "content": [
+					    {
+					      "entryId": 2,
+					      "frontMatter": {"title": "entry2", "summary": "This is the summary for entry2", "categories": [], "tags": []},
+					      "content": "",
+					      "created": {"name": "demo", "date": "2024-04-01T00:00:00Z"},
+					      "updated": {"name": "demo", "date": "2024-04-02T00:00:00Z"}
+					    },
+					    {
+					      "entryId": 1,
+					      "frontMatter": {"title": "entry1", "categories": [], "tags": []},
+					      "content": "",
+					      "created": {"name": "demo", "date": "2024-04-01T00:00:00Z"},
+					      "updated": {"name": "demo", "date": "2024-04-01T00:00:00Z"}
+					    }
+					  ],
+					  "size": 2,
+					  "hasPrevious": false,
+					  "hasNext": true
+					}
+					"""));
 
 		page.navigate("http://localhost:%d/entries".formatted(port),
 				new Page.NavigateOptions().setWaitUntil(WaitUntilState.NETWORKIDLE));
@@ -138,10 +139,15 @@ class E2ETest {
 			.hasText("entry2");
 		assertThat(page.locator("#entries > div:nth-child(1) > div.space-y-4 > div:nth-child(1) > a"))
 			.hasAttribute("href", "/entries/2");
+		// Verify summary is displayed for entry2
+		assertThat(page.locator("#entries > div:nth-child(1) > div.space-y-4 > div:nth-child(1) > p"))
+			.hasText("This is the summary for entry2");
 		assertThat(page.locator("#entries > div:nth-child(1) > div.space-y-4 > div:nth-child(2) > a"))
 			.hasText("entry1");
 		assertThat(page.locator("#entries > div:nth-child(1) > div.space-y-4 > div:nth-child(2) > a"))
 			.hasAttribute("href", "/entries/1");
+		// Verify no summary element exists for entry1 (no summary field)
+		assertThat(page.locator("#entries > div:nth-child(1) > div.space-y-4 > div:nth-child(2) > p")).hasCount(0);
 	}
 
 	@Test
