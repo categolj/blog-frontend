@@ -5,7 +5,11 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
     plugins: [react()],
     ssr: {
-        noExternal: true
+        noExternal: true,
+        external: ['@ffmpeg/ffmpeg', '@ffmpeg/util', '@ffmpeg/core'],
+    },
+    optimizeDeps: {
+        exclude: ['@ffmpeg/ffmpeg', '@ffmpeg/util', '@ffmpeg/core'],
     },
     server: {
         proxy: {

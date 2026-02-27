@@ -7,6 +7,8 @@ import CategoriesPage, {CategoriesProps} from "./pages/entry/CategoriesPage.tsx"
 import en from 'javascript-time-ago/locale/en'
 import TimeAgo from "javascript-time-ago";
 import AboutMePage from "./pages/etc/AboutMePage.tsx";
+import LabPage from "./pages/lab/LabPage.tsx";
+import MovToGifPage from "./pages/lab/MovToGifPage.tsx";
 import Error404Page from "./pages/etc/Error404Page.tsx";
 import InfoPage from "./components/InfoPage.tsx";
 import LoginPage from "./pages/note/LoginPage.tsx";
@@ -97,6 +99,12 @@ export default function routes(initData: object): RouteObject[] {
                 },
                 {
                     path: "/aboutme", element: <AboutMePage/>
+                },
+                {
+                    path: "/lab", element: <LabPage/>
+                },
+                {
+                    path: "/lab/mov-to-gif", element: <MovToGifPage/>
                 },
                 {
                     path: "/info", element: <InfoPage/>

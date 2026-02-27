@@ -87,8 +87,17 @@ const MobileMenu: React.FC = () => {
               </NavLink>
             </li>
             <li className="font-bold">
-              <NavLink 
-                to={'/aboutme'} 
+              <NavLink
+                to={'/lab'}
+                className={({isActive}) => isActive ? "no-underline border-b border-dashed border-1" : "no-underline"}
+                onClick={() => setIsOpen(false)}
+              >
+                Lab
+              </NavLink>
+            </li>
+            <li className="font-bold">
+              <NavLink
+                to={'/aboutme'}
                 className={({isActive}) => isActive ? "no-underline border-b border-dashed border-1" : "no-underline"}
                 onClick={() => setIsOpen(false)}
               >
