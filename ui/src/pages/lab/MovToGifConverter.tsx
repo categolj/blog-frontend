@@ -11,9 +11,9 @@ const MovToGifConverter: React.FC = () => {
     const [converting, setConverting] = useState(false)
     const [progress, setProgress] = useState(0)
     const [logMessages, setLogMessages] = useState<string[]>([])
-    const [scale, setScale] = useState(720)
-    const [fps, setFps] = useState(10)
-    const [quality, setQuality] = useState<'low' | 'medium' | 'high'>('medium')
+    const [scale, setScale] = useState('720')
+    const [fps, setFps] = useState('10')
+    const [quality, setQuality] = useState<'low' | 'medium' | 'high'>('low')
     const [speed, setSpeed] = useState(1)
     const [dragOver, setDragOver] = useState(false)
     const [loadError, setLoadError] = useState<string | null>(null)
@@ -89,9 +89,11 @@ const MovToGifConverter: React.FC = () => {
         try {
             await ffmpeg.writeFile('input.mov', await fetchFile(inputFile))
 
+            const scaleVal = parseInt(scale, 10) || 720
+            const fpsVal = parseInt(fps, 10) || 10
             const speedFilter = speed !== 1 ? `setpts=${(1 / speed).toFixed(4)}*PTS,` : ''
-            const fpsFilter = `fps=${fps},`
-            const scaleFilter = `scale=${scale}:-1:flags=lanczos`
+            const fpsFilter = `fps=${fpsVal},`
+            const scaleFilter = `scale=${scaleVal}:-1:flags=lanczos`
 
             if (quality === 'high') {
                 const paletteVf = `${speedFilter}${fpsFilter}${scaleFilter},palettegen=max_colors=256:stats_mode=diff`
@@ -203,10 +205,9 @@ const MovToGifConverter: React.FC = () => {
                     <input
                         type="number"
                         value={scale}
-                        onChange={e => setScale(Number(e.target.value))}
+                        onChange={e => setScale(e.target.value)}
                         min={100}
                         max={1920}
-                        step={10}
                         className={inputClasses}
                     />
                 </div>
@@ -215,7 +216,7 @@ const MovToGifConverter: React.FC = () => {
                     <input
                         type="number"
                         value={fps}
-                        onChange={e => setFps(Number(e.target.value))}
+                        onChange={e => setFps(e.target.value)}
                         min={1}
                         max={30}
                         className={inputClasses}
