@@ -24,6 +24,9 @@ const Navi = () => {
                         <NavLink to={'/notes'} className={({isActive}) => isActive ? "no-underline border-b border-dashed border-1" : "no-underline"}>Notes</NavLink>
                     </li>
                     <li className="list-none inline pr-4 font-bold">
+                        <NavLink to={'/lab'} className={({isActive}) => isActive ? "no-underline border-b border-dashed border-1" : "no-underline"}>Lab</NavLink>
+                    </li>
+                    <li className="list-none inline pr-4 font-bold">
                         <NavLink to={'/aboutme'} className={({isActive}) => isActive ? "no-underline border-b border-dashed border-1" : "no-underline"}>About</NavLink>
                     </li>
                 </ul>
