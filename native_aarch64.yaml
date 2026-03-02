@@ -1,8 +1,8 @@
-image: ghcr.io/categolj/blog-frontend@sha256:1bde3fb40e0a7df8d71b081ed348d26766a007ed6b595896635952705f927c48
-git_revision: 170b6b7d6fba0a3192b85863f6a4d1570ef14ac0
+image: ghcr.io/categolj/blog-frontend@sha256:76f3519ac29d00366f5e3021f059b4af8fb37995b6e212e5fc7f839f992dd6e9
+git_revision: 580a95ef14564f7c9da5773c20aae5995bee2737
 deployment:
   image:
     repository: ghcr.io/categolj/blog-frontend
-    digest: sha256:1bde3fb40e0a7df8d71b081ed348d26766a007ed6b595896635952705f927c48
+    digest: sha256:76f3519ac29d00366f5e3021f059b4af8fb37995b6e212e5fc7f839f992dd6e9
   podLabels:
-    github.com/revision: 170b6b7d6fba0a3192b85863f6a4d1570ef14ac0
+    github.com/revision: 580a95ef14564f7c9da5773c20aae5995bee2737
