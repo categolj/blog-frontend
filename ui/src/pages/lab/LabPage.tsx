@@ -16,6 +16,11 @@ const tools: LabTool[] = [
         description: 'Convert video files to GIF animations entirely in your browser using FFmpeg WebAssembly.',
         path: '/lab/mov-to-gif',
     },
+    {
+        title: 'Line Drawing Converter',
+        description: 'Convert photos to line drawings in your browser using OpenCV.js for easy tracing and sketching.',
+        path: '/lab/line-drawing',
+    },
 ];
 
 const accentColor = '#F4E878';
