@@ -2,7 +2,6 @@ package am.ik.blog.info;
 
 import am.ik.blog.BlogApiProps;
 import am.ik.blog.CounterApiProps;
-import am.ik.blog.ImageProxyProps;
 import am.ik.blog.NoteApiProps;
 import am.ik.blog.TranslationApiProps;
 import java.util.List;
@@ -32,11 +31,8 @@ public class InfoController {
 
 	private final CounterApiProps counterApiProps;
 
-	private final ImageProxyProps imageProxyProps;
-
 	public InfoController(BlogApiProps blogApiProps, InfoEndpoint infoEndpoint, RestClient.Builder restClientBuilder,
-			NoteApiProps noteApiProps, TranslationApiProps translationApiProps, CounterApiProps counterApiProps,
-			ImageProxyProps imageProxyProps) {
+			NoteApiProps noteApiProps, TranslationApiProps translationApiProps, CounterApiProps counterApiProps) {
 		this.blogApiProps = blogApiProps;
 		this.infoEndpoint = infoEndpoint;
 		this.restClient = restClientBuilder.defaultStatusHandler(__ -> true, (req, res) -> {
@@ -44,7 +40,6 @@ public class InfoController {
 		this.noteApiProps = noteApiProps;
 		this.translationApiProps = translationApiProps;
 		this.counterApiProps = counterApiProps;
-		this.imageProxyProps = imageProxyProps;
 	}
 
 	@SuppressWarnings("preview")
@@ -76,20 +71,13 @@ public class InfoController {
 				.retrieve()
 				.body(new ParameterizedTypeReference<>() {
 				}), Map::of));
-			Subtask<Map<String, Object>> imageProxy = scope
-				.fork(() -> Objects.requireNonNullElseGet(this.restClient.get()
-					.uri(this.imageProxyProps.url() + "/actuator/info")
-					.retrieve()
-					.body(new ParameterizedTypeReference<>() {
-					}), Map::of));
 			scope.join();
 			return List.of( //
 					Map.of("name", "Self", "info", self.get()), //
 					Map.of("name", "Entry API", "info", entry.get()), //
 					Map.of("name", "Translation API", "info", translation.get()), //
 					Map.of("name", "Note API", "info", note.get()), //
-					Map.of("name", "Counter API", "info", counter.get()), //
-					Map.of("name", "Image Proxy", "info", imageProxy.get()) //
+					Map.of("name", "Counter API", "info", counter.get()) //
 			);
 		}
 	}

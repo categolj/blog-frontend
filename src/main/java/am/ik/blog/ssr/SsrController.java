@@ -3,7 +3,6 @@ package am.ik.blog.ssr;
 import am.ik.blog.entry.EntryClient;
 import am.ik.blog.entry.EntryRequest;
 import am.ik.blog.entry.EntryRequestBuilder;
-import am.ik.blog.entry.ImageProxyReplacer;
 import am.ik.blog.entry.model.Entry;
 import jakarta.annotation.Nullable;
 import java.util.Map;
@@ -29,15 +28,12 @@ public class SsrController {
 
 	private final EntryClient entryClient;
 
-	private final ImageProxyReplacer imageProxyReplacer;
-
 	static final Pattern scriptPattern = Pattern.compile("<script[^>]*>.*?</script>",
 			Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
 
-	public SsrController(ReactRenderer reactRenderer, EntryClient entryClient, ImageProxyReplacer imageProxyReplacer) {
+	public SsrController(ReactRenderer reactRenderer, EntryClient entryClient) {
 		this.reactRenderer = reactRenderer;
 		this.entryClient = entryClient;
-		this.imageProxyReplacer = imageProxyReplacer;
 	}
 
 	@GetMapping(path = "/", produces = MediaType.TEXT_HTML_VALUE)
@@ -69,7 +65,7 @@ public class SsrController {
 				.contentType(MediaType.TEXT_HTML)
 				.body(this.reactRenderer.render("/forbidden", Map.of()));
 		}
-		var entry = this.imageProxyReplacer.replaceImage(Objects.requireNonNull(response.getBody()));
+		var entry = Objects.requireNonNull(response.getBody());
 		Matcher matcher = scriptPattern.matcher(Objects.requireNonNull(entry.content()));
 		String path = "/entries/%d".formatted(entryId) + (StringUtils.hasText(tenantId) ? "/" + tenantId : "");
 		return ResponseEntity.ok()

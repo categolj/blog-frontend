@@ -8,7 +8,6 @@ import am.ik.pagination.CursorPage;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 import org.springframework.http.CacheControl;
@@ -26,14 +25,11 @@ public class EntryController {
 
 	private final EntryClient entryClient;
 
-	private final ImageProxyReplacer imageProxyReplacer;
-
 	private static final CacheControl swrCacheControl = CacheControl.maxAge(Duration.ofHours(1))
 		.staleWhileRevalidate(Duration.ofMinutes(10));
 
-	public EntryController(EntryClient entryClient, ImageProxyReplacer imageProxyReplacer) {
+	public EntryController(EntryClient entryClient) {
 		this.entryClient = entryClient;
-		this.imageProxyReplacer = imageProxyReplacer;
 	}
 
 	@GetMapping(path = { "/api/entries", "/api/tenants/{tenantId}/entries" })
@@ -81,9 +77,7 @@ public class EntryController {
 			if (lastModified != -1) {
 				headers.setLastModified(lastModified);
 			}
-		})
-			.cacheControl(swrCacheControl)
-			.body(this.imageProxyReplacer.replaceImage(Objects.requireNonNull(response.getBody())));
+		}).cacheControl(swrCacheControl).body(response.getBody());
 	}
 
 	@GetMapping(path = "/api/tags")
