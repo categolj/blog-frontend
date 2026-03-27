@@ -107,7 +107,7 @@ class SsrControllerTest {
 			.elementHasText("#root article > p > strong", "Hello world") //
 			.elementHasHtml("#__INIT_DATA__",
 					"""
-							{"preLoadedEntry":{"entryId":100,"tenantId":"_","frontMatter":{"title":"Hello World!","summary":"","categories":[{"name":"a"},{"name":"b"},{"name":"c"}],"tags":[{"name":"x"},{"name":"y"},{"name":"z"}]},"content":"Welcome\\n**Hello world**, this is my first blog post.\\nI hope you like it!","created":{"name":"demo","date":"2024-04-01T00:00:00Z"},"updated":{"name":"demo","date":"2024-04-01T00:00:00Z"}}}
+							{"preLoadedEntry":{"frontMatter":{"title":"Hello World!","summary":"","categories":[{"name":"a"},{"name":"b"},{"name":"c"}],"tags":[{"name":"x"},{"name":"y"},{"name":"z"}]},"content":"Welcome\\n**Hello world**, this is my first blog post.\\nI hope you like it!","created":{"name":"demo","date":"2024-04-01T00:00:00Z"},"updated":{"name":"demo","date":"2024-04-01T00:00:00Z"},"entryId":100,"tenantId":"_"}}
 							"""
 						.trim());
 	}
@@ -198,7 +198,7 @@ class SsrControllerTest {
 					"/entries/1")
 			.elementHasHtml("#__INIT_DATA__",
 					"""
-							{"preLoadedEntries":{"content":[{"entryId":2,"tenantId":"_","frontMatter":{"title":"entry2","summary":"","categories":[],"tags":[]},"content":"","created":{"name":"demo","date":"2024-04-01T00:00:00Z"},"updated":{"name":"demo","date":"2024-04-02T00:00:00Z"}},{"entryId":1,"tenantId":"_","frontMatter":{"title":"entry1","summary":"","categories":[],"tags":[]},"content":"","created":{"name":"demo","date":"2024-04-01T00:00:00Z"},"updated":{"name":"demo","date":"2024-04-01T00:00:00Z"}}],"size":2,"hasPrevious":false,"hasNext":true}}
+							{"preLoadedEntries":{"content":[{"frontMatter":{"title":"entry2","summary":"","categories":[],"tags":[]},"content":"","created":{"name":"demo","date":"2024-04-01T00:00:00Z"},"updated":{"name":"demo","date":"2024-04-02T00:00:00Z"},"entryId":2,"tenantId":"_"},{"frontMatter":{"title":"entry1","summary":"","categories":[],"tags":[]},"content":"","created":{"name":"demo","date":"2024-04-01T00:00:00Z"},"updated":{"name":"demo","date":"2024-04-01T00:00:00Z"},"entryId":1,"tenantId":"_"}],"size":2,"hasPrevious":false,"hasNext":true}}
 							"""
 						.trim());
 	}
@@ -237,7 +237,7 @@ class SsrControllerTest {
 			.elementHasText("#tags li:nth-child(3)", "C (1)")
 			.elementAttributeHasText("#tags li:nth-child(3) > a", "href", "/tags/C/entries")
 			.elementHasHtml("#__INIT_DATA__", """
-					{"preLoadedTags":[{"name":"A","count":1},{"name":"B","count":2},{"name":"C","count":1}]}
+					{"preLoadedTags":[{"count":1,"name":"A"},{"count":2,"name":"B"},{"count":1,"name":"C"}]}
 					""".trim());
 	}
 
