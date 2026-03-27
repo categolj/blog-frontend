@@ -2,14 +2,12 @@ package am.ik.blog.entry.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import java.time.Instant;
 import org.jspecify.annotations.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-@JsonPropertyOrder({ "entryId", "tenantId", "frontMatter", "content", "created", "updated" })
 public record Entry(@JsonUnwrapped EntryKey entryKey, FrontMatter frontMatter,
 		@Nullable @JsonInclude(JsonInclude.Include.NON_NULL) String content, Author created, Author updated) {
 
