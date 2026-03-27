@@ -1,9 +1,11 @@
 package am.ik.blog.entry.model;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import org.jspecify.annotations.Nullable;
 import org.springframework.util.Assert;
 
+@JsonPropertyOrder({ "name", "count" })
 public record TagAndCount(@JsonUnwrapped Tag tag, int count) {
 
 	public static Builder builder() {
