@@ -363,22 +363,11 @@
         <version>0.2.1</version>
         <executions>
             <execution>
-                <phase>compile</phase>
                 <goals>
                     <goal>compress</goal>
                 </goals>
             </execution>
         </executions>
-        <configuration>
-          <fileExtensions>
-              <fileExtension>js</fileExtension>
-              <fileExtension>css</fileExtension>
-              <fileExtension>svg</fileExtension>
-              <fileExtension>html</fileExtension>
-              <fileExtension>json</fileExtension>
-              <fileExtension>wasm</fileExtension>
-          </fileExtensions>
-        </configuration>
       </plugin>
     </plugins>
   </build>
